@@ -1,10 +1,28 @@
-# IVC Club Website
+# IVC Club Website 
 
+A modern full-stack website built for the **Innovators and Visionaries Club (IVC) ** to showcase projects, events, and encourage students to join and collaborate.
+
+---
+
+## 🚀 Tech Stack
+
+### Frontend
+- React.js
+- Tailwind CSS
+- Framer Motion
+- Vite
+
+### Backend
+- Node.js
+
+---
+
+## 📁 Project Structure
 Modern website for Innovation & Value Creation Club.
 
 ## Project Structure
 - `/client`: React Frontend
-- `/server`: Node.js/Express Backend
+- `/server`: Node.js Backend 
 
 ## Getting Started
 
