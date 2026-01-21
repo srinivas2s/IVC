@@ -1,6 +1,6 @@
 # IVC Club Website 
 
-A modern full-stack website built for the **Innovators and Visionaries Club (IVC) ** to showcase projects, events, and encourage students to join and collaborate.
+A modern full-stack website built for the **Innovators and Visionaries Club (IVC)** to showcase projects, events, and encourage students to join and collaborate.
 
 ---
 
