@@ -49,3 +49,50 @@ This file tracks all changes made to the codebase, including configuration updat
 - **Deployment**:
   - Action: Rebuilt the frontend with `npm run build` to apply changes.
   - Action: Restarted server.
+
+### 10:41 AM - Content Update
+- **Frontend**:
+  - File: `client/src/pages/Home.jsx`
+  - Action: Updated the main description paragraph.
+  - New Content: "IVC fuels the future by connecting passionate students with the tools to innovate and create. From tech enthusiasts to artistic dreamers, we build teams that turn imagination into impact. Our mission is simple: collaborate, experiment, and engineer the solutions the world needs next."
+- **Deployment**:
+  - Action: Rebuilt the frontend.
+
+### 10:46 AM - Content Update
+- **Frontend**:
+  - File: `client/src/pages/Home.jsx`
+  - Action: Updated the main description paragraph to a more concise version.
+  - New Content: "IVC is the ultimate hub for student innovation, uniting tech enthusiasts, designers, and dreamers. We empower creative minds to collaborate, experiment, and build future-ready solutions together."
+- **Deployment**:
+  - Action: Rebuilt the frontend.
+
+### 10:52 AM - Content Update
+- **Frontend**:
+  - File: `client/src/pages/About.jsx`
+  - Action: Completely rewrote the 'About IVC' description.
+  - New Content: "Innovators & Visionaries Club (IVC) is a thriving ecosystem where technology meets creativity..."
+- **Deployment**:
+  - Action: Rebuilt the frontend.
+
+### 10:52 AM - Styling Update
+- **Frontend**:
+  - File: `client/src/pages/About.jsx`
+  - Action: Increased font size of the About description.
+  - Change: Updated class from `text-lg` to `text-2xl` (approx 1.5x larger).
+- **Deployment**:
+  - Action: Rebuilt the frontend.
+
+### 10:54 AM - Style Update
+- **Frontend**:
+  - File: `client/src/pages/About.jsx`
+  - Action: Reduced font size of About text from `text-lg` to `text-base` (approx 1x size).
+- **Deployment**:
+  - Action: Rebuilt the frontend.
+
+### 11:00 AM - Content & Style Update
+- **Frontend**:
+  - File: `client/src/pages/About.jsx`
+  - Action: Updated "About IVC" description text to a more detailed version.
+  - Action: Increased font size from `text-base` to `text-xl` (approx 1.25x).
+- **Deployment**:
+  - Action: Automatically rebuilt the frontend.
