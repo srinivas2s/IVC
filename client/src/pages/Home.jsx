@@ -4,7 +4,54 @@ import { Link } from 'react-router-dom';
 
 import logo from '../assets/logo.png';
 
+import { useState, useEffect } from 'react';
+
 const Home = () => {
+    const [currentText, setCurrentText] = useState('');
+    const [isDeleting, setIsDeleting] = useState(false);
+    const [loopNum, setLoopNum] = useState(0);
+    const [typingSpeed, setTypingSpeed] = useState(150);
+
+    const phrases = [
+        "Empower your mind, build the future.",
+        "Transform Ideas into Impact.",
+        "Code your dreams into existence.",
+        "Design, develop, and deliver excellence.",
+        "Elevating potential through student innovation."
+    ];
+
+    useEffect(() => {
+        const handleTyping = () => {
+            const i = loopNum % phrases.length;
+            const fullText = phrases[i];
+
+            setCurrentText(isDeleting
+                ? fullText.substring(0, currentText.length - 1)
+                : fullText.substring(0, currentText.length + 1)
+            );
+
+            // Typing Speed logic
+            let typeSpeed = isDeleting ? 50 : 100;
+
+            if (!isDeleting && currentText === fullText) {
+                // Done typing, wait 3 seconds
+                typeSpeed = 1000;
+                setIsDeleting(true);
+            } else if (isDeleting && currentText === '') {
+                // Done deleting, move to next
+                setIsDeleting(false);
+                setLoopNum(loopNum + 1);
+                typeSpeed = 500;
+            }
+
+            setTypingSpeed(typeSpeed);
+        };
+
+        const timer = setTimeout(handleTyping, typingSpeed);
+
+        return () => clearTimeout(timer);
+    }, [currentText, isDeleting, loopNum, phrases, typingSpeed]);
+
     return (
         <div className="relative isolate pt-24 pb-12 lg:pt-32 min-h-screen flex items-center">
 
@@ -30,11 +77,12 @@ const Home = () => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ duration: 0.8, delay: 0.1 }}
-                        className="text-xl sm:text-3xl font-bold mt-8"
+                        className="text-xl sm:text-3xl font-bold mt-8 h-12" // Added height to prevent layout shift
                     >
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-ivc-primary to-ivc-accent">
-                            Transform Ideas into Impact.
+                            {currentText}
                         </span>
+                        <span className="animate-pulse text-ivc-primary">|</span>
                     </motion.h2>
                     <motion.p
                         initial={{ opacity: 0, y: 20 }}
@@ -42,7 +90,7 @@ const Home = () => {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="mt-6 text-lg leading-8 text-gray-600"
                     >
-                        IVC is the hub for student innovation, bringing together tech enthusiasts, designers, and dreamers to build future-ready solutions.
+                        IVC is the club for student innovation, bringing together tech enthusiasts, designers, and dreamers to build future-ready solutions.
                     </motion.p>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
