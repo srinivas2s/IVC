@@ -71,7 +71,7 @@ const Home = () => {
                         transition={{ duration: 0.8 }}
                         className="text-3xl font-extrabold tracking-tight text-ivc-text sm:text-6xl whitespace-nowrap"
                     >
-                        IDEATE - VISUALIZE - CREATE
+                        IDEATE VISUALIZE CREATE
                     </motion.h1>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}
@@ -90,7 +90,7 @@ const Home = () => {
                         transition={{ duration: 0.8, delay: 0.2 }}
                         className="mt-6 text-lg leading-8 text-gray-600"
                     >
-                        IVC is the club for student innovation, bringing together tech enthusiasts, designers, and dreamers to build future-ready solutions.
+                        IVC is the ultimate hub for student innovation, uniting tech enthusiasts, designers, and dreamers. We empower creative minds to collaborate, experiment, and build future-ready solutions together.
                     </motion.p>
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
