@@ -71,7 +71,7 @@ const Home = () => {
                         transition={{ duration: 0.8 }}
                         className="text-3xl font-extrabold tracking-tight text-ivc-text sm:text-6xl whitespace-nowrap"
                     >
-                        IDEATE VISUALIZE CREATE
+                        IDEATE - VISUALIZE - CREATE
                     </motion.h1>
                     <motion.h2
                         initial={{ opacity: 0, y: 20 }}

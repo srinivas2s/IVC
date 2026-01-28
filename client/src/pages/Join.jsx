@@ -72,6 +72,32 @@ const Join = () => {
                     {status === 'error' && <p className="text-red-400 text-center">Something went wrong. Ensure backend is running.</p>}
                 </form>
             </motion.div>
+
+            {/* Connect With Us Section */}
+            <motion.div
+                initial={{ opacity: 0, y: 30 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.6, delay: 0.3 }}
+                className="mt-16 text-center"
+            >
+                <div className="bg-ivc-card/80 backdrop-blur-md p-8 rounded-2xl border border-gray-200/50 shadow-xl">
+                    <h3 className="text-2xl font-bold text-ivc-text mb-3">
+                        Connect With Us
+                    </h3>
+                    <p className="text-gray-600 mb-4">
+                        Have questions or ideas? We'd love to hear from you.
+                    </p>
+                    <a
+                        href="mailto:ivc@university.edu"
+                        className="text-ivc-primary hover:text-ivc-accent font-semibold text-lg transition-colors underline underline-offset-4"
+                    >
+                        ivc@university.edu
+                    </a>
+                    <p className="text-gray-500 text-sm mt-6">
+                        © 2026 Innovators & Visionaries Club. All rights reserved.
+                    </p>
+                </div>
+            </motion.div>
         </div>
     );
 };
