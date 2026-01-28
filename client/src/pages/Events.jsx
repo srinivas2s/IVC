@@ -36,7 +36,7 @@ const Events = () => {
                             className="flex flex-col md:flex-row bg-[#050505] border border-gray-800 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.01] hover:border-ivc-primary hover:shadow-[0_0_30px_rgba(124,58,237,0.15)] group"
                         >
                             <div className="md:w-auto relative min-w-[140px]">
-                                <div className="absolute top-4 left-0 bg-ivc-primary text-white px-4 py-1 rounded-r-full font-bold text-sm shadow-lg shadow-ivc-primary/30 z-10">
+                                <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-md text-xs font-mono border border-gray-700 text-gray-300 z-10">
                                     {event.date}
                                 </div>
                                 <div className="h-48 md:h-full md:w-full bg-gray-900">

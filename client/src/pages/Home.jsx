@@ -53,7 +53,7 @@ const Home = () => {
     }, [currentText, isDeleting, loopNum, phrases, typingSpeed]);
 
     return (
-        <div className="relative isolate pt-32 pb-32 lg:pt-40 min-h-screen flex items-center">
+        <div className="relative isolate pt-24 pb-20 lg:pt-32 min-h-screen flex items-start">
 
             <div className="px-4 mx-auto max-w-7xl sm:px-6 lg:px-8 relative z-10 w-full">
                 <div className="max-w-5xl mx-auto text-center">
