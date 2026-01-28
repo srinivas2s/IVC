@@ -52,19 +52,19 @@ const Projects = () => {
                         <motion.div
                             key={project.id}
                             variants={item}
-                            className="bg-ivc-card border border-gray-200 dark:border-gray-800 rounded-xl overflow-hidden transition-all duration-300 group hover:scale-[1.02] hover:shadow-2xl hover:border-ivc-primary dark:hover:border-ivc-primary hover:shadow-ivc-primary/20"
+                            className="bg-[#050505] border border-gray-800 rounded-2xl overflow-hidden transition-all duration-300 group hover:scale-[1.02] hover:border-ivc-primary hover:shadow-[0_0_30px_rgba(124,58,237,0.15)]"
                         >
-                            <div className="h-48 bg-gray-200 overflow-hidden relative">
+                            <div className="h-56 bg-gray-900 overflow-hidden relative">
                                 <img src={project.image} alt={project.title} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500" />
-                                <div className="absolute top-2 right-2 bg-black/60 px-2 py-1 rounded text-xs font-mono border border-white/20 text-gray-200">
+                                <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-md text-xs font-mono border border-gray-700 text-gray-300">
                                     {project.domain}
                                 </div>
                             </div>
                             <div className="p-6">
-                                <h3 className="text-xl font-bold mb-2 group-hover:text-ivc-accent transition-colors text-ivc-text">{project.title}</h3>
-                                <p className="text-gray-600 text-sm mb-4">{project.description}</p>
-                                <button className="text-ivc-primary text-sm font-semibold hover:text-ivc-secondary transition-colors">
-                                    Read More &rarr;
+                                <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-ivc-primary transition-colors">{project.title}</h3>
+                                <p className="text-gray-400 text-sm mb-6 leading-relaxed line-clamp-2">{project.description}</p>
+                                <button className="text-ivc-primary text-sm font-bold tracking-wide hover:text-white transition-colors flex items-center gap-2 group-hover:translate-x-1 duration-300">
+                                    Read More <span className="text-lg">→</span>
                                 </button>
                             </div>
                         </motion.div>

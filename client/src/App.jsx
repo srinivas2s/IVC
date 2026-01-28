@@ -14,21 +14,21 @@ import InteractiveBackground from './components/InteractiveBackground';
 function App() {
   return (
     <Router>
-      <div className="min-h-screen bg-ivc-bg text-ivc-text font-sans selection:bg-ivc-primary selection:text-white flex flex-col relative">
+      <div className="min-h-screen bg-ivc-bg dark:bg-transparent text-ivc-text font-sans selection:bg-ivc-primary selection:text-white flex flex-col relative">
         <InteractiveBackground />
         <Navbar />
         <main className="flex-grow relative z-10">
-          <section id="home"><Home /></section>
-          <section id="about"><About /></section>
-          <section id="domains"><Domains /></section>
-          <section id="projects"><Projects /></section>
-          <section id="events"><Events /></section>
-          <section id="achievements"><Achievements /></section>
-          <section id="team"><Team /></section>
-          <section id="join"><Join /></section>
+          <section id="home" className="scroll-mt-20"><Home /></section>
+          <section id="about" className="scroll-mt-20"><About /></section>
+          <section id="domains" className="scroll-mt-20"><Domains /></section>
+          <section id="projects" className="scroll-mt-20"><Projects /></section>
+          <section id="events" className="scroll-mt-20"><Events /></section>
+          <section id="achievements" className="scroll-mt-20"><Achievements /></section>
+          <section id="team" className="scroll-mt-20"><Team /></section>
+          <section id="join" className="scroll-mt-20"><Join /></section>
         </main>
 
-        <footer className="py-8 text-center text-gray-500 text-sm border-t border-gray-200 bg-gray-50 backdrop-blur-sm">
+        <footer className="py-8 text-center text-gray-500 text-sm border-t border-gray-200 bg-gray-50 backdrop-blur-sm dark:bg-ivc-dark-card dark:text-gray-400 dark:border-gray-800">
           &copy; {new Date().getFullYear()} IVC - Innovation & Value Creation Club. All rights reserved.
         </footer>
       </div>
