@@ -86,12 +86,12 @@ const Join = () => {
                 </form>
             </motion.div>
 
-            {/* Connect With Us Section */}
             <motion.div
                 initial={{ opacity: 0, y: 30 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6, delay: 0.3 }}
                 className="mt-16 text-center"
+                id="contact"
             >
                 <div className="bg-ivc-card dark:bg-ivc-dark-card/50 backdrop-blur-md p-8 rounded-2xl border border-gray-200 dark:border-gray-800 shadow-xl">
                     <h3 className="text-2xl font-bold text-ivc-text dark:text-ivc-dark-text mb-3">

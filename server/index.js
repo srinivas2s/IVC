@@ -13,13 +13,13 @@ app.use(express.json());
 
 // Mock Data
 const events = [
-    { id: 1, title: 'Hackathon 2024', date: '2024-03-15', description: 'Annual 24h Hackathon', image: 'https://via.placeholder.com/300' },
-    { id: 2, title: 'AI Workshop', date: '2024-04-10', description: 'Intro to GenAI', image: 'https://via.placeholder.com/300' }
+    { id: 1, title: 'Hackathon 2025', date: '2025-03-15', description: 'Annual 24h Hackathon', image: '/images/events/hackathon.png' },
+    { id: 2, title: 'AI Workshop', date: '2025-04-10', description: 'Intro to GenAI', image: 'https://via.placeholder.com/300' }
 ];
 
 const projects = [
-    { id: 1, title: 'Smart Campus', domain: 'IoT', description: 'Automating text messaging', image: 'https://via.placeholder.com/300' },
-    { id: 2, title: 'Health AI', domain: 'AI/ML', description: 'Diagnosing diseases early', image: 'https://via.placeholder.com/300' }
+    { id: 1, title: 'Smart Campus', domain: 'IoT', description: 'Automating text messaging', image: '/images/projects/smart_campus.jpg' },
+    { id: 2, title: 'Health AI', domain: 'AI/ML', description: 'Diagnosing diseases early', image: '/images/projects/health_ai.png' }
 ];
 
 const members = []; // In-memory store for join requests

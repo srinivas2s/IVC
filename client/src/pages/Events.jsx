@@ -33,7 +33,7 @@ const Events = () => {
                             initial={{ opacity: 0, y: 20 }}
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            className="bg-[#050505] border border-gray-800 rounded-2xl overflow-hidden transition-all duration-300 group hover:scale-[1.02] hover:border-ivc-primary hover:shadow-[0_0_30px_rgba(124,58,237,0.15)] flex flex-col"
+                            className="glass-panel glass-panel-hover rounded-2xl overflow-hidden group flex flex-col"
                         >
                             <div className="h-56 bg-gray-900 relative overflow-hidden">
                                 <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-md text-xs font-mono border border-gray-700 text-gray-300 z-10">
