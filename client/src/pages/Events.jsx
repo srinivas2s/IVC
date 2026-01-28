@@ -26,30 +26,25 @@ const Events = () => {
                     <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-ivc-primary"></div>
                 </div>
             ) : (
-                <div className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
                     {events.map((event, index) => (
                         <motion.div
                             key={event.id}
-                            initial={{ opacity: 0, x: -20 }}
-                            animate={{ opacity: 1, x: 0 }}
+                            initial={{ opacity: 0, y: 20 }}
+                            animate={{ opacity: 1, y: 0 }}
                             transition={{ delay: index * 0.1 }}
-                            className="flex flex-col md:flex-row bg-[#050505] border border-gray-800 rounded-2xl overflow-hidden transition-all duration-300 hover:scale-[1.01] hover:border-ivc-primary hover:shadow-[0_0_30px_rgba(124,58,237,0.15)] group"
+                            className="bg-[#050505] border border-gray-800 rounded-2xl overflow-hidden transition-all duration-300 group hover:scale-[1.02] hover:border-ivc-primary hover:shadow-[0_0_30px_rgba(124,58,237,0.15)] flex flex-col"
                         >
-                            <div className="md:w-auto relative min-w-[140px]">
+                            <div className="h-56 bg-gray-900 relative overflow-hidden">
                                 <div className="absolute top-3 right-3 bg-black/70 backdrop-blur-md px-3 py-1 rounded-md text-xs font-mono border border-gray-700 text-gray-300 z-10">
                                     {event.date}
                                 </div>
-                                <div className="h-48 md:h-full md:w-full bg-gray-900">
-                                    {/* Placeholder for event image if needed, or remove image to match 'list' style more closely if desired. Keeping image for now as per previous code structure but improved. */}
-                                    <img src={event.image} alt={event.title} className="w-full h-full object-cover opacity-60 group-hover:opacity-100 transition-opacity duration-500" />
-                                </div>
+                                <img src={event.image} alt={event.title} className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-all duration-500" />
                             </div>
-                            <div className="p-6 flex-grow flex flex-col md:flex-row items-center justify-between gap-6">
-                                <div className="text-center md:text-left">
-                                    <h3 className="text-2xl font-bold mb-2 text-white group-hover:text-ivc-primary transition-colors">{event.title}</h3>
-                                    <p className="text-gray-400 text-sm max-w-xl">{event.description}</p>
-                                </div>
-                                <button className="whitespace-nowrap px-6 py-2.5 bg-transparent border border-ivc-primary text-ivc-primary rounded-lg font-semibold hover:bg-ivc-primary hover:text-white transition-all shadow-[0_0_15px_rgba(124,58,237,0.2)] hover:shadow-[0_0_25px_rgba(124,58,237,0.4)]">
+                            <div className="p-6 flex flex-col flex-grow">
+                                <h3 className="text-2xl font-bold mb-3 text-ivc-dark-text group-hover:text-ivc-primary transition-colors">{event.title}</h3>
+                                <p className="text-gray-400 text-sm mb-6 flex-grow line-clamp-3">{event.description}</p>
+                                <button className="w-full py-2.5 bg-transparent border border-ivc-primary text-ivc-primary rounded-lg font-semibold hover:bg-ivc-primary hover:text-ivc-dark-text transition-all shadow-[0_0_15px_rgba(124,58,237,0.2)] hover:shadow-[0_0_25px_rgba(124,58,237,0.4)]">
                                     Register Now
                                 </button>
                             </div>

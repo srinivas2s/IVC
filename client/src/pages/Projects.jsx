@@ -61,9 +61,9 @@ const Projects = () => {
                                 </div>
                             </div>
                             <div className="p-6">
-                                <h3 className="text-2xl font-bold mb-3 text-white group-hover:text-ivc-primary transition-colors">{project.title}</h3>
+                                <h3 className="text-2xl font-bold mb-3 text-ivc-dark-text group-hover:text-ivc-primary transition-colors">{project.title}</h3>
                                 <p className="text-gray-400 text-sm mb-6 leading-relaxed line-clamp-2">{project.description}</p>
-                                <button className="text-ivc-primary text-sm font-bold tracking-wide hover:text-white transition-colors flex items-center gap-2 group-hover:translate-x-1 duration-300">
+                                <button className="text-ivc-primary text-sm font-bold tracking-wide hover:text-ivc-dark-text transition-colors flex items-center gap-2 group-hover:translate-x-1 duration-300">
                                     Read More <span className="text-lg">→</span>
                                 </button>
                             </div>
