@@ -29,7 +29,12 @@ const Home = () => {
                             className="flex justify-center mb-12"
                         >
                             <div className="relative">
-                                <img src={logo} alt="IVC Logo" className="relative w-28 h-28 md:w-36 md:h-36 drop-shadow-liquid" />
+                                <motion.img
+                                    layoutId="main-logo"
+                                    src="/logo_loading.png"
+                                    alt="IVC Logo"
+                                    className="relative w-28 h-28 md:w-36 md:h-36 drop-shadow-liquid"
+                                />
                             </div>
                         </motion.div>
 

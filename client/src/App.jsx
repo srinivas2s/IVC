@@ -27,7 +27,7 @@ function App() {
 
   return (
     <Router>
-      <AnimatePresence mode="wait">
+      <AnimatePresence>
         {loading ? (
           <LoadingScreen key="loader" />
         ) : (
