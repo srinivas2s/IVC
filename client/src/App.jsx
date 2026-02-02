@@ -21,18 +21,18 @@ function App() {
     // Simulate loading time for aesthetics
     const timer = setTimeout(() => {
       setLoading(false);
-    }, 2500);
+    }, 3500);
     return () => clearTimeout(timer);
   }, []);
 
   return (
     <Router>
+      <InteractiveBackground />
       <AnimatePresence>
         {loading ? (
           <LoadingScreen key="loader" />
         ) : (
-          <div key="content" className="min-h-screen bg-ivc-bg text-ivc-text font-sans selection:bg-ivc-primary selection:text-white flex flex-col relative">
-            <InteractiveBackground />
+          <div key="content" className="min-h-screen text-ivc-text font-sans selection:bg-ivc-primary selection:text-white flex flex-col relative">
             <Navbar />
             <main className="flex-grow relative z-10">
               <section id="home"><Home /></section>

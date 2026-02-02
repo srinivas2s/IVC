@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, X } from 'lucide-react';
+import { Menu, X, ArrowLeft } from 'lucide-react';
 
 import logo from '../assets/logo.png';
 
@@ -83,19 +83,30 @@ const Navbar = () => {
                 </div>
             </div>
 
-            {/* Mobile Menu Overlay */}
+            {/* Mobile Menu Sidebar */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
-                        initial={{ opacity: 0, x: 50, scale: 0.95 }}
-                        animate={{ opacity: 1, x: 0, scale: 1 }}
-                        exit={{ opacity: 0, x: 50, scale: 0.95 }}
+                        initial={{ x: '-100%' }}
+                        animate={{ x: 0 }}
+                        exit={{ x: '-100%' }}
                         transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                        className="absolute top-0 right-0 md:hidden px-4 w-full"
+                        className="fixed top-0 left-0 h-screen w-[280px] z-[60] md:hidden"
                     >
-                        <div className="liquid-glass backdrop-blur-3xl p-6 shadow-2xl overflow-hidden relative w-full rounded-[32px] mt-2 flex items-start justify-between">
+                        <div className="h-full w-full liquid-glass backdrop-blur-3xl p-6 shadow-2xl relative flex flex-col border-r border-white/10">
+
+                            {/* Back Button (Top Right of Sidebar) */}
+                            <div className="flex justify-end mb-8">
+                                <button
+                                    onClick={() => setIsOpen(false)}
+                                    className="p-3 bg-white/10 hover:bg-white/20 rounded-full border border-white/10 transition-colors group"
+                                >
+                                    <ArrowLeft size={24} className="text-white group-hover:-translate-x-1 transition-transform" />
+                                </button>
+                            </div>
+
                             {/* Menu content */}
-                            <ul className="flex flex-col space-y-4 relative z-10 w-full">
+                            <ul className="flex flex-col space-y-6 relative z-10 w-full pl-2">
                                 {links.map((link) => (
                                     <motion.li
                                         key={link.name}
@@ -104,11 +115,10 @@ const Navbar = () => {
                                         <button
                                             onClick={() => {
                                                 scrollToSection(link.id);
-                                                setIsOpen(false);
                                             }}
-                                            className={`block text-left text-base font-black tracking-tighter transition-all uppercase ${activeSection === link.id
-                                                ? 'text-ivc-secondary'
-                                                : 'text-white/60 hover:text-white'
+                                            className={`block text-left text-lg font-black tracking-widest transition-all uppercase ${activeSection === link.id
+                                                ? 'text-ivc-secondary text-glow translate-x-2'
+                                                : 'text-white/60 hover:text-white hover:translate-x-2'
                                                 }`}
                                         >
                                             {link.name}
@@ -117,16 +127,8 @@ const Navbar = () => {
                                 ))}
                             </ul>
 
-                            {/* Close Button Inside Panel */}
-                            <button
-                                onClick={() => setIsOpen(false)}
-                                className="relative z-20 p-3 bg-white/10 hover:bg-white/20 rounded-2xl border border-white/10 transition-colors shrink-0 ml-4"
-                            >
-                                <X size={24} className="text-white" />
-                            </button>
-
                             {/* Liquid Gloss Reflection */}
-                            <div className="absolute top-[-50%] left-[-20%] w-[200%] h-[200%] bg-white/5 blur-[100px] rounded-full pointer-events-none"></div>
+                            <div className="absolute top-[-20%] left-[-20%] w-[150%] h-[50%] bg-white/5 blur-[80px] rounded-full pointer-events-none"></div>
                         </div>
                     </motion.div>
                 )}

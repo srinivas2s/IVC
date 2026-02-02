@@ -10,24 +10,24 @@ const Home = () => {
     const words = tagline.split(" ");
 
     return (
-        <div className="relative isolate pt-32 pb-24 min-h-screen flex items-center justify-center">
+        <div className="relative isolate pt-32 pb-24 min-h-screen flex items-start justify-center">
             <div className="px-4 mx-auto max-w-7xl relative z-10 w-full mt-10">
-                <motion.div
-                    initial={{ scale: 0.9, opacity: 0 }}
-                    animate={{ scale: 1, opacity: 1 }}
-                    transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                    className="liquid-glass max-w-5xl mx-auto rounded-[32px] md:rounded-[40px] p-6 md:p-20 relative overflow-hidden group"
-                >
-                    {/* Inner Reflection Glow */}
-                    <div className="absolute top-[-20%] left-[-10%] w-full h-[300px] bg-white/5 blur-[80px] rounded-full skew-y-12 transition-transform duration-1000 group-hover:translate-x-full"></div>
+                <div className="relative max-w-5xl mx-auto p-6 md:p-20 group">
+                    {/* Glass Card Background - Animates In separately */}
+                    <motion.div
+                        initial={{ scale: 0.9, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        transition={{ type: "spring", stiffness: 100, damping: 20 }}
+                        className="liquid-glass absolute inset-0 rounded-[32px] md:rounded-[40px] overflow-hidden"
+                    >
+                        {/* Inner Reflection Glow */}
+                        <div className="absolute top-[-20%] left-[-10%] w-full h-[300px] bg-white/5 blur-[80px] rounded-full skew-y-12 transition-transform duration-1000 group-hover:translate-x-full"></div>
+                        {/* Bottom floating accent */}
+                        <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-ivc-primary/10 blur-[100px] rounded-full"></div>
+                    </motion.div>
 
                     <div className="relative z-10 text-center">
-                        <motion.div
-                            initial={{ y: -20, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: 0.2 }}
-                            className="flex justify-center mb-12"
-                        >
+                        <div className="flex justify-center mb-12">
                             <div className="relative">
                                 <motion.img
                                     layoutId="main-logo"
@@ -36,7 +36,7 @@ const Home = () => {
                                     className="relative w-28 h-28 md:w-36 md:h-36 drop-shadow-liquid"
                                 />
                             </div>
-                        </motion.div>
+                        </div>
 
                         <h1 className="text-4xl font-black tracking-tighter text-white sm:text-7xl md:text-8xl mb-8 leading-[0.9]">
                             {words.map((word, i) => (
@@ -83,10 +83,7 @@ const Home = () => {
                             </LiquidButton>
                         </motion.div>
                     </div>
-
-                    {/* Bottm floating accent */}
-                    <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-ivc-primary/10 blur-[100px] rounded-full"></div>
-                </motion.div>
+                </div>
             </div>
         </div>
     )
