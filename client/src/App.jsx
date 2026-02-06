@@ -18,17 +18,8 @@ function App() {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    // Check if user has already seen the full loader this session
-    const hasLoaded = sessionStorage.getItem('ivc_loaded');
-
-    if (hasLoaded) {
-      setLoading(false);
-      return;
-    }
-
     const timer = setTimeout(() => {
       setLoading(false);
-      sessionStorage.setItem('ivc_loaded', 'true');
     }, 3500);
     return () => clearTimeout(timer);
   }, []);
