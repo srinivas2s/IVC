@@ -92,7 +92,7 @@ const Navbar = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={() => setIsOpen(false)}
-                        className="fixed inset-0 bg-black/40 backdrop-blur-sm z-[55] md:hidden"
+                        className="fixed inset-0 bg-black/10 backdrop-blur-[2px] z-[55] md:hidden"
                     />
                 )}
             </AnimatePresence>
@@ -107,53 +107,56 @@ const Navbar = () => {
                         transition={{ type: "spring", stiffness: 400, damping: 40 }}
                         className="fixed top-6 right-6 w-[220px] z-[60] md:hidden"
                     >
-                        <div className="w-full liquid-glass backdrop-blur-3xl p-6 shadow-2xl relative flex flex-col border border-white/10 rounded-[32px]">
+                        <div className="w-full relative group">
+                            {/* Glass Panel */}
+                            <div className="w-full bg-white/[0.01] backdrop-blur-3xl p-6 shadow-[0_20px_50px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.1)] relative flex flex-col border border-white/10 rounded-[32px] overflow-hidden">
 
-                            {/* Close Button */}
-                            <div className="flex justify-end mb-6">
-                                <button
-                                    onClick={() => setIsOpen(false)}
-                                    className="p-2.5 bg-white/10 hover:bg-white/20 rounded-xl border border-white/10 transition-colors group"
-                                >
-                                    <ArrowLeft size={20} className="text-white rotate-180" />
-                                </button>
-                            </div>
+                                {/* Glossy Reflection Effect */}
+                                <div className="absolute inset-0 bg-gradient-to-b from-white/[0.08] to-transparent pointer-events-none" />
 
-                            {/* Menu content */}
-                            <ul className="flex flex-col space-y-4 relative z-10 w-full">
-                                {links.map((link, index) => (
-                                    <motion.li
-                                        key={link.name}
-                                        initial={{ opacity: 0, x: 10 }}
-                                        animate={{ opacity: 1, x: 0 }}
-                                        transition={{ delay: index * 0.03 }}
+                                {/* Close Button */}
+                                <div className="flex justify-end mb-6 relative z-10">
+                                    <button
+                                        onClick={() => setIsOpen(false)}
+                                        className="p-2 text-white/50 hover:text-white transition-colors"
                                     >
-                                        <button
-                                            onClick={() => {
-                                                scrollToSection(link.id);
-                                            }}
-                                            className={`block w-full text-right text-sm font-black tracking-[0.2em] transition-all uppercase ${activeSection === link.id
-                                                ? 'text-ivc-secondary text-glow -translate-x-1'
-                                                : 'text-white/60 hover:text-white hover:-translate-x-1'
-                                                }`}
-                                        >
-                                            {link.name}
-                                        </button>
-                                    </motion.li>
-                                ))}
-                            </ul>
+                                        <ArrowLeft size={24} className="rotate-180" />
+                                    </button>
+                                </div>
 
-                            {/* Bottom Elements */}
-                            <div className="mt-8 pt-8 border-t border-white/10 flex flex-col items-center">
-                                <img src="/logo.png" className="h-10 w-auto mb-4 opacity-40" alt="" />
-                                <div className="text-[8px] tracking-[0.3em] text-white/30 uppercase font-black text-center leading-loose">
-                                    Ideate . Visualize .<br />
-                                    <span className="tracking-[0.5em]">Create</span>
+                                {/* Menu content */}
+                                <ul className="flex flex-col space-y-4 relative z-10 w-full text-right">
+                                    {links.map((link, index) => (
+                                        <motion.li
+                                            key={link.name}
+                                            initial={{ opacity: 0, x: 10 }}
+                                            animate={{ opacity: 1, x: 0 }}
+                                            transition={{ delay: index * 0.03 }}
+                                        >
+                                            <button
+                                                onClick={() => {
+                                                    scrollToSection(link.id);
+                                                }}
+                                                className={`block w-full text-right text-[15px] font-black tracking-[0.2em] transition-all uppercase ${activeSection === link.id
+                                                    ? 'text-ivc-secondary text-glow -translate-x-1'
+                                                    : 'text-white/70 hover:text-white hover:-translate-x-1'
+                                                    }`}
+                                            >
+                                                {link.name}
+                                            </button>
+                                        </motion.li>
+                                    ))}
+                                </ul>
+
+                                {/* Bottom Elements */}
+                                <div className="mt-8 pt-8 border-t border-white/10 flex flex-col items-center relative z-10">
+                                    <img src="/logo.png" className="h-14 w-auto mb-4 opacity-100 brightness-110 contrast-110 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" alt="" />
+                                    <div className="text-[10px] tracking-[0.3em] text-white/90 uppercase font-black text-center leading-loose">
+                                        Ideate . Visualize .<br />
+                                        <span className="tracking-[0.5em] text-white">Create</span>
+                                    </div>
                                 </div>
                             </div>
-
-                            {/* Reflective Element */}
-                            <div className="absolute bottom-[-10%] right-[-10%] w-[120%] h-[40%] bg-ivc-primary/5 blur-[100px] rounded-full pointer-events-none"></div>
                         </div>
                     </motion.div>
                 )}
