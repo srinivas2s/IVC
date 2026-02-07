@@ -17,7 +17,7 @@ const Home = () => {
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ type: "spring", stiffness: 100, damping: 20 }}
-                        className="liquid-glass absolute inset-0 rounded-[40px] md:rounded-[60px] overflow-hidden"
+                        className="liquid-glass absolute inset-0 rounded-2xl overflow-hidden"
                     >
                         {/* Inner Reflection Glow */}
                         <div className="absolute top-[-20%] left-[-10%] w-full h-[300px] bg-white/5 blur-[80px] rounded-full skew-y-12 transition-transform duration-1000 group-hover:translate-x-full"></div>
