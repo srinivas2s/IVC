@@ -46,16 +46,17 @@ const Navbar = () => {
 
     return (
         <nav className="fixed left-1/2 -translate-x-1/2 z-50 top-6 w-[95%] max-w-7xl">
-            {/* Main Navbar Bar - Hidden on mobile if menu is open */}
+            {/* Main Navbar Bar */}
             <div className={`
                 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between px-6 py-3
-                ${isOpen ? 'hidden md:flex' : 'flex'}
+                ${isOpen ? 'hidden' : 'flex'}
             `}>
                 <button onClick={() => scrollToSection('home')} className="flex items-center space-x-3 rtl:space-x-reverse bg-transparent border-none cursor-pointer group">
                     <img src="/logo.png" className="h-10 w-auto group-hover:scale-110 transition-transform duration-300" alt="IVC Logo" />
                     <span className="self-center text-2xl font-black tracking-tighter whitespace-nowrap text-gradient">IVC</span>
                 </button>
-                <div className="flex md:hidden rtl:space-x-reverse">
+
+                <div className="flex rtl:space-x-reverse">
                     <button
                         onClick={() => setIsOpen(true)}
                         className="inline-flex items-center p-2 w-12 h-12 justify-center text-ivc-text rounded-xl hover:bg-white/10 transition-colors"
@@ -64,27 +65,9 @@ const Navbar = () => {
                         <Menu size={28} />
                     </button>
                 </div>
-
-                <div className="hidden md:flex md:w-auto md:order-1">
-                    <ul className="flex flex-row space-x-8 bg-transparent">
-                        {links.map((link) => (
-                            <li key={link.name}>
-                                <button
-                                    onClick={() => scrollToSection(link.id)}
-                                    className={`block py-2 transition-all uppercase text-[10px] tracking-[0.3em] font-black ${activeSection === link.id
-                                        ? 'text-ivc-secondary text-glow'
-                                        : 'text-gray-400 hover:text-white'
-                                        }`}
-                                >
-                                    {link.name}
-                                </button>
-                            </li>
-                        ))}
-                    </ul>
-                </div>
             </div>
 
-            {/* Mobile Menu Backdrop */}
+            {/* Menu Backdrop */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -92,12 +75,12 @@ const Navbar = () => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={() => setIsOpen(false)}
-                        className="fixed inset-0 bg-black/10 backdrop-blur-[2px] z-[55] md:hidden"
+                        className="fixed inset-0 bg-black/10 backdrop-blur-[2px] z-[55]"
                     />
                 )}
             </AnimatePresence>
 
-            {/* Mobile Menu Sidebar (Right Side) */}
+            {/* Menu Sidebar (Right Side) */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -105,7 +88,7 @@ const Navbar = () => {
                         animate={{ x: 0, opacity: 1 }}
                         exit={{ x: '100%', opacity: 0 }}
                         transition={{ type: "spring", stiffness: 400, damping: 40 }}
-                        className="fixed top-6 right-6 w-[280px] z-[60] md:hidden"
+                        className="fixed top-6 right-6 w-[280px] z-[60]"
                     >
                         <div className="w-full relative group">
                             {/* Glass Panel */}
