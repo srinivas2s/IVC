@@ -69,7 +69,7 @@ const members = []; // In-memory store for join requests (resets on server resta
 
 // Routes
 app.get('/api', (req, res) => {
-    res.json({ message: "🚀 IVC API is Running" });
+    res.json({ message: "IVC API is Running" });
 });
 
 app.get('/api/events', (req, res) => {

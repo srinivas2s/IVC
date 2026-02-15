@@ -1,15 +1,33 @@
-const { execSync } = require('child_process');
+const concurrently = require('concurrently');
 
-// Get arguments (e.g., --host)
+/**
+ * Portable Development Runner
+ * Directly uses the concurrently Node API for maximum stability 
+ * across Windows, macOS, and Linux. No emojis used.
+ */
+
 const args = process.argv.slice(2).filter(arg => arg !== '--');
 const clientArgs = args.length > 0 ? ` -- ${args.join(' ')}` : '';
 
-const command = `npx concurrently "npm run dev --prefix server" "npm run dev --prefix client${clientArgs}"`;
+console.log('Starting development environment...');
 
-console.log(`🚀 Executing: ${command}`);
+const { result } = concurrently([
+    {
+        command: 'npm run dev --prefix server',
+        name: 'server',
+        prefixColor: 'blue'
+    },
+    {
+        command: `npm run dev --prefix client${clientArgs}`,
+        name: 'client',
+        prefixColor: 'green'
+    }
+], {
+    killOthers: ['failure', 'success'],
+    restartDelay: 0,
+});
 
-try {
-    execSync(command, { stdio: 'inherit' });
-} catch (e) {
-    // Silent exit, concurrently handles errors
-}
+result.then(
+    () => process.exit(0),
+    () => process.exit(1)
+);
