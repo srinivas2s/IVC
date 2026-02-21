@@ -9,16 +9,14 @@ const Home = () => {
         <div className="relative isolate min-h-screen flex items-center justify-center pt-20">
             <div className="px-4 mx-auto max-w-7xl relative z-10 w-full">
                 <div className="relative max-w-5xl md:max-w-7xl mx-auto py-32 px-10 md:py-16 md:px-24 group">
-                    {/* Glass Card Background - Animates In separately */}
                     <motion.div
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
                         transition={{ type: "spring", stiffness: 100, damping: 20 }}
                         className="liquid-glass absolute inset-0 rounded-2xl overflow-hidden"
                     >
-                        {/* Inner Reflection Glow */}
-                        <div className="absolute top-[-20%] left-[-10%] w-full h-[300px] bg-white/5 blur-[80px] rounded-full skew-y-12 transition-transform duration-1000 group-hover:translate-x-full"></div>
-                        {/* Bottom floating accent */}
+
+
                         <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-ivc-primary/10 blur-[100px] rounded-full"></div>
                     </motion.div>
 

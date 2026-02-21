@@ -51,7 +51,7 @@ const Navbar = () => {
             `}>
                 <div className="flex items-center gap-3">
                     <div className="flex items-center gap-3 select-none">
-                        <span className="text-white font-bold text-2xl tracking-tighter">inunity</span>
+                        <span className="text-white font-normal text-2xl tracking-tighter">inunity</span>
                     </div>
                 </div>
 
@@ -100,7 +100,6 @@ const Navbar = () => {
                                     style={{ willChange: 'backdrop-filter' }}
                                 />
 
-                                {/* Glossy Reflection Effect */}
                                 <div className="absolute inset-0 bg-gradient-to-b from-white/[0.08] to-transparent pointer-events-none" />
 
                                 {/* Close Button */}
@@ -113,7 +112,7 @@ const Navbar = () => {
                                     </button>
                                 </div>
 
-                                {/* Menu content */}
+
                                 <ul className="flex flex-col space-y-4 relative z-10 w-full text-right">
                                     {links.map((link, index) => (
                                         <motion.li
@@ -137,7 +136,7 @@ const Navbar = () => {
                                     ))}
                                 </ul>
 
-                                {/* Bottom Elements */}
+
                                 <div className="mt-8 pt-8 border-t border-white/10 flex flex-col items-center relative z-10">
                                     <img src={logo} className="h-14 w-auto mb-4 opacity-100 brightness-110 contrast-110 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" alt="" />
                                     <div className="text-[10px] tracking-[0.2em] text-white/90 uppercase font-black text-center whitespace-nowrap">

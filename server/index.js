@@ -124,7 +124,6 @@ app.post('/api/join', joinLimiter, (req, res) => {
 // Export the app for Vercel
 module.exports = app;
 
-// Only listen if not running as a Vercel function
 if (process.env.NODE_ENV !== 'production') {
     app.listen(PORT, () => {
         console.log(`Server running on port ${PORT}`);
