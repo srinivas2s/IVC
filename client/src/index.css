@@ -20,7 +20,11 @@
 }
 
 .liquid-glass {
-  @apply backdrop-blur-liquid bg-white/5 border border-white/10 shadow-ios;
+  @apply backdrop-blur-liquid bg-white/5 border border-white/10 shadow-ios transition-all duration-700;
+}
+
+.light .liquid-glass {
+  @apply bg-white/20 border-white/40 shadow-[0_8px_32px_0_rgba(0, 0, 0, 0.05)] shadow-white/20;
 }
 
 .dark .liquid-glass {
@@ -28,7 +32,11 @@
 }
 
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-ivc-primary via-ivc-secondary to-ivc-accent;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-ivc-primary via-ivc-secondary to-ivc-accent transition-all duration-700;
+}
+
+.light .text-gradient {
+  @apply from-indigo-600 via-cyan-600 to-purple-600;
 }
 
 .ios-tap-active {

@@ -16,6 +16,7 @@ import InteractiveBackground from './components/InteractiveBackground';
 
 function App() {
   const [loading, setLoading] = useState(true);
+  const [theme, setTheme] = useState('dark');
 
   useEffect(() => {
     const timer = setTimeout(() => {
@@ -24,15 +25,19 @@ function App() {
     return () => clearTimeout(timer);
   }, []);
 
+  const toggleTheme = () => {
+    setTheme(prev => prev === 'dark' ? 'light' : 'dark');
+  };
+
   return (
     <Router>
-      <InteractiveBackground />
+      <InteractiveBackground mode={theme} />
       <AnimatePresence mode="wait">
         {loading ? (
           <LoadingScreen key="loader" />
         ) : (
-          <div key="content" className="min-h-screen text-ivc-text font-sans selection:bg-ivc-primary selection:text-white flex flex-col relative overflow-x-hidden">
-            <Navbar />
+          <div key="content" className={`min-h-screen ${theme === 'light' ? 'text-ivc-text-dark' : 'text-ivc-text'} font-sans selection:bg-ivc-primary selection:text-white flex flex-col relative overflow-x-hidden transition-colors duration-1000`}>
+            <Navbar theme={theme} onToggleTheme={toggleTheme} />
             <main className="flex-grow relative z-10">
               <section id="home"><Home /></section>
               <section id="about"><About /></section>
