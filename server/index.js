@@ -108,7 +108,6 @@ app.post('/api/join', joinLimiter, (req, res) => {
         };
 
         members.push(newMember);
-        console.log('New Member Joined:', newMember.name);
         res.status(201).json({ message: 'Successfully joined IVC!', member: newMember });
 
     } catch (error) {

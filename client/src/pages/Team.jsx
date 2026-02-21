@@ -12,17 +12,22 @@ const Team = () => (
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-16">
-            {[1, 2, 3, 4].map(d => (
+            {[
+                { name: 'Member Name', role: 'President' },
+                { name: 'Member Name', role: 'Vice President' },
+                { name: 'Member Name', role: 'Technical Lead' },
+                { name: 'Member Name', role: 'Design Lead' },
+            ].map((member, i) => (
                 <motion.div
-                    key={d}
+                    key={i}
                     whileHover={{ y: -10, scale: 1.02 }}
                     className="liquid-glass p-6 md:p-8 rounded-[28px] md:rounded-[32px] border border-white/10 group"
                 >
                     <div className="w-24 h-24 bg-white/5 rounded-full mx-auto mb-6 relative overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-tr from-ivc-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
-                    <h3 className="text-xl font-black text-white">Member Name</h3>
-                    <p className="text-ivc-secondary text-xs font-black tracking-widest uppercase mt-2">Coordinator</p>
+                    <h3 className="text-xl font-black text-white">{member.name}</h3>
+                    <p className="text-ivc-secondary text-xs font-black tracking-widest uppercase mt-2">{member.role}</p>
                 </motion.div>
             ))}
         </div>
