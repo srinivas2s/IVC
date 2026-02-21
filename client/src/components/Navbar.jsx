@@ -1,12 +1,10 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Sun, Moon, Menu, ArrowLeft } from 'lucide-react';
+import { Menu, ArrowLeft } from 'lucide-react';
 import logo from '../assets/logo.png';
-
-const Navbar = ({ theme, onToggleTheme }) => {
+const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
-    const isLight = theme === 'light';
 
     const links = [
         { name: 'Home', id: 'home' },
@@ -48,28 +46,19 @@ const Navbar = ({ theme, onToggleTheme }) => {
         <nav className="fixed left-1/2 -translate-x-1/2 z-50 top-6 w-[95%] max-w-7xl">
             {/* Main Navbar Bar */}
             <div className={`
-                ${isLight ? 'bg-white/40 border-black/5 shadow-lg' : 'bg-white/[0.03] border-white/10'} 
-                backdrop-blur-2xl border rounded-2xl items-center justify-between px-6 py-3 transition-all duration-500
+                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between px-6 py-3
                 ${isOpen ? 'hidden' : 'flex'}
             `}>
                 <div className="flex items-center gap-3">
                     <div className="flex items-center gap-3 select-none">
-                        <span className={`${isLight ? 'text-black' : 'text-white'} font-bold text-2xl tracking-tighter transition-colors`}>inunity</span>
+                        <span className="text-white font-bold text-2xl tracking-tighter">inunity</span>
                     </div>
                 </div>
 
-                <div className="flex items-center gap-4">
-                    {/* Theme Toggle */}
-                    <button
-                        onClick={onToggleTheme}
-                        className={`p-2 rounded-xl transition-colors ${isLight ? 'hover:bg-black/5 text-black/60' : 'hover:bg-white/10 text-white/60'}`}
-                    >
-                        {isLight ? <Moon size={20} /> : <Sun size={20} />}
-                    </button>
-
+                <div className="flex rtl:space-x-reverse">
                     <button
                         onClick={() => setIsOpen(true)}
-                        className={`inline-flex items-center p-2 w-12 h-12 justify-center rounded-xl transition-colors ${isLight ? 'text-black hover:bg-black/5' : 'text-ivc-text hover:bg-white/10'}`}
+                        className="inline-flex items-center p-2 w-12 h-12 justify-center text-ivc-text rounded-xl hover:bg-white/10 transition-colors"
                     >
                         <span className="sr-only">Open main menu</span>
                         <Menu size={28} />
@@ -103,22 +92,22 @@ const Navbar = ({ theme, onToggleTheme }) => {
                         <div className="w-full relative group">
                             {/* Glass Panel */}
                             <div
-                                className={`w-full ${isLight ? 'bg-white/90 border-black/5 shadow-2xl' : 'bg-white/[0.01] border-white/10 shadow-[0_20px_50px_rgba(0,0,0,0.3)]'} p-6 relative flex flex-col rounded-[32px] overflow-hidden transform-gpu transition-all duration-500`}
+                                className="w-full bg-white/[0.01] p-6 shadow-[0_20px_50px_rgba(0,0,0,0.3),inset_0_1px_1px_rgba(255,255,255,0.1)] relative flex flex-col border border-white/10 rounded-[32px] overflow-hidden transform-gpu"
                                 style={{ backfaceVisibility: 'hidden' }}
                             >
                                 <div
-                                    className={`absolute inset-0 backdrop-blur-3xl ${isLight ? 'bg-white/30' : 'bg-black/10'} -z-10`}
+                                    className="absolute inset-0 backdrop-blur-3xl bg-black/10 -z-10"
                                     style={{ willChange: 'backdrop-filter' }}
                                 />
 
                                 {/* Glossy Reflection Effect */}
-                                <div className={`absolute inset-0 ${isLight ? 'bg-gradient-to-b from-black/[0.02]' : 'bg-gradient-to-b from-white/[0.08]'} to-transparent pointer-events-none`} />
+                                <div className="absolute inset-0 bg-gradient-to-b from-white/[0.08] to-transparent pointer-events-none" />
 
                                 {/* Close Button */}
                                 <div className="flex justify-end mb-6 relative z-10">
                                     <button
                                         onClick={() => setIsOpen(false)}
-                                        className={`p-2 transition-colors ${isLight ? 'text-black/40 hover:text-black' : 'text-white/50 hover:text-white'}`}
+                                        className="p-2 text-white/50 hover:text-white transition-colors"
                                     >
                                         <ArrowLeft size={24} className="rotate-180" />
                                     </button>
@@ -139,7 +128,7 @@ const Navbar = ({ theme, onToggleTheme }) => {
                                                 }}
                                                 className={`block w-full text-right text-[15px] font-black tracking-[0.2em] transition-all uppercase ${activeSection === link.id
                                                     ? 'text-ivc-secondary text-glow -translate-x-1'
-                                                    : `${isLight ? 'text-black/60 hover:text-black' : 'text-white/70 hover:text-white'} hover:-translate-x-1`
+                                                    : 'text-white/70 hover:text-white hover:-translate-x-1'
                                                     }`}
                                             >
                                                 {link.name}
@@ -149,9 +138,9 @@ const Navbar = ({ theme, onToggleTheme }) => {
                                 </ul>
 
                                 {/* Bottom Elements */}
-                                <div className={`mt-8 pt-8 border-t ${isLight ? 'border-black/5' : 'border-white/10'} flex flex-col items-center relative z-10`}>
-                                    <img src={logo} className={`h-14 w-auto mb-4 ${isLight ? 'opacity-90 contrast-125' : 'opacity-100 brightness-110 contrast-110 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]'}`} alt="" />
-                                    <div className={`text-[10px] tracking-[0.2em] ${isLight ? 'text-black/60' : 'text-white/90'} uppercase font-black text-center whitespace-nowrap`}>
+                                <div className="mt-8 pt-8 border-t border-white/10 flex flex-col items-center relative z-10">
+                                    <img src={logo} className="h-14 w-auto mb-4 opacity-100 brightness-110 contrast-110 drop-shadow-[0_0_15px_rgba(255,255,255,0.2)]" alt="" />
+                                    <div className="text-[10px] tracking-[0.2em] text-white/90 uppercase font-black text-center whitespace-nowrap">
                                         Ideate . Visualize . Create
                                     </div>
                                 </div>

@@ -6,7 +6,7 @@ const Team = () => (
         <motion.h2
             initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
-            className="text-4xl md:text-5xl font-black mb-12 md:mb-16 text-inherit tracking-tighter"
+            className="text-4xl md:text-5xl font-black mb-12 md:mb-16 text-white tracking-tighter"
         >
             Meet the <span className="text-gradient">Team</span>
         </motion.h2>
@@ -23,10 +23,10 @@ const Team = () => (
                     whileHover={{ y: -10, scale: 1.02 }}
                     className="liquid-glass p-6 md:p-8 rounded-[28px] md:rounded-[32px] border border-white/10 group"
                 >
-                    <div className="w-24 h-24 dark:bg-white/5 bg-black/5 rounded-full mx-auto mb-6 relative overflow-hidden">
+                    <div className="w-24 h-24 bg-white/5 rounded-full mx-auto mb-6 relative overflow-hidden">
                         <div className="absolute inset-0 bg-gradient-to-tr from-ivc-primary/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity" />
                     </div>
-                    <h3 className="text-xl font-black text-inherit">{member.name}</h3>
+                    <h3 className="text-xl font-black text-white">{member.name}</h3>
                     <p className="text-ivc-secondary text-xs font-black tracking-widest uppercase mt-2">{member.role}</p>
                 </motion.div>
             ))}
