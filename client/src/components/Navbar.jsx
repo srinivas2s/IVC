@@ -46,9 +46,14 @@ const Navbar = () => {
         <nav className="fixed left-1/2 -translate-x-1/2 z-50 top-6 w-[95%] max-w-7xl">
             {/* Main Navbar Bar */}
             <div className={`
-                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-end px-6 py-3
+                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between px-6 py-3
                 ${isOpen ? 'hidden' : 'flex'}
             `}>
+                <div className="flex items-center gap-3">
+                    <div className="flex items-center gap-3 select-none">
+                        <span className="text-white font-bold text-2xl tracking-tighter">inunity</span>
+                    </div>
+                </div>
 
                 <div className="flex rtl:space-x-reverse">
                     <button
