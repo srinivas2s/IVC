@@ -20,15 +20,15 @@ const InteractiveBackground = ({ mode = 'dark' }) => {
     return (
         <div className={`fixed inset-0 z-0 overflow-hidden pointer-events-none transition-colors duration-1000 ${isLight ? 'bg-[#f8f9ff]' : 'bg-[#05070a]'}`}>
             {/* Grain Texture Overlay */}
-            <div className="absolute inset-0 opacity-[0.03] pointer-events-none z-50 contrast-150 brightness-100"
+            <div className={`absolute inset-0 ${isLight ? 'opacity-[0.05]' : 'opacity-[0.03]'} pointer-events-none z-50 contrast-150 brightness-100`}
                 style={{ backgroundImage: `url('https://grainy-gradients.vercel.app/noise.svg')` }}></div>
 
             {/* Mesh Gradients - Light Mode (Matching the image) */}
             {isLight && (
                 <>
-                    <div className="absolute top-[-10%] left-[-10%] w-[1200px] h-[1200px] bg-[#dde4ff] rounded-full blur-[140px] opacity-60 mix-blend-multiply animate-pulse"></div>
-                    <div className="absolute bottom-[-10%] right-[-10%] w-[1000px] h-[1000px] bg-[#ffd7c4] rounded-full blur-[140px] opacity-60 mix-blend-multiply transition-transform duration-1000"></div>
-                    <div className="absolute top-[20%] right-[10%] w-[700px] h-[700px] bg-[#f5e1ff] rounded-full blur-[120px] opacity-50 mix-blend-multiply"></div>
+                    <div className="absolute top-[-10%] left-[-10%] w-[1200px] h-[1200px] bg-[#dde4ff] rounded-full blur-[140px] opacity-70 mix-blend-multiply animate-pulse"></div>
+                    <div className="absolute bottom-[-10%] right-[-10%] w-[1000px] h-[1000px] bg-[#ffd7c4] rounded-full blur-[140px] opacity-70 mix-blend-multiply transition-transform duration-1000"></div>
+                    <div className="absolute top-[20%] right-[10%] w-[700px] h-[700px] bg-[#f5e1ff] rounded-full blur-[120px] opacity-60 mix-blend-multiply"></div>
                 </>
             )}
 

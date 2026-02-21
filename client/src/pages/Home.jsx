@@ -17,9 +17,9 @@ const Home = () => {
                         className="liquid-glass absolute inset-0 rounded-2xl overflow-hidden"
                     >
                         {/* Inner Reflection Glow */}
-                        <div className="absolute top-[-20%] left-[-10%] w-full h-[300px] bg-white/5 blur-[80px] rounded-full skew-y-12 transition-transform duration-1000 group-hover:translate-x-full"></div>
+                        <div className="absolute top-[-20%] left-[-10%] w-full h-[300px] dark:bg-white/5 bg-black/5 blur-[80px] rounded-full skew-y-12 transition-transform duration-1000 group-hover:translate-x-full"></div>
                         {/* Bottom floating accent */}
-                        <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 bg-ivc-primary/10 blur-[100px] rounded-full"></div>
+                        <div className="absolute bottom-[-10%] right-[-10%] w-64 h-64 dark:bg-ivc-primary/10 bg-indigo-500/10 blur-[100px] rounded-full"></div>
                     </motion.div>
 
                     <div className="relative z-10 text-center">
@@ -29,12 +29,12 @@ const Home = () => {
                                     layoutId="main-logo"
                                     src={logo}
                                     alt="IVC Logo"
-                                    className="relative w-24 h-24 md:w-32 md:h-32 drop-shadow-liquid"
+                                    className="relative w-24 h-24 md:w-32 md:h-32 drop-shadow-liquid dark:brightness-100 brightness-90 transition-all duration-700"
                                 />
                             </div>
                         </div>
 
-                        <h1 className="text-4xl font-black tracking-tight text-white sm:text-7xl md:text-[92px] mb-10 leading-[0.85] flex flex-col items-center">
+                        <h1 className="text-4xl font-black tracking-tight text-inherit sm:text-7xl md:text-[92px] mb-10 leading-[0.85] flex flex-col items-center">
                             <div className="flex flex-wrap justify-center gap-x-4">
                                 {words.slice(0, 2).map((word, i) => (
                                     <motion.span
@@ -68,7 +68,7 @@ const Home = () => {
                             animate={{ opacity: 1, y: 0 }}
                             transition={{ duration: 0.8, delay: 0.7 }}
                         >
-                            <p className="text-lg md:text-xl font-bold tracking-tight text-white/80 max-w-xl mx-auto leading-relaxed">
+                            <p className="text-lg md:text-xl font-bold tracking-tight opacity-80 max-w-xl mx-auto leading-relaxed">
                                 Empower <span className="text-ivc-secondary text-glow">Students</span> through innovation, collaboration, and creativity.
                             </p>
                         </motion.div>

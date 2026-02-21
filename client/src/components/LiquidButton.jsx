@@ -11,9 +11,9 @@ const LiquidButton = ({
 }) => {
     // Variants Mapping
     const variants = {
-        primary: "bg-white text-black hover:bg-white/90 border-white/20 shadow-liquid",
+        primary: "dark:bg-white dark:text-black bg-black text-white hover:opacity-90 border-white/20 shadow-liquid",
         secondary: "bg-ivc-primary text-white hover:bg-ivc-primary/90 border-white/10 shadow-liquid",
-        glass: "bg-white/5 text-white hover:bg-white/10 border-white/10 backdrop-blur-md"
+        glass: "dark:bg-white/5 bg-black/[0.03] dark:text-white text-black hover:dark:bg-white/10 hover:bg-black/5 border-black/5 dark:border-white/10 backdrop-blur-md"
     };
 
     return (
@@ -35,8 +35,8 @@ const LiquidButton = ({
         >
             {/* Liquid Glare Effect */}
             <span className="absolute inset-0 z-0 overflow-hidden rounded-full pointer-events-none">
-                <span className="absolute inset-0 bg-gradient-to-tr from-white/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                <span className="absolute -inset-[100%] bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%)] bg-[length:250%_250%] opacity-0 group-hover:opacity-100 animate-liquid pointer-events-none" />
+                <span className="absolute inset-0 dark:bg-gradient-to-tr dark:from-white/20 bg-gradient-to-tr from-ivc-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                <span className="absolute -inset-[100%] dark:bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.2)_50%,transparent_75%)] bg-[linear-gradient(45deg,transparent_25%,rgba(99,102,241,0.1)_50%,transparent_75%)] bg-[length:250%_250%] opacity-0 group-hover:opacity-100 animate-liquid pointer-events-none" />
             </span>
 
             <span className="relative z-10 flex items-center gap-2">
@@ -51,7 +51,7 @@ const LiquidButton = ({
 
             {/* Subtle Glow beneath */}
             <motion.div
-                className="absolute -inset-1 bg-white/10 blur-xl opacity-0 group-hover:opacity-100 transition-opacity rounded-full -z-10"
+                className="absolute -inset-1 dark:bg-white/10 bg-indigo-500/5 blur-xl opacity-0 group-hover:opacity-100 transition-opacity rounded-full -z-10"
             />
         </motion.button>
     );
