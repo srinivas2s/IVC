@@ -56,6 +56,12 @@ const Navbar = () => {
                         <span className="text-white font-light text-2xl tracking-tighter">inunity</span>
                         <div className="w-[1px] h-10 bg-white/20"></div>
                         <img src={vvceLogo} alt="VVCE Logo" className="h-14 w-auto brightness-110" />
+                        <div className="w-[1px] h-10 bg-white/10 hidden md:block mx-1"></div>
+                        <div className="hidden md:flex flex-col justify-center select-none">
+                            <span className="text-[9px] text-white/40 leading-none mb-1 uppercase tracking-[0.1em] font-medium">Vidyavardhaka Sangha ®, Mysore</span>
+                            <span className="text-[14px] text-white font-bold leading-none mb-1 tracking-tight">Vidyavardhaka College of Engineering</span>
+                            <span className="text-[10px] text-white/50 leading-none font-medium opacity-80">Autonomous institute affiliated to VTU, Belagavi</span>
+                        </div>
                     </div>
                 </div>
 
