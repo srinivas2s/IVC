@@ -48,10 +48,10 @@ const Navbar = () => {
         <nav className="fixed left-1/2 -translate-x-1/2 z-50 top-6 w-[95%] max-w-7xl">
             {/* Main Navbar Bar */}
             <div className={`
-                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between pl-3 pr-1 sm:px-8 py-4 sm:py-3
+                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between px-3 sm:px-8 py-2 sm:py-3 flex-nowrap
                 ${isOpen ? 'hidden' : 'flex'}
             `}>
-                <div className="flex items-center gap-1 sm:gap-4">
+                <div className="flex items-center gap-2 sm:gap-4 shrink-0">
                     <div className="flex items-center select-none">
                         {/* Emerges to the left */}
                         <div className="overflow-hidden">
@@ -63,7 +63,7 @@ const Navbar = () => {
                                     ease: [0.16, 1, 0.3, 1],
                                     delay: 0.3
                                 }}
-                                className="text-white font-light text-2xl sm:text-3xl tracking-tighter block mr-5 sm:mr-6"
+                                className="text-white font-light text-xl sm:text-3xl tracking-tighter block mr-2 sm:mr-6"
                             >
                                 inunity
                             </motion.span>
@@ -79,11 +79,11 @@ const Navbar = () => {
                                 damping: 15,
                                 delay: 0.1
                             }}
-                            className="w-[2px] h-12 sm:h-14 bg-white origin-center shrink-0"
+                            className="w-[1px] sm:w-[2px] h-8 sm:h-14 bg-white/60 sm:bg-white origin-center shrink-0"
                         />
 
                         {/* Emerges to the right */}
-                        <div className="flex items-center gap-1 sm:gap-4 overflow-hidden ml-1 sm:ml-6">
+                        <div className="flex items-center gap-2 sm:gap-4 overflow-hidden ml-2 sm:ml-6 shrink-0">
                             <motion.img
                                 src={vvceLogo}
                                 alt="VVCE Logo"
@@ -94,7 +94,7 @@ const Navbar = () => {
                                     ease: [0.16, 1, 0.3, 1],
                                     delay: 0.4
                                 }}
-                                className="h-14 sm:h-20 w-auto brightness-110 shrink-0"
+                                className="h-10 sm:h-20 w-auto brightness-110 shrink-0"
                             />
                             <motion.div
                                 initial={{ x: '-30%', opacity: 0, filter: 'blur(8px)' }}
@@ -106,28 +106,28 @@ const Navbar = () => {
                                 }}
                                 className="flex flex-col justify-center select-none ml-1 sm:ml-2"
                             >
-                                <span className="text-[6px] sm:text-[11px] text-white leading-none mb-0.5 sm:mb-1 uppercase tracking-[0.15em] font-normal">Vidyavardhaka Sangha ®, Mysore</span>
-                                <span className="text-[10px] sm:text-[18px] text-white font-medium leading-none mb-1 sm:mb-1.5 tracking-tight">Vidyavardhaka College of Engineering</span>
-                                <span className="text-[7px] sm:text-[12px] text-white leading-none font-normal opacity-100">Autonomous institute affiliated to VTU, Belagavi</span>
+                                <span className="text-[6px] sm:text-[11px] text-white leading-none mb-0.5 sm:mb-1 uppercase tracking-[0.15em] font-normal opacity-90">Vidyavardhaka Sangha ®, Mysore</span>
+                                <span className="text-[9px] sm:text-[18px] text-white font-medium leading-none mb-1 sm:mb-1.5 tracking-tight">Vidyavardhaka College of Engineering</span>
+                                <span className="text-[5px] sm:text-[12px] text-white leading-none font-normal opacity-80">Autonomous institute affiliated to VTU, Belagavi</span>
                             </motion.div>
                         </div>
                     </div>
                 </div>
 
-                <div className="flex rtl:space-x-reverse">
+                <div className="flex shrink-0">
                     <button
                         onClick={() => setIsOpen(true)}
                         className="inline-flex items-center p-1 sm:p-2 w-8 h-8 sm:w-10 sm:h-10 justify-center text-ivc-text rounded-xl hover:bg-white/10 transition-colors group"
                     >
                         <span className="sr-only">Open main menu</span>
-                        <div className="flex flex-col gap-1.5 items-center justify-center">
+                        <div className="flex flex-col gap-1 sm:gap-1.5 items-center justify-center">
                             {[0, 1, 2].map((i) => (
                                 <motion.div
                                     key={i}
                                     initial={{ width: 4, height: 4, opacity: 0 }}
                                     animate={{
-                                        width: window.innerWidth < 640 ? 8 : 22,
-                                        height: window.innerWidth < 640 ? 8 : 3,
+                                        width: window.innerWidth < 640 ? 18 : 22,
+                                        height: window.innerWidth < 640 ? 2 : 3,
                                         opacity: 1
                                     }}
                                     transition={{
