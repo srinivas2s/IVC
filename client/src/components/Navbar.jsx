@@ -107,14 +107,18 @@ const Navbar = () => {
                             {[0, 1, 2].map((i) => (
                                 <motion.div
                                     key={i}
-                                    initial={{ width: 4, opacity: 0 }}
-                                    animate={{ width: 22, opacity: 1 }}
+                                    initial={{ width: 4, height: 4, opacity: 0 }}
+                                    animate={{
+                                        width: window.innerWidth < 640 ? 6 : 22,
+                                        height: window.innerWidth < 640 ? 6 : 1.5,
+                                        opacity: 1
+                                    }}
                                     transition={{
                                         duration: 0.8,
                                         delay: 0.6 + (i * 0.1),
                                         ease: [0.16, 1, 0.3, 1]
                                     }}
-                                    className="h-[1.5px] bg-white rounded-full"
+                                    className="bg-white rounded-full"
                                 />
                             ))}
                         </div>
