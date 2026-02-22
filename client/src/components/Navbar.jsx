@@ -48,7 +48,7 @@ const Navbar = () => {
         <nav className="fixed left-1/2 -translate-x-1/2 z-50 top-6 w-[95%] max-w-7xl">
             {/* Main Navbar Bar */}
             <div className={`
-                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between px-3 sm:px-8 py-7 sm:py-6
+                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between pl-3 pr-1 sm:px-8 py-4 sm:py-3
                 ${isOpen ? 'hidden' : 'flex'}
             `}>
                 <div className="flex items-center gap-1 sm:gap-4">
@@ -74,14 +74,14 @@ const Navbar = () => {
                         />
 
                         {/* Emerges to the right */}
-                        <div className="flex items-center gap-1 sm:gap-4 overflow-hidden ml-2 sm:ml-6">
+                        <div className="flex items-center gap-1 sm:gap-4 overflow-hidden ml-1 sm:ml-6">
                             <motion.img
                                 src={vvceLogo}
                                 alt="VVCE Logo"
                                 initial={{ x: '-100%', opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
                                 transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-                                className="h-12 sm:h-18 w-auto brightness-110 shrink-0"
+                                className="h-14 sm:h-20 w-auto brightness-110 shrink-0"
                             />
                             <motion.div
                                 initial={{ x: '-50%', opacity: 0 }}
@@ -89,9 +89,9 @@ const Navbar = () => {
                                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
                                 className="flex flex-col justify-center select-none ml-1 sm:ml-2"
                             >
-                                <span className="text-[7px] sm:text-[11px] text-white leading-none mb-0.5 sm:mb-1 uppercase tracking-[0.15em] font-medium">Vidyavardhaka Sangha ®, Mysore</span>
-                                <span className="text-[11px] sm:text-[18px] text-white font-bold leading-none mb-1 sm:mb-1.5 tracking-tight">Vidyavardhaka College of Engineering</span>
-                                <span className="text-[8px] sm:text-[12px] text-white leading-none font-medium opacity-100">Autonomous institute affiliated to VTU, Belagavi</span>
+                                <span className="text-[6px] sm:text-[11px] text-white leading-none mb-0.5 sm:mb-1 uppercase tracking-[0.15em] font-medium">Vidyavardhaka Sangha ®, Mysore</span>
+                                <span className="text-[10px] sm:text-[18px] text-white font-bold leading-none mb-1 sm:mb-1.5 tracking-tight">Vidyavardhaka College of Engineering</span>
+                                <span className="text-[7px] sm:text-[12px] text-white leading-none font-medium opacity-100">Autonomous institute affiliated to VTU, Belagavi</span>
                             </motion.div>
                         </div>
                     </div>
@@ -100,10 +100,24 @@ const Navbar = () => {
                 <div className="flex rtl:space-x-reverse">
                     <button
                         onClick={() => setIsOpen(true)}
-                        className="inline-flex items-center p-1 sm:p-2 w-10 h-10 sm:w-12 sm:h-12 justify-center text-ivc-text rounded-xl hover:bg-white/10 transition-colors"
+                        className="inline-flex items-center p-0.5 w-10 h-6 sm:w-12 sm:h-8 justify-center text-ivc-text rounded-lg hover:bg-white/10 transition-colors group"
                     >
                         <span className="sr-only">Open main menu</span>
-                        <Menu size={28} />
+                        <div className="flex flex-col gap-[3px] items-center justify-center">
+                            {[0, 1, 2].map((i) => (
+                                <motion.div
+                                    key={i}
+                                    initial={{ width: 4, opacity: 0 }}
+                                    animate={{ width: 22, opacity: 1 }}
+                                    transition={{
+                                        duration: 0.8,
+                                        delay: 0.6 + (i * 0.1),
+                                        ease: [0.16, 1, 0.3, 1]
+                                    }}
+                                    className="h-[1.5px] bg-white rounded-full"
+                                />
+                            ))}
+                        </div>
                     </button>
                 </div>
             </div>
