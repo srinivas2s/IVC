@@ -37,9 +37,9 @@ const Home = () => {
                                 transition={{ delay: 0.5, duration: 0.8 }}
                                 className="flex items-center gap-3 sm:gap-5 font-black text-xl sm:text-3xl md:text-4xl tracking-tight uppercase"
                             >
-                                <span className="text-[#FEDE00] drop-shadow-[0_0_10px_rgba(254,222,0,0.3)]">Ideate</span>
-                                <span className="text-[#4A4A4A] drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">Visualize</span>
-                                <span className="text-[#FF3B30] drop-shadow-[0_0_10px_rgba(255,59,48,0.3)]">Create</span>
+                                <span className="text-[#FEDE00]">Ideate</span>
+                                <span className="text-[#4A4A4A]">Visualize</span>
+                                <span className="text-[#FF3B30]">Create</span>
                             </motion.div>
                         </div>
 
