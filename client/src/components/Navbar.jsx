@@ -109,8 +109,8 @@ const Navbar = () => {
                                     key={i}
                                     initial={{ width: 4, height: 4, opacity: 0 }}
                                     animate={{
-                                        width: window.innerWidth < 640 ? 6 : 22,
-                                        height: window.innerWidth < 640 ? 6 : 1.5,
+                                        width: window.innerWidth < 640 ? 8 : 22,
+                                        height: window.innerWidth < 640 ? 8 : 3,
                                         opacity: 1
                                     }}
                                     transition={{
