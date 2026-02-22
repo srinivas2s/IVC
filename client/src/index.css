@@ -65,3 +65,44 @@ body {
   scrollbar-width: none;
   /* Firefox */
 }
+
+@keyframes float {
+
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+
+  50% {
+    transform: translateY(-20px) scale(1.05);
+  }
+}
+
+@keyframes pulse-soft {
+
+  0%,
+  100% {
+    opacity: 0.3;
+  }
+
+  50% {
+    opacity: 0.6;
+  }
+}
+
+.animate-float {
+  animation: float 10s ease-in-out infinite;
+}
+
+.animate-pulse-slow {
+  animation: pulse-soft 8s ease-in-out infinite;
+}
+
+.text-glow {
+  text-shadow: 0 0 15px rgba(255, 222, 0, 0.3);
+}
+
+.bg-grid {
+  background-size: 50px 50px;
+  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+}

@@ -27,7 +27,7 @@ const LoadingScreen = () => {
                                         layoutId="main-logo"
                                         src={logo}
                                         alt="IVC Logo"
-                                        className="relative w-28 h-28 md:w-36 md:h-36 drop-shadow-liquid"
+                                        className="relative w-32 h-32 md:w-44 md:h-44 drop-shadow-liquid"
                                     />
                                 </div>
                             </motion.div>
