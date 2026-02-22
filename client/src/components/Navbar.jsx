@@ -48,10 +48,10 @@ const Navbar = () => {
         <nav className="fixed left-1/2 -translate-x-1/2 z-50 top-6 w-[95%] max-w-7xl">
             {/* Main Navbar Bar */}
             <div className={`
-                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between px-3 sm:px-6 py-5
+                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between px-3 sm:px-8 py-7 sm:py-6
                 ${isOpen ? 'hidden' : 'flex'}
             `}>
-                <div className="flex items-center gap-1 sm:gap-3">
+                <div className="flex items-center gap-1 sm:gap-4">
                     <div className="flex items-center select-none">
                         {/* Emerges to the left */}
                         <div className="overflow-hidden">
@@ -59,7 +59,7 @@ const Navbar = () => {
                                 initial={{ x: '100%', opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
                                 transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
-                                className="text-white font-light text-xl sm:text-2xl tracking-tighter block mr-1 sm:mr-3"
+                                className="text-white font-light text-2xl sm:text-3xl tracking-tighter block mr-5 sm:mr-6"
                             >
                                 inunity
                             </motion.span>
@@ -70,28 +70,28 @@ const Navbar = () => {
                             initial={{ scaleY: 0, opacity: 0 }}
                             animate={{ scaleY: 1, opacity: 1 }}
                             transition={{ duration: 0.6, delay: 0.1 }}
-                            className="w-[1px] h-10 bg-white/20 origin-center shrink-0"
+                            className="w-[2px] h-12 sm:h-14 bg-white origin-center shrink-0"
                         />
 
                         {/* Emerges to the right */}
-                        <div className="flex items-center gap-1 sm:gap-3 overflow-hidden ml-1 sm:ml-3">
+                        <div className="flex items-center gap-1 sm:gap-4 overflow-hidden ml-2 sm:ml-6">
                             <motion.img
                                 src={vvceLogo}
                                 alt="VVCE Logo"
                                 initial={{ x: '-100%', opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
                                 transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
-                                className="h-10 sm:h-14 w-auto brightness-110 shrink-0"
+                                className="h-12 sm:h-18 w-auto brightness-110 shrink-0"
                             />
                             <motion.div
                                 initial={{ x: '-50%', opacity: 0 }}
                                 animate={{ x: 0, opacity: 1 }}
                                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
-                                className="flex flex-col justify-center select-none"
+                                className="flex flex-col justify-center select-none ml-1 sm:ml-2"
                             >
-                                <span className="text-[6px] sm:text-[9px] text-white/40 leading-none mb-0.5 sm:mb-1 uppercase tracking-[0.1em] font-medium">Vidyavardhaka Sangha ®, Mysore</span>
-                                <span className="text-[9px] sm:text-[14px] text-white font-bold leading-none mb-0.5 sm:mb-1 tracking-tight">Vidyavardhaka College of Engineering</span>
-                                <span className="text-[7px] sm:text-[10px] text-white/50 leading-none font-medium opacity-80">Autonomous institute affiliated to VTU, Belagavi</span>
+                                <span className="text-[7px] sm:text-[11px] text-white leading-none mb-0.5 sm:mb-1 uppercase tracking-[0.15em] font-medium">Vidyavardhaka Sangha ®, Mysore</span>
+                                <span className="text-[11px] sm:text-[18px] text-white font-bold leading-none mb-1 sm:mb-1.5 tracking-tight">Vidyavardhaka College of Engineering</span>
+                                <span className="text-[8px] sm:text-[12px] text-white leading-none font-medium opacity-100">Autonomous institute affiliated to VTU, Belagavi</span>
                             </motion.div>
                         </div>
                     </div>
