@@ -2,6 +2,8 @@ import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Menu, ArrowLeft } from 'lucide-react';
 import logo from '../assets/logo.png';
+import vvceLogo from '../assets/vvce-logo.png';
+
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
@@ -46,12 +48,14 @@ const Navbar = () => {
         <nav className="fixed left-1/2 -translate-x-1/2 z-50 top-6 w-[95%] max-w-7xl">
             {/* Main Navbar Bar */}
             <div className={`
-                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between px-6 py-3
+                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between px-6 py-5
                 ${isOpen ? 'hidden' : 'flex'}
             `}>
                 <div className="flex items-center gap-3">
                     <div className="flex items-center gap-3 select-none">
-                        <span className="text-white font-normal text-2xl tracking-tighter">inunity</span>
+                        <span className="text-white font-light text-2xl tracking-tighter">inunity</span>
+                        <div className="w-[1px] h-10 bg-white/20"></div>
+                        <img src={vvceLogo} alt="VVCE Logo" className="h-14 w-auto brightness-110" />
                     </div>
                 </div>
 

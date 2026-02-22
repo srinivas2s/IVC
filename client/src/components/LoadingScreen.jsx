@@ -10,14 +10,10 @@ const LoadingScreen = () => {
             transition={{ duration: 0.8, ease: "easeInOut" }}
             className="fixed inset-0 z-[100]"
         >
-
-
             <div className="relative isolate min-h-screen flex items-center justify-center px-4 py-20">
                 <div className="mx-auto max-w-7xl relative z-10 w-full h-full flex flex-col justify-center">
                     {/* Glass Container Wrapper */}
                     <div className="relative max-w-5xl mx-auto w-full p-8 md:p-16 lg:p-24 group min-h-[70vh] flex flex-col justify-center">
-
-
                         <div className="relative z-10 text-center">
                             <motion.div
                                 initial={{ opacity: 0 }}
