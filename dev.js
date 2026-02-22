@@ -6,10 +6,17 @@ const concurrently = require('concurrently');
  * across Windows, macOS, and Linux. No emojis used.
  */
 
-const args = process.argv.slice(2).filter(arg => arg !== '--');
+// Gather arguments from both process.argv and npm environment variables
+const args = process.argv.slice(2);
+
+// Check if --host was passed via npm (npm run dev --host)
+if (process.env.npm_config_host && !args.includes('--host')) {
+    args.push('--host');
+}
+
 const clientArgs = args.length > 0 ? ` -- ${args.join(' ')}` : '';
 
-console.log('Starting development environment...');
+console.log(`Starting development environment${clientArgs ? ' with args:' + clientArgs : ''}...`);
 
 const { result } = concurrently([
     {

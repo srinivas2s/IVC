@@ -46,7 +46,7 @@ function App() {
 
             <footer className="py-12 text-center text-gray-500 text-sm border-t border-white/5 bg-white/[0.02] backdrop-blur-xl">
               <div className="max-w-7xl mx-auto px-4">
-                <p className="mb-2">&copy; {new Date().getFullYear()} IVC - Innovation & Value Creation Club.</p>
+                <p className="mb-2">&copy; {new Date().getFullYear()} IVC - Innovation Value Creation Club.</p>
                 <p className="text-gray-600">Built with passion for the next generation of innovators.</p>
               </div>
             </footer>
