@@ -127,16 +127,16 @@ const Home = () => {
                                 <motion.div
                                     animate={{ x: ["0%", "-50%"] }}
                                     transition={{
-                                        duration: 8,
+                                        duration: 11,
                                         repeat: Infinity,
                                         ease: "linear"
                                     }}
                                     className="flex shrink-0 items-center"
                                 >
                                     {[
-                                        "Where ideas meet execution and passion becomes impact.",
-                                        "Building a community of learners, leaders, and changemakers.",
-                                        "Learn. Build. Innovate. Together."
+                                        "Where ideas meet execution and passion becomes impact",
+                                        "Building a community of learners leaders and changemakers",
+                                        "Learn. Build Innovate Together"
                                     ].map((text, i) => (
                                         <div key={i} className="flex items-center">
                                             <span className="text-xs md:text-sm font-black tracking-[0.4em] text-white uppercase mx-10 md:mx-16">
@@ -147,9 +147,9 @@ const Home = () => {
                                     ))}
                                     {/* Duplicate for seamless loop */}
                                     {[
-                                        "Where ideas meet execution and passion becomes impact.",
-                                        "Building a community of learners, leaders, and changemakers.",
-                                        "Learn. Build. Innovate. Together."
+                                        "Where ideas meet execution and passion becomes impact",
+                                        "Building a community of learners leaders and changemakers",
+                                        "Learn. Build Innovate Together"
                                     ].map((text, i) => (
                                         <div key={`dup-${i}`} className="flex items-center">
                                             <span className="text-xs md:text-sm font-black tracking-[0.4em] text-white uppercase mx-10 md:mx-16">
