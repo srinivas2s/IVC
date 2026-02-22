@@ -48,19 +48,51 @@ const Navbar = () => {
         <nav className="fixed left-1/2 -translate-x-1/2 z-50 top-6 w-[95%] max-w-7xl">
             {/* Main Navbar Bar */}
             <div className={`
-                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between px-6 py-5
+                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between px-3 sm:px-6 py-5
                 ${isOpen ? 'hidden' : 'flex'}
             `}>
-                <div className="flex items-center gap-3">
-                    <div className="flex items-center gap-3 select-none">
-                        <span className="text-white font-light text-2xl tracking-tighter">inunity</span>
-                        <div className="w-[1px] h-10 bg-white/20"></div>
-                        <img src={vvceLogo} alt="VVCE Logo" className="h-14 w-auto brightness-110" />
-                        <div className="w-[1px] h-10 bg-white/10 hidden md:block mx-1"></div>
-                        <div className="hidden md:flex flex-col justify-center select-none">
-                            <span className="text-[9px] text-white/40 leading-none mb-1 uppercase tracking-[0.1em] font-medium">Vidyavardhaka Sangha ®, Mysore</span>
-                            <span className="text-[14px] text-white font-bold leading-none mb-1 tracking-tight">Vidyavardhaka College of Engineering</span>
-                            <span className="text-[10px] text-white/50 leading-none font-medium opacity-80">Autonomous institute affiliated to VTU, Belagavi</span>
+                <div className="flex items-center gap-1 sm:gap-3">
+                    <div className="flex items-center select-none">
+                        {/* Emerges to the left */}
+                        <div className="overflow-hidden">
+                            <motion.span
+                                initial={{ x: '100%', opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                                className="text-white font-light text-xl sm:text-2xl tracking-tighter block mr-1 sm:mr-3"
+                            >
+                                inunity
+                            </motion.span>
+                        </div>
+
+                        {/* Center Anchor */}
+                        <motion.div
+                            initial={{ scaleY: 0, opacity: 0 }}
+                            animate={{ scaleY: 1, opacity: 1 }}
+                            transition={{ duration: 0.6, delay: 0.1 }}
+                            className="w-[1px] h-10 bg-white/20 origin-center shrink-0"
+                        />
+
+                        {/* Emerges to the right */}
+                        <div className="flex items-center gap-1 sm:gap-3 overflow-hidden ml-1 sm:ml-3">
+                            <motion.img
+                                src={vvceLogo}
+                                alt="VVCE Logo"
+                                initial={{ x: '-100%', opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+                                className="h-10 sm:h-14 w-auto brightness-110 shrink-0"
+                            />
+                            <motion.div
+                                initial={{ x: '-50%', opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+                                className="flex flex-col justify-center select-none"
+                            >
+                                <span className="text-[6px] sm:text-[9px] text-white/40 leading-none mb-0.5 sm:mb-1 uppercase tracking-[0.1em] font-medium">Vidyavardhaka Sangha ®, Mysore</span>
+                                <span className="text-[9px] sm:text-[14px] text-white font-bold leading-none mb-0.5 sm:mb-1 tracking-tight">Vidyavardhaka College of Engineering</span>
+                                <span className="text-[7px] sm:text-[10px] text-white/50 leading-none font-medium opacity-80">Autonomous institute affiliated to VTU, Belagavi</span>
+                            </motion.div>
                         </div>
                     </div>
                 </div>
@@ -68,7 +100,7 @@ const Navbar = () => {
                 <div className="flex rtl:space-x-reverse">
                     <button
                         onClick={() => setIsOpen(true)}
-                        className="inline-flex items-center p-2 w-12 h-12 justify-center text-ivc-text rounded-xl hover:bg-white/10 transition-colors"
+                        className="inline-flex items-center p-1 sm:p-2 w-10 h-10 sm:w-12 sm:h-12 justify-center text-ivc-text rounded-xl hover:bg-white/10 transition-colors"
                     >
                         <span className="sr-only">Open main menu</span>
                         <Menu size={28} />
