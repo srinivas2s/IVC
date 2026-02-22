@@ -6,9 +6,9 @@ const Home = () => {
     const words = tagline.split(" ");
 
     return (
-        <div className="relative isolate min-h-screen flex items-center justify-center pt-40 sm:pt-20">
-            <div className="px-4 mx-auto max-w-7xl relative z-10 w-full">
-                <div className="relative max-w-5xl md:max-w-7xl mx-auto py-32 px-10 md:py-16 md:px-24 group">
+        <div className="relative isolate min-h-screen flex items-center justify-center pt-40 sm:pt-48">
+            <div className="relative z-10 w-full flex justify-center">
+                <div className="relative w-[95%] max-w-7xl py-32 px-10 md:py-16 md:px-24 group">
                     <motion.div
                         initial={{ scale: 0.9, opacity: 0 }}
                         animate={{ scale: 1, opacity: 1 }}
