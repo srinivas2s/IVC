@@ -3,7 +3,7 @@
     "cleanUrls": true,
     "functions": {
         "server/index.js": {
-            "runtime": "@vercel/node"
+            "maxDuration": 15
         }
     },
     "rewrites": [
