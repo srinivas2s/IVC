@@ -4,20 +4,20 @@ import { Menu, ArrowLeft } from 'lucide-react';
 import logo from '../assets/logo.png';
 import vvceLogo from '../assets/vvce-logo.png';
 
+const links = [
+    { name: 'Home', id: 'home' },
+    { name: 'About', id: 'about' },
+    { name: 'Team', id: 'team' },
+    { name: 'Events', id: 'events' },
+    { name: 'Domains', id: 'domains' },
+    { name: 'Projects', id: 'projects' },
+    { name: 'Achievements', id: 'achievements' },
+    { name: 'Join IVC', id: 'join' },
+];
+
 const Navbar = () => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
-
-    const links = [
-        { name: 'Home', id: 'home' },
-        { name: 'About', id: 'about' },
-        { name: 'Team', id: 'team' },
-        { name: 'Events', id: 'events' },
-        { name: 'Domains', id: 'domains' },
-        { name: 'Projects', id: 'projects' },
-        { name: 'Achievements', id: 'achievements' },
-        { name: 'Join IVC', id: 'join' },
-    ];
 
     const scrollToSection = (id) => {
         const element = document.getElementById(id);
