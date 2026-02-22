@@ -51,10 +51,47 @@ const Home = () => {
                             initial={{ opacity: 0, y: 30, filter: 'blur(12px)' }}
                             animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
                             transition={{ duration: 1.5, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
+                            className="mt-8 overflow-hidden relative"
                         >
-                            <p className="text-lg md:text-xl font-bold tracking-tight text-white/80 max-w-xl mx-auto leading-relaxed">
-                                Empower <span className="text-ivc-secondary text-glow">Students</span> through innovation, collaboration, creativity.
-                            </p>
+                            <div className="flex whitespace-nowrap">
+                                <motion.div
+                                    animate={{ x: ["0%", "-50%"] }}
+                                    transition={{
+                                        duration: 30,
+                                        repeat: Infinity,
+                                        ease: "linear"
+                                    }}
+                                    className="flex shrink-0 items-center"
+                                >
+                                    {[
+                                        "Empowering students through innovation, collaboration, and creativity.",
+                                        "Where ideas meet execution and passion becomes impact.",
+                                        "Building a community of learners, leaders, and changemakers.",
+                                        "Learn. Build. Innovate. Together."
+                                    ].map((text, i) => (
+                                        <div key={i} className="flex items-center">
+                                            <span className="text-lg md:text-xl font-bold tracking-tight text-white/80 leading-relaxed mx-8">
+                                                {text}
+                                            </span>
+                                            <div className="w-1.5 h-1.5 rounded-full bg-ivc-primary/40 mx-2 shadow-[0_0_10px_rgba(255,186,0,0.5)]" />
+                                        </div>
+                                    ))}
+                                    {/* Duplicate for seamless loop */}
+                                    {[
+                                        "Empowering students through innovation, collaboration, and creativity.",
+                                        "Where ideas meet execution and passion becomes impact.",
+                                        "Building a community of learners, leaders, and changemakers.",
+                                        "Learn. Build. Innovate. Together."
+                                    ].map((text, i) => (
+                                        <div key={`dup-${i}`} className="flex items-center">
+                                            <span className="text-lg md:text-xl font-bold tracking-tight text-white/80 leading-relaxed mx-8">
+                                                {text}
+                                            </span>
+                                            <div className="w-1.5 h-1.5 rounded-full bg-ivc-primary/40 mx-2 shadow-[0_0_10px_rgba(255,186,0,0.5)]" />
+                                        </div>
+                                    ))}
+                                </motion.div>
+                            </div>
                         </motion.div>
                     </div>
                 </div>
