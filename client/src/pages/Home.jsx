@@ -2,8 +2,6 @@ import { motion } from 'framer-motion';
 import logo from '../assets/logo.png';
 
 const Home = () => {
-    const tagline = "IDEATE VISUALIZE CREATE";
-    const words = tagline.split(" ");
 
     return (
         <div className="relative isolate min-h-screen flex items-center justify-center pt-32 sm:pt-40">

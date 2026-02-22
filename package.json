@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "node dev.js",
-    "build": "npm install --prefix client --legacy-peer-deps && npm install --prefix server --legacy-peer-deps && npm run build --prefix client && cp -r client/dist ./dist"
+    "build": "npm install --prefix client --legacy-peer-deps && npm install --prefix server --legacy-peer-deps && npm run build --prefix client && cp -rv client/dist/* ."
   },
   "keywords": [],
   "author": "",
