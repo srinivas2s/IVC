@@ -163,21 +163,21 @@ const Navbar = () => {
                                 <div className="absolute inset-0 bg-gradient-to-b from-white/[0.08] to-transparent pointer-events-none" />
 
                                 {/* Close Button */}
-                                <div className="flex justify-end mb-6 relative z-10">
+                                <div className="flex justify-start mb-6 relative z-10">
                                     <button
                                         onClick={() => setIsOpen(false)}
                                         className="p-2 text-white/50 hover:text-white transition-colors"
                                     >
-                                        <ArrowLeft size={24} className="rotate-180" />
+                                        <ArrowLeft size={24} />
                                     </button>
                                 </div>
 
 
-                                <ul className="flex flex-col space-y-4 relative z-10 w-full text-right">
+                                <ul className="flex flex-col space-y-4 relative z-10 w-full text-left">
                                     {links.map((link, index) => (
                                         <motion.li
                                             key={link.name}
-                                            initial={{ opacity: 0, x: 10 }}
+                                            initial={{ opacity: 0, x: -10 }}
                                             animate={{ opacity: 1, x: 0 }}
                                             transition={{ delay: index * 0.03 }}
                                         >
@@ -185,9 +185,9 @@ const Navbar = () => {
                                                 onClick={() => {
                                                     scrollToSection(link.id);
                                                 }}
-                                                className={`block w-full text-right text-[15px] font-black tracking-[0.2em] transition-all uppercase ${activeSection === link.id
-                                                    ? 'text-ivc-secondary text-glow -translate-x-1'
-                                                    : 'text-white/70 hover:text-white hover:-translate-x-1'
+                                                className={`block w-full text-left text-[15px] font-black tracking-[0.2em] transition-all uppercase ${activeSection === link.id
+                                                    ? 'text-ivc-secondary text-glow translate-x-1'
+                                                    : 'text-white/70 hover:text-white hover:translate-x-1'
                                                     }`}
                                             >
                                                 {link.name}
