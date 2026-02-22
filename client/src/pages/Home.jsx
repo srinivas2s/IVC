@@ -4,7 +4,7 @@ import logo from '../assets/logo.png';
 const Home = () => {
 
     return (
-        <div className="relative isolate min-h-screen flex items-center justify-center pt-32 sm:pt-40">
+        <div className="relative isolate min-h-screen flex items-center justify-center pt-15 sm:pt-20">
             <div className="relative z-10 w-full flex justify-center">
                 <div className="relative w-[95%] max-w-7xl py-32 px-10 md:py-16 md:px-24 group">
                     <motion.div
@@ -25,14 +25,6 @@ const Home = () => {
                                     layoutId="main-logo"
                                     src={logo}
                                     alt="IVC Logo"
-                                    initial={{ scale: 0.5, opacity: 0, filter: 'blur(20px)' }}
-                                    animate={{ scale: 1, opacity: 1, filter: 'blur(0px)' }}
-                                    transition={{
-                                        type: "spring",
-                                        stiffness: 50,
-                                        damping: 15,
-                                        delay: 0.2
-                                    }}
                                     className="relative w-32 h-32 md:w-44 md:h-44 drop-shadow-liquid"
                                 />
                             </div>
