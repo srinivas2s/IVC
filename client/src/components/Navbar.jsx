@@ -56,9 +56,9 @@ const Navbar = () => {
                         {/* Emerges to the left */}
                         <div className="overflow-hidden">
                             <motion.span
-                                initial={{ x: '100%', opacity: 0, filter: 'blur(10px)' }}
-                                animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
-                                transition={{ duration: 1.4, ease: [0.22, 1, 0.36, 1], delay: 0.4 }}
+                                initial={{ x: '100%', opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
                                 className="text-white font-light text-2xl sm:text-3xl tracking-tighter block mr-5 sm:mr-6"
                             >
                                 inunity
@@ -69,8 +69,8 @@ const Navbar = () => {
                         <motion.div
                             initial={{ scaleY: 0, opacity: 0 }}
                             animate={{ scaleY: 1, opacity: 1 }}
-                            transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.2 }}
-                            className="w-[2px] h-12 sm:h-14 bg-white/40 origin-center shrink-0"
+                            transition={{ duration: 0.6, delay: 0.1 }}
+                            className="w-[2px] h-12 sm:h-14 bg-white origin-center shrink-0"
                         />
 
                         {/* Emerges to the right */}
@@ -78,9 +78,9 @@ const Navbar = () => {
                             <motion.img
                                 src={vvceLogo}
                                 alt="VVCE Logo"
-                                initial={{ x: '-100%', opacity: 0, filter: 'blur(10px)' }}
-                                animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
-                                transition={{ duration: 1.5, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
+                                initial={{ x: '-100%', opacity: 0 }}
+                                animate={{ x: 0, opacity: 1 }}
+                                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
                                 className="h-14 sm:h-20 w-auto brightness-110 shrink-0"
                             />
                             <motion.div
@@ -109,8 +109,8 @@ const Navbar = () => {
                                     key={i}
                                     initial={{ width: 4, height: 4, opacity: 0 }}
                                     animate={{
-                                        width: window.innerWidth < 640 ? 8 : 22,
-                                        height: window.innerWidth < 640 ? 8 : 3,
+                                        width: window.innerWidth < 640 ? 6 : 22,
+                                        height: window.innerWidth < 640 ? 6 : 1.5,
                                         opacity: 1
                                     }}
                                     transition={{
