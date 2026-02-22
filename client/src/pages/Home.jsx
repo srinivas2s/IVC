@@ -6,7 +6,7 @@ const Home = () => {
     const words = tagline.split(" ");
 
     return (
-        <div className="relative isolate min-h-screen flex items-center justify-center pt-40 sm:pt-48">
+        <div className="relative isolate min-h-screen flex items-center justify-center pt-32 sm:pt-40">
             <div className="relative z-10 w-full flex justify-center">
                 <div className="relative w-[95%] max-w-7xl py-32 px-10 md:py-16 md:px-24 group">
                     <motion.div
@@ -21,45 +21,29 @@ const Home = () => {
                     </motion.div>
 
                     <div className="relative z-10 text-center">
-                        <div className="flex justify-center mb-10">
-                            <div className="relative">
+                        <div className="flex flex-col items-center mb-10">
+                            <div className="relative mb-6">
                                 <motion.img
                                     layoutId="main-logo"
                                     src={logo}
                                     alt="IVC Logo"
-                                    className="relative w-24 h-24 md:w-32 md:h-32 drop-shadow-liquid"
+                                    className="relative w-32 h-32 md:w-44 md:h-44 drop-shadow-liquid"
                                 />
                             </div>
+
+                            <motion.div
+                                initial={{ opacity: 0, y: 10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ delay: 0.5, duration: 0.8 }}
+                                className="flex items-center gap-3 sm:gap-5 font-black text-xl sm:text-3xl md:text-4xl tracking-tight uppercase"
+                            >
+                                <span className="text-[#FEDE00] drop-shadow-[0_0_10px_rgba(254,222,0,0.3)]">Ideate</span>
+                                <span className="text-[#4A4A4A] drop-shadow-[0_0_10px_rgba(255,255,255,0.1)]">Visualize</span>
+                                <span className="text-[#FF3B30] drop-shadow-[0_0_10px_rgba(255,59,48,0.3)]">Create</span>
+                            </motion.div>
                         </div>
 
-                        <h1 className="text-4xl font-black tracking-tight text-white sm:text-7xl md:text-[92px] mb-10 leading-[0.85] flex flex-col items-center">
-                            <div className="flex flex-wrap justify-center gap-x-4">
-                                {words.slice(0, 2).map((word, i) => (
-                                    <motion.span
-                                        key={i}
-                                        initial={{ opacity: 0, filter: 'blur(15px)', y: 30 }}
-                                        animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                                        transition={{ delay: 0.3 + (i * 0.1), type: "spring", stiffness: 100 }}
-                                        className="text-gradient bg-clip-text"
-                                    >
-                                        {word}
-                                    </motion.span>
-                                ))}
-                            </div>
-                            <div className="mt-2">
-                                {words.slice(2).map((word, i) => (
-                                    <motion.span
-                                        key={i}
-                                        initial={{ opacity: 0, filter: 'blur(15px)', y: 30 }}
-                                        animate={{ opacity: 1, filter: 'blur(0px)', y: 0 }}
-                                        transition={{ delay: 0.5 + (i * 0.1), type: "spring", stiffness: 100 }}
-                                        className="text-gradient bg-clip-text"
-                                    >
-                                        {word}
-                                    </motion.span>
-                                ))}
-                            </div>
-                        </h1>
+
 
                         <motion.div
                             initial={{ opacity: 0, y: 20 }}
@@ -67,7 +51,7 @@ const Home = () => {
                             transition={{ duration: 0.8, delay: 0.7 }}
                         >
                             <p className="text-lg md:text-xl font-bold tracking-tight text-white/80 max-w-xl mx-auto leading-relaxed">
-                                Empower <span className="text-ivc-secondary text-glow">Students</span> through innovation, collaboration, and creativity.
+                                Empower <span className="text-ivc-secondary text-glow">Students</span> through innovation, collaboration, creativity.
                             </p>
                         </motion.div>
                     </div>

@@ -2,7 +2,7 @@ import { motion } from 'framer-motion';
 import logo from '../assets/logo.png';
 
 const LoadingScreen = () => {
-    const tagline = "IDEATE VISUALIZE AND CREATE";
+    const tagline = "IDEATE VISUALIZE CREATE";
 
     return (
         <motion.div

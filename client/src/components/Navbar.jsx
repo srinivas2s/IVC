@@ -100,10 +100,10 @@ const Navbar = () => {
                 <div className="flex rtl:space-x-reverse">
                     <button
                         onClick={() => setIsOpen(true)}
-                        className="inline-flex items-center p-0.5 w-10 h-6 sm:w-12 sm:h-8 justify-center text-ivc-text rounded-lg hover:bg-white/10 transition-colors group"
+                        className="inline-flex items-center p-1 sm:p-2 w-8 h-8 sm:w-10 sm:h-10 justify-center text-ivc-text rounded-xl hover:bg-white/10 transition-colors group"
                     >
                         <span className="sr-only">Open main menu</span>
-                        <div className="flex flex-col gap-[3px] items-center justify-center">
+                        <div className="flex flex-col gap-1.5 items-center justify-center">
                             {[0, 1, 2].map((i) => (
                                 <motion.div
                                     key={i}
