@@ -56,9 +56,13 @@ const Navbar = () => {
                         {/* Emerges to the left */}
                         <div className="overflow-hidden">
                             <motion.span
-                                initial={{ x: '100%', opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1], delay: 0.3 }}
+                                initial={{ x: '100%', opacity: 0, filter: 'blur(10px)' }}
+                                animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
+                                transition={{
+                                    duration: 1.2,
+                                    ease: [0.16, 1, 0.3, 1],
+                                    delay: 0.3
+                                }}
                                 className="text-white font-light text-2xl sm:text-3xl tracking-tighter block mr-5 sm:mr-6"
                             >
                                 inunity
@@ -67,9 +71,14 @@ const Navbar = () => {
 
                         {/* Center Anchor */}
                         <motion.div
-                            initial={{ scaleY: 0, opacity: 0 }}
-                            animate={{ scaleY: 1, opacity: 1 }}
-                            transition={{ duration: 0.6, delay: 0.1 }}
+                            initial={{ scaleY: 0, scaleX: 0.5, opacity: 0 }}
+                            animate={{ scaleY: 1, scaleX: 1, opacity: 1 }}
+                            transition={{
+                                type: "spring",
+                                stiffness: 100,
+                                damping: 15,
+                                delay: 0.1
+                            }}
                             className="w-[2px] h-12 sm:h-14 bg-white origin-center shrink-0"
                         />
 
@@ -78,20 +87,28 @@ const Navbar = () => {
                             <motion.img
                                 src={vvceLogo}
                                 alt="VVCE Logo"
-                                initial={{ x: '-100%', opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                transition={{ duration: 1.1, ease: [0.16, 1, 0.3, 1], delay: 0.4 }}
+                                initial={{ x: '-100%', opacity: 0, filter: 'blur(10px)', scale: 0.8 }}
+                                animate={{ x: 0, opacity: 1, filter: 'blur(0px)', scale: 1 }}
+                                transition={{
+                                    duration: 1.2,
+                                    ease: [0.16, 1, 0.3, 1],
+                                    delay: 0.4
+                                }}
                                 className="h-14 sm:h-20 w-auto brightness-110 shrink-0"
                             />
                             <motion.div
-                                initial={{ x: '-50%', opacity: 0 }}
-                                animate={{ x: 0, opacity: 1 }}
-                                transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1], delay: 0.5 }}
+                                initial={{ x: '-30%', opacity: 0, filter: 'blur(8px)' }}
+                                animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
+                                transition={{
+                                    duration: 1.3,
+                                    ease: [0.16, 1, 0.3, 1],
+                                    delay: 0.5
+                                }}
                                 className="flex flex-col justify-center select-none ml-1 sm:ml-2"
                             >
-                                <span className="text-[6px] sm:text-[11px] text-white leading-none mb-0.5 sm:mb-1 uppercase tracking-[0.15em] font-medium">Vidyavardhaka Sangha ®, Mysore</span>
-                                <span className="text-[10px] sm:text-[18px] text-white font-bold leading-none mb-1 sm:mb-1.5 tracking-tight">Vidyavardhaka College of Engineering</span>
-                                <span className="text-[7px] sm:text-[12px] text-white leading-none font-medium opacity-100">Autonomous institute affiliated to VTU, Belagavi</span>
+                                <span className="text-[6px] sm:text-[11px] text-white leading-none mb-0.5 sm:mb-1 uppercase tracking-[0.15em] font-normal">Vidyavardhaka Sangha ®, Mysore</span>
+                                <span className="text-[10px] sm:text-[18px] text-white font-medium leading-none mb-1 sm:mb-1.5 tracking-tight">Vidyavardhaka College of Engineering</span>
+                                <span className="text-[7px] sm:text-[12px] text-white leading-none font-normal opacity-100">Autonomous institute affiliated to VTU, Belagavi</span>
                             </motion.div>
                         </div>
                     </div>
@@ -177,9 +194,13 @@ const Navbar = () => {
                                     {links.map((link, index) => (
                                         <motion.li
                                             key={link.name}
-                                            initial={{ opacity: 0, x: -10 }}
-                                            animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: index * 0.03 }}
+                                            initial={{ opacity: 0, x: -15, filter: 'blur(10px)' }}
+                                            animate={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                                            transition={{
+                                                delay: index * 0.05,
+                                                duration: 0.8,
+                                                ease: [0.16, 1, 0.3, 1]
+                                            }}
                                         >
                                             <button
                                                 onClick={() => {

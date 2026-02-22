@@ -25,14 +25,26 @@ const Home = () => {
                                     layoutId="main-logo"
                                     src={logo}
                                     alt="IVC Logo"
+                                    initial={{ scale: 0.5, opacity: 0, filter: 'blur(20px)' }}
+                                    animate={{ scale: 1, opacity: 1, filter: 'blur(0px)' }}
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 50,
+                                        damping: 15,
+                                        delay: 0.2
+                                    }}
                                     className="relative w-32 h-32 md:w-44 md:h-44 drop-shadow-liquid"
                                 />
                             </div>
 
                             <motion.div
-                                initial={{ opacity: 0, y: 10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ delay: 0.5, duration: 0.8 }}
+                                initial={{ opacity: 0, y: 30, filter: 'blur(15px)' }}
+                                animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                                transition={{
+                                    delay: 0.6,
+                                    duration: 1.2,
+                                    ease: [0.16, 1, 0.3, 1]
+                                }}
                                 className="flex items-center gap-3 sm:gap-5 font-black text-xl sm:text-3xl md:text-4xl tracking-tight uppercase"
                             >
                                 <span className="text-[#FEDE00]">Ideate</span>
@@ -44,9 +56,9 @@ const Home = () => {
 
 
                         <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{ duration: 0.8, delay: 0.7 }}
+                            initial={{ opacity: 0, y: 30, filter: 'blur(12px)' }}
+                            animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
+                            transition={{ duration: 1.5, delay: 0.9, ease: [0.16, 1, 0.3, 1] }}
                         >
                             <p className="text-lg md:text-xl font-bold tracking-tight text-white/80 max-w-xl mx-auto leading-relaxed">
                                 Empower <span className="text-ivc-secondary text-glow">Students</span> through innovation, collaboration, creativity.
