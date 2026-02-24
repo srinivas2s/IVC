@@ -39,10 +39,10 @@ const Join = () => {
     return (
         <div className="pt-32 pb-24 px-4 max-w-xl mx-auto min-h-screen flex flex-col justify-center">
             <motion.div
-                initial={{ opacity: 0, scale: 0.9 }}
-                whileInView={{ opacity: 1, scale: 1 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6 }}
+                initial={{ opacity: 0, scale: 0.95, y: 30 }}
+                whileInView={{ opacity: 1, scale: 1, y: 0 }}
+                viewport={{ once: true, margin: "-50px" }}
+                transition={{ delay: 0.3, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             >
                 <h2 className="text-4xl md:text-5xl font-black mb-10 text-center text-gradient tracking-tighter">
                     Join the Club

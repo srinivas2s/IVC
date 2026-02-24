@@ -22,9 +22,10 @@ const Events = () => {
     return (
         <div className="pt-32 pb-24 px-4 max-w-7xl mx-auto min-h-screen">
             <motion.h2
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 className="text-4xl md:text-5xl font-black mb-12 md:mb-16 text-center text-white tracking-tighter"
             >
                 Upcoming <span className="text-gradient">Events</span>
@@ -39,10 +40,10 @@ const Events = () => {
                     {events.map((event, index) => (
                         <motion.div
                             key={event.id}
-                            initial={{ opacity: 0, x: -30 }}
-                            whileInView={{ opacity: 1, x: 0 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1, duration: 0.6 }}
+                            initial={{ opacity: 0, x: -30, filter: 'blur(10px)' }}
+                            whileInView={{ opacity: 1, x: 0, filter: 'blur(0px)' }}
+                            viewport={{ once: true, margin: "-50px" }}
+                            transition={{ delay: 0.5 + (index * 0.15), duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                             className="flex flex-col md:flex-row glass-card rounded-2xl overflow-hidden hover:border-ivc-primary/40 transition-all duration-500 group"
                         >
                             <div className="md:w-1/3 h-64 md:h-auto relative">

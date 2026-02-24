@@ -92,7 +92,7 @@ const Home = () => {
                         <motion.div
                             initial={{ opacity: 0, scale: 0.95 }}
                             animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.2, duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                            transition={{ delay: 0.8, duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
                             className="flex flex-row items-center justify-center gap-3 md:gap-8 lg:gap-10"
                         >
                             <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap">
@@ -118,7 +118,7 @@ const Home = () => {
                 <motion.div
                     initial={{ opacity: 0, y: 50, filter: 'blur(10px)' }}
                     animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    transition={{ delay: 0.8, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
+                    transition={{ delay: 1.2, duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
                     className="mt-16 md:mt-24 w-full max-w-full px-0"
                 >
                     <div className="liquid-glass rounded-xl md:rounded-3xl p-[1.5px] overflow-hidden group shadow-[0_20px_50px_rgba(0,0,0,0.5)] border border-white/5">

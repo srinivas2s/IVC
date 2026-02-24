@@ -79,6 +79,7 @@ const Domains = () => {
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 className="text-4xl md:text-6xl font-black mb-12 md:mb-20 text-center text-white tracking-tighter"
             >
                 Our <span className="text-gradient">Domains</span>
@@ -88,10 +89,10 @@ const Domains = () => {
                 {domains.map((domain, index) => (
                     <motion.div
                         key={domain.title}
-                        initial={{ opacity: 0, y: 30 }}
+                        initial={{ opacity: 0, y: 40 }}
                         whileInView={{ opacity: 1, y: 0 }}
                         viewport={{ once: true }}
-                        transition={{ delay: index * 0.1 }}
+                        transition={{ delay: 0.4 + (index * 0.1), duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                     >
                         <DomainCard {...domain} />
                     </motion.div>

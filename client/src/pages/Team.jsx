@@ -4,8 +4,10 @@ import LiquidButton from '../components/LiquidButton';
 const Team = () => (
     <div className="pt-32 px-4 max-w-7xl mx-auto text-center">
         <motion.h2
-            initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 30 }}
             whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.3, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             className="text-4xl md:text-5xl font-black mb-12 md:mb-16 text-white tracking-tighter"
         >
             Meet the <span className="text-gradient">Team</span>
@@ -20,6 +22,10 @@ const Team = () => (
             ].map((member, i) => (
                 <motion.div
                     key={i}
+                    initial={{ opacity: 0, y: 30 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ delay: 0.4 + (i * 0.1), duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                     whileHover={{ y: -10, scale: 1.02 }}
                     className="liquid-glass p-6 md:p-8 rounded-[28px] md:rounded-[32px] border border-white/10 group"
                 >

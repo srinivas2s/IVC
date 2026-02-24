@@ -7,7 +7,7 @@ const Achievements = () => (
             initial={{ opacity: 0, y: 30, filter: 'blur(10px)' }}
             whileInView={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
             viewport={{ once: true }}
-            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            transition={{ delay: 0.3, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
             className="text-4xl md:text-5xl font-black mb-12 md:mb-16 text-white tracking-tighter"
         >
             Our <span className="text-gradient">Achievements</span>
@@ -24,8 +24,8 @@ const Achievements = () => (
                     whileInView={{ opacity: 1, scale: 1, filter: 'blur(0px)', y: 0 }}
                     viewport={{ once: true }}
                     transition={{
-                        delay: i * 0.15,
-                        duration: 1,
+                        delay: 0.5 + (i * 0.2),
+                        duration: 1.5,
                         ease: [0.16, 1, 0.3, 1]
                     }}
                     whileHover={{ y: -10 }}

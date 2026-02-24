@@ -30,16 +30,21 @@ const Projects = () => {
     };
 
     const item = {
-        hidden: { opacity: 0, y: 20 },
-        show: { opacity: 1, y: 0 }
+        hidden: { opacity: 0, y: 30 },
+        show: {
+            opacity: 1,
+            y: 0,
+            transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
+        }
     };
 
     return (
         <div className="pt-32 pb-24 px-4 max-w-7xl mx-auto min-h-screen">
             <motion.h2
-                initial={{ opacity: 0, y: 20 }}
+                initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
+                transition={{ delay: 0.3, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
                 className="text-4xl md:text-5xl font-black mb-12 md:mb-16 text-center text-white tracking-tighter"
             >
                 Our <span className="text-gradient">Projects</span>
@@ -54,7 +59,8 @@ const Projects = () => {
                     variants={container}
                     initial="hidden"
                     whileInView="show"
-                    viewport={{ once: true }}
+                    viewport={{ once: true, margin: "-100px" }}
+                    transition={{ delay: 0.5 }}
                     className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-12"
                 >
                     {projects.map((project) => (
