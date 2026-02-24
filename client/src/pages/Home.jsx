@@ -127,7 +127,7 @@ const Home = () => {
                                 <motion.div
                                     animate={{ x: ["0%", "-50%"] }}
                                     transition={{
-                                        duration: 11,
+                                        duration: 25,
                                         repeat: Infinity,
                                         ease: "linear"
                                     }}
