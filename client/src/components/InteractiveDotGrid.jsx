@@ -74,9 +74,6 @@ const InteractiveDotGrid = ({
                     let size = dotSize;
                     let color = dotColor;
 
-                    // Check if this is a magic spot
-                    const magicPulse = magicMap.get(`${i}-${j}`);
-
                     if (distance < glowRadius) {
                         const force = (glowRadius - distance) / glowRadius;
                         const influence = Math.pow(force, 1.2);
