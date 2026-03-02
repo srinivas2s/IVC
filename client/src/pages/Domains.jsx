@@ -70,7 +70,8 @@ const Domains = () => {
         { title: 'AI & ML', description: 'Building intelligent systems and exploring the depths of neural networks and data science.' },
         { title: 'IoT & Hardware', description: 'Connecting the physical and digital worlds through innovative electronics and smart systems.' },
         { title: 'Entrepreneurship', description: 'Nurturing the next generation of founders through business strategy and innovation.' },
-        { title: 'UI/UX Design', description: 'Designing intuitive, aesthetically stunning interfaces that prioritize user experience.' }
+        { title: 'UI/UX Design', description: 'Designing intuitive, aesthetically stunning interfaces that prioritize user experience.' },
+        { title: 'Robotics', description: 'Designing and building autonomous machines and robotic systems for future impact.' }
     ];
 
     return (

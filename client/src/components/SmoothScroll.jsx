@@ -10,7 +10,7 @@ const SmoothScroll = () => {
             gestureOrientation: 'vertical',
             smoothWheel: true,
             wheelMultiplier: 1,
-            smoothTouch: true,
+            smoothTouch: false,
             touchMultiplier: 2,
             infinite: false,
         });

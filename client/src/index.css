@@ -20,7 +20,7 @@
 }
 
 .liquid-glass {
-  @apply backdrop-blur-liquid bg-white/5 border border-white/10 shadow-ios;
+  @apply backdrop-blur-[12px] md:backdrop-blur-liquid bg-white/5 border border-white/10 shadow-ios;
 }
 
 .dark .liquid-glass {
@@ -28,7 +28,25 @@
 }
 
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-ivc-primary via-ivc-secondary to-ivc-accent;
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-ivc-secondary via-white to-ivc-accent animate-text-shimmer bg-[length:200%_auto];
+}
+
+@keyframes text-shimmer {
+  0% {
+    background-position: 0% 50%;
+  }
+
+  50% {
+    background-position: 100% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-text-shimmer {
+  animation: text-shimmer 4s ease infinite;
 }
 
 .ios-tap-active {

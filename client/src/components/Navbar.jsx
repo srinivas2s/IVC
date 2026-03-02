@@ -48,13 +48,16 @@ const Navbar = () => {
         <nav className="fixed left-1/2 -translate-x-1/2 z-50 top-6 w-[95%] max-w-7xl">
             {/* Main Navbar Bar */}
             <div className={`
-                bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-2xl items-center justify-between px-3 sm:px-8 py-2 sm:py-3 flex-nowrap
+                relative bg-[#020408]/40 backdrop-blur-[20px] border border-white/10 rounded-[24px] items-center justify-between px-4 sm:px-10 py-3 sm:py-5 flex-nowrap shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)]
                 ${isOpen ? 'hidden' : 'flex'}
+                group/nav
             `}>
-                <div className="flex items-center gap-2 sm:gap-4 shrink-0">
-                    <div className="flex items-center select-none">
-                        {/* Emerges to the left */}
-                        <div className="overflow-hidden">
+                {/* Subtle Bloom behind the bar */}
+                <div className="absolute inset-x-10 inset-y-0 bg-ivc-primary/5 blur-3xl opacity-0 group-hover/nav:opacity-100 transition-opacity duration-1000 -z-10" />
+
+                <div className="flex items-center gap-2 sm:gap-6 flex-1 min-w-0">
+                    <div className="flex items-center select-none min-w-0">
+                        <div className="overflow-hidden shrink-0">
                             <motion.span
                                 initial={{ x: '100%', opacity: 0, filter: 'blur(10px)' }}
                                 animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
@@ -69,21 +72,14 @@ const Navbar = () => {
                             </motion.span>
                         </div>
 
-                        {/* Center Anchor */}
                         <motion.div
-                            initial={{ scaleY: 0, scaleX: 0.5, opacity: 0 }}
-                            animate={{ scaleY: 1, scaleX: 1, opacity: 1 }}
-                            transition={{
-                                type: "spring",
-                                stiffness: 100,
-                                damping: 15,
-                                delay: 0.1
-                            }}
-                            className="w-[1px] sm:w-[2px] h-8 sm:h-14 bg-white/60 sm:bg-white origin-center shrink-0"
+                            initial={{ scaleY: 0, opacity: 0 }}
+                            animate={{ scaleY: 1, opacity: 1 }}
+                            transition={{ duration: 0.8, delay: 0.2 }}
+                            className="w-[1px] h-8 sm:h-14 bg-white/20 shrink-0"
                         />
 
-                        {/* Emerges to the right */}
-                        <div className="flex items-center gap-2 sm:gap-4 overflow-hidden ml-2 sm:ml-6 shrink-0">
+                        <div className="flex items-center gap-2 sm:gap-5 ml-2 sm:ml-6 min-w-0 overflow-hidden">
                             <motion.img
                                 src={vvceLogo}
                                 alt="VVCE Logo"
@@ -104,11 +100,11 @@ const Navbar = () => {
                                     ease: [0.16, 1, 0.3, 1],
                                     delay: 0.5
                                 }}
-                                className="flex flex-col justify-center select-none ml-1 sm:ml-2"
+                                className="flex flex-col justify-center select-none min-w-0 overflow-hidden"
                             >
-                                <span className="text-[6px] sm:text-[11px] text-white leading-none mb-0.5 sm:mb-1 uppercase tracking-[0.15em] font-normal opacity-90">Vidyavardhaka Sangha ®, Mysore</span>
-                                <span className="text-[9px] sm:text-[18px] text-white font-medium leading-none mb-1 sm:mb-1.5 tracking-tight">Vidyavardhaka College of Engineering</span>
-                                <span className="text-[5px] sm:text-[12px] text-white leading-none font-normal opacity-80">Autonomous institute affiliated to VTU, Belagavi</span>
+                                <span className="text-[5px] sm:text-[11px] text-white leading-none mb-0.5 sm:mb-1 uppercase tracking-[0.15em] font-medium opacity-60 truncate">Vidyavardhaka Sangha ®, Mysore</span>
+                                <span className="text-[8px] sm:text-[18px] text-white font-black leading-none mb-1 sm:mb-1.5 tracking-tight truncate">Vidyavardhaka College of Engineering</span>
+                                <span className="text-[5px] sm:text-[12px] text-white leading-none font-medium opacity-50 truncate">Autonomous institute affiliated to VTU, Belagavi</span>
                             </motion.div>
                         </div>
                     </div>
@@ -117,28 +113,25 @@ const Navbar = () => {
                 <div className="flex shrink-0">
                     <button
                         onClick={() => setIsOpen(true)}
-                        className="inline-flex items-center p-1 sm:p-2 w-8 h-8 sm:w-10 sm:h-10 justify-center text-ivc-text rounded-xl hover:bg-white/10 transition-colors group"
+                        className="inline-flex flex-col items-center justify-center p-2 w-10 h-10 sm:w-14 sm:h-14 space-y-1.5 sm:space-y-2.5 text-ivc-text rounded-2xl hover:bg-white/5 transition-all group/btn active:scale-90"
                     >
                         <span className="sr-only">Open main menu</span>
-                        <div className="flex flex-col gap-1 sm:gap-1.5 items-center justify-center">
-                            {[0, 1, 2].map((i) => (
-                                <motion.div
-                                    key={i}
-                                    initial={{ width: 4, height: 4, opacity: 0 }}
-                                    animate={{
-                                        width: window.innerWidth < 640 ? 18 : 22,
-                                        height: window.innerWidth < 640 ? 2 : 3,
-                                        opacity: 1
-                                    }}
-                                    transition={{
-                                        duration: 0.8,
-                                        delay: 0.6 + (i * 0.1),
-                                        ease: [0.16, 1, 0.3, 1]
-                                    }}
-                                    className="bg-white rounded-full"
-                                />
-                            ))}
-                        </div>
+                        {[0, 1, 2].map((i) => (
+                            <motion.div
+                                key={i}
+                                initial={{ width: 0, opacity: 0 }}
+                                animate={{
+                                    width: i === 1 ? (window.innerWidth < 640 ? 18 : 24) : (window.innerWidth < 640 ? 12 : 18),
+                                    opacity: 1
+                                }}
+                                transition={{
+                                    duration: 0.8,
+                                    delay: 0.6 + (i * 0.1),
+                                    ease: [0.16, 1, 0.3, 1]
+                                }}
+                                className="h-[2px] sm:h-[3px] bg-white rounded-full group-hover/btn:bg-ivc-primary transition-colors"
+                            />
+                        ))}
                     </button>
                 </div>
             </div>

@@ -4,6 +4,7 @@ import logo from '../assets/logo.png';
 
 const Home = () => {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+    const [isMobile, setIsMobile] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
     const containerRef = useRef(null);
 
@@ -25,14 +26,15 @@ const Home = () => {
     const zTranslate = useTransform(smoothProgress, [0, 0.5], [0, 200]);
 
     useEffect(() => {
+        const checkMobile = () => setIsMobile(window.innerWidth < 768);
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
         // Delay the entrance of background effects to allow logo to "sit" first
         const timer = setTimeout(() => setIsLoaded(true), 1200);
 
         const handleOrientation = (e) => {
-            if (e.beta && e.gamma) {
-                // Account for natural 45-degree phone holding angle
-                // Gamma: Left/Right tilt (-90 to 90)
-                // Beta: Front/Back tilt (-180 to 180, typically 45 for handheld)
+            if (e.beta && e.gamma && !isMobile) {
                 const x = (e.gamma / 30) * 15;
                 const y = ((e.beta - 45) / 30) * 15;
                 setMousePos({ x, y });
@@ -40,7 +42,7 @@ const Home = () => {
         };
 
         const requestPermission = async () => {
-            if (typeof DeviceOrientationEvent !== 'undefined' &&
+            if (!isMobile && typeof DeviceOrientationEvent !== 'undefined' &&
                 typeof DeviceOrientationEvent.requestPermission === 'function') {
                 try {
                     const permission = await DeviceOrientationEvent.requestPermission();
@@ -50,7 +52,7 @@ const Home = () => {
                 } catch (error) {
                     console.error('Gyroscope permission denied');
                 }
-            } else {
+            } else if (!isMobile) {
                 window.addEventListener('deviceorientation', handleOrientation);
             }
         };
@@ -58,11 +60,13 @@ const Home = () => {
         requestPermission();
         return () => {
             clearTimeout(timer);
+            window.removeEventListener('resize', checkMobile);
             window.removeEventListener('deviceorientation', handleOrientation);
         };
-    }, []);
+    }, [isMobile]);
 
     const handleMouseMove = (e) => {
+        if (isMobile) return;
         const { clientX, clientY } = e;
         const x = (clientX / window.innerWidth - 0.5) * 20;
         const y = (clientY / window.innerHeight - 0.5) * 20;
@@ -70,6 +74,8 @@ const Home = () => {
     };
 
     const handleTouchMove = (e) => {
+        // Only track touch for effects if we really want to, but keep it light
+        if (isMobile) return;
         const touch = e.touches[0];
         const x = (touch.clientX / window.innerWidth - 0.5) * 15;
         const y = (touch.clientY / window.innerHeight - 0.5) * 15;
@@ -82,52 +88,30 @@ const Home = () => {
             onMouseMove={handleMouseMove}
             onTouchMove={handleTouchMove}
             className="relative isolate min-h-screen flex items-center justify-center pt-12 md:pt-32 lg:pt-48 overflow-visible bg-transparent"
-            style={{ perspective: "1500px" }}
+            style={{ perspective: isMobile ? "none" : "1500px" }}
         >
-            {/* 3D Space - Environment Layer */}
-            <div className="fixed inset-0 z-0 pointer-events-none" style={{ transformStyle: "preserve-3d" }}>
-                {/* Dynamic Space Grid - Warps with tilt */}
-                <motion.div
-                    animate={{
-                        rotateX: 60 + (mousePos.y * 0.2),
-                        rotateZ: mousePos.x * 0.1,
-                        y: mousePos.y * 5
-                    }}
-                    className="absolute bottom-[-20%] left-[-50%] w-[200%] h-[100%] opacity-10"
-                    style={{
-                        backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-                        backgroundSize: '80px 80px',
-                        transform: "rotateX(70deg)",
-                        maskImage: 'radial-gradient(circle at center, black, transparent 80%)'
-                    }}
-                />
-
-                {/* Milky Way Particles - Enhanced Multi-Layer */}
-                {[...Array(30)].map((_, i) => (
+            {/* 3D Space - Environment Layer - Disabled on mobile for performance */}
+            {!isMobile && (
+                <div className="fixed inset-0 z-0 pointer-events-none" style={{ transformStyle: "preserve-3d" }}>
+                    {/* Dynamic Space Grid - Warps with tilt */}
                     <motion.div
-                        key={i}
                         animate={{
-                            x: mousePos.x * (i % 8 + 1) * -0.3,
-                            y: mousePos.y * (i % 8 + 1) * -0.3,
-                            opacity: [0.2, 0.5, 0.2]
+                            rotateX: 60 + (mousePos.y * 0.2),
+                            rotateZ: mousePos.x * 0.1,
+                            y: mousePos.y * 5
                         }}
-                        transition={{
-                            opacity: { duration: Math.random() * 3 + 2, repeat: Infinity },
-                            type: "spring",
-                            stiffness: 15,
-                            damping: 25
-                        }}
-                        className={`absolute rounded-full blur-[1px] ${i % 3 === 0 ? 'bg-ivc-primary/40' : i % 3 === 1 ? 'bg-ivc-secondary/40' : 'bg-white/40'}`}
+                        className="absolute bottom-[-20%] left-[-50%] w-[200%] h-[100%] opacity-10"
                         style={{
-                            width: `${Math.random() * 3 + 1}px`,
-                            height: `${Math.random() * 3 + 1}px`,
-                            left: `${Math.random() * 100}%`,
-                            top: `${Math.random() * 100}%`,
-                            transform: `translateZ(${-200 - (i * 15)}px)`
+                            backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)`,
+                            backgroundSize: '80px 80px',
+                            transform: "rotateX(70deg)",
+                            maskImage: 'radial-gradient(circle at center, black, transparent 80%)'
                         }}
                     />
-                ))}
-            </div>
+
+                    {/* Particles removed as per user request */}
+                </div>
+            )}
 
             <motion.div
                 style={{

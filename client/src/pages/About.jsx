@@ -24,7 +24,7 @@ const About = () => (
                 onClick={() => document.getElementById('join')?.scrollIntoView({ behavior: 'smooth' })}
                 variant="glass"
             >
-                Get Started <ArrowRight size={18} />
+                Get Started
             </LiquidButton>
 
             <LiquidButton
