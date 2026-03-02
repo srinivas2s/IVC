@@ -2,13 +2,20 @@ import { motion } from 'framer-motion';
 import logo from '../assets/logo.png';
 
 const LoadingScreen = () => {
-    const tagline = "IDEATE VISUALIZE CREATE";
+    const words = [
+        { text: "IDEATE", id: "word-ideate", color: "text-[#FEDE00]" },
+        { text: "VISUALIZE", id: "word-visualize", color: "text-white" },
+        { text: "CREATE", id: "word-create", color: "text-[#FF3B30]" }
+    ];
 
     return (
         <motion.div
             initial={{ opacity: 1 }}
-            transition={{ duration: 0.8, ease: "easeInOut" }}
-            className="fixed inset-0 z-[100]"
+            exit={{
+                opacity: 0,
+                transition: { duration: 0.8, ease: "circIn" }
+            }}
+            className="fixed inset-0 z-[100] bg-[#020408]"
         >
             <div className="relative isolate min-h-screen flex items-center justify-center px-4 py-20">
                 <div className="mx-auto max-w-7xl relative z-10 w-full h-full flex flex-col justify-center">
@@ -16,10 +23,9 @@ const LoadingScreen = () => {
                     <div className="relative max-w-5xl mx-auto w-full p-8 md:p-16 lg:p-24 group min-h-[70vh] flex flex-col justify-center">
                         <div className="relative z-10 text-center">
                             <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                // No exit animation for the container of the logo to ensure persistence
-                                transition={{ delay: 0.2, duration: 0.6 }}
+                                initial={{ opacity: 0, scale: 0.8 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                                 className="flex justify-center mb-12"
                             >
                                 <div className="relative">
@@ -33,45 +39,34 @@ const LoadingScreen = () => {
                             </motion.div>
 
                             {/* Loading content - Fades Out */}
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                exit={{ opacity: 0 }}
-                                transition={{ duration: 0.6 }}
-                                className="space-y-8"
-                            >
+                            <div className="space-y-8">
                                 {/* Tagline with smooth reveal */}
-                                <div className="relative text-sm sm:text-lg md:text-3xl font-extrabold tracking-[0.15em] md:tracking-[0.4em] uppercase text-center px-4 max-w-[90vw] mx-auto">
-                                    {/* Background ghost text */}
-                                    <span className="text-white/[0.03] select-none block">
-                                        {tagline}
-                                    </span>
+                                <div className="relative flex flex-row items-center justify-center gap-4 md:gap-8 text-sm sm:text-lg md:text-3xl font-extrabold tracking-[0.15em] md:tracking-[0.4em] uppercase text-center px-4 max-w-[90vw] mx-auto">
+                                    {words.map((word, index) => (
+                                        <div key={word.id} className="relative flex items-center">
+                                            <motion.span
+                                                layoutId={word.id}
+                                                initial={{ opacity: 0, y: 20 }}
+                                                animate={{ opacity: 1, y: 0 }}
+                                                transition={{
+                                                    delay: 0.5 + (index * 0.2),
+                                                    duration: 0.8,
+                                                    ease: [0.16, 1, 0.3, 1]
+                                                }}
+                                                className={`relative z-10 ${word.color}`}
+                                            >
+                                                {word.text}
+                                            </motion.span>
 
-                                    {/* Animated gradient reveal */}
-                                    <motion.span
-                                        initial={{ clipPath: 'inset(0 100% 0 0)' }}
-                                        animate={{ clipPath: 'inset(0 0% 0 0)' }}
-                                        transition={{
-                                            duration: 2.5,
-                                            ease: [0.65, 0, 0.35, 1],
-                                            delay: 0.5
-                                        }}
-                                        className="absolute inset-0 px-4 block"
-                                    >
-                                        <motion.span
-                                            animate={{
-                                                backgroundPosition: ['0% 50%', '100% 50%', '0% 50%'],
-                                            }}
-                                            transition={{
-                                                duration: 5,
-                                                repeat: Infinity,
-                                                ease: "linear"
-                                            }}
-                                            className="text-transparent bg-clip-text bg-gradient-to-r from-white via-white/60 to-white bg-[length:200%_100%]"
-                                        >
-                                            {tagline}
-                                        </motion.span>
-                                    </motion.span>
+                                            {/* Glowing underline for each word during load */}
+                                            <motion.div
+                                                initial={{ scaleX: 0 }}
+                                                animate={{ scaleX: 1 }}
+                                                transition={{ delay: 1 + (index * 0.2), duration: 1 }}
+                                                className="absolute -bottom-2 left-0 right-0 h-[1px] bg-white/20 origin-left"
+                                            />
+                                        </div>
+                                    ))}
                                 </div>
 
                                 {/* Subtitle */}
@@ -85,13 +80,21 @@ const LoadingScreen = () => {
                                 </motion.p>
 
                                 {/* Loading progress indicator */}
-                                <motion.div
-                                    initial={{ width: 0 }}
-                                    animate={{ width: '100%' }}
-                                    transition={{ duration: 2.5, ease: "easeInOut", delay: 0.5 }}
-                                    className="h-[1px] bg-gradient-to-r from-transparent via-white/30 to-transparent max-w-xs mx-auto"
-                                />
-                            </motion.div>
+                                <div className="relative h-[1px] max-w-xs mx-auto overflow-hidden">
+                                    <motion.div
+                                        initial={{ x: '-100%' }}
+                                        animate={{ x: '100%' }}
+                                        transition={{
+                                            duration: 2,
+                                            repeat: Infinity,
+                                            ease: "easeInOut",
+                                            delay: 0.5
+                                        }}
+                                        className="absolute inset-0 bg-gradient-to-r from-transparent via-ivc-primary to-transparent"
+                                    />
+                                    <div className="absolute inset-0 bg-white/10" />
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>

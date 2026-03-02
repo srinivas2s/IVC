@@ -164,10 +164,7 @@ const Home = () => {
 
                     {/* Unified Horizontal Branding Row with Specular Shine */}
                     <div className="w-full flex justify-center pointer-events-none px-4" style={{ transform: "translateZ(60px)", transformStyle: "preserve-3d" }}>
-                        <motion.div
-                            initial={{ opacity: 0, scale: 0.95 }}
-                            animate={{ opacity: 1, scale: 1 }}
-                            transition={{ delay: 0.8, duration: 1.8, ease: [0.16, 1, 0.3, 1] }}
+                        <div
                             className="flex flex-row items-center justify-center gap-3 md:gap-8 lg:gap-10 relative"
                         >
                             {/* Specular Light Sweep */}
@@ -178,21 +175,36 @@ const Home = () => {
                             />
 
                             <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap group">
-                                <span className="text-[#FEDE00] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10">Ideate</span>
+                                <motion.span
+                                    layoutId="word-ideate"
+                                    className="text-[#FEDE00] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10 block"
+                                >
+                                    Ideate
+                                </motion.span>
                             </h1>
 
                             <div className="w-1 h-1 md:w-2 md:h-2 rounded-full bg-white/20 blur-[1px] shrink-0" />
 
                             <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap">
-                                <span className="text-white drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10">Visualize</span>
+                                <motion.span
+                                    layoutId="word-visualize"
+                                    className="text-white drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10 block"
+                                >
+                                    Visualize
+                                </motion.span>
                             </h1>
 
                             <div className="w-1 h-1 md:w-2 md:h-2 rounded-full bg-white/20 blur-[1px] shrink-0" />
 
                             <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap">
-                                <span className="text-[#FF3B30] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10">Create</span>
+                                <motion.span
+                                    layoutId="word-create"
+                                    className="text-[#FF3B30] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10 block"
+                                >
+                                    Create
+                                </motion.span>
                             </h1>
-                        </motion.div>
+                        </div>
                     </div>
                 </motion.div>
 
