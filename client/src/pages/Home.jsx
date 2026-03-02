@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
 import logo from '../assets/logo.png';
 
 const Home = () => {
@@ -12,10 +12,17 @@ const Home = () => {
         offset: ["start start", "end start"]
     });
 
-    // Scroll-triggered scaling and perspective shifts
-    const scale = useTransform(scrollYProgress, [0, 0.5], [1, 1.1]);
-    const opacity = useTransform(scrollYProgress, [0, 0.4], [1, 0]);
-    const zTranslate = useTransform(scrollYProgress, [0, 0.5], [0, 200]);
+    // Create a smooth spring for the scroll progress to avoid jitter
+    const smoothProgress = useSpring(scrollYProgress, {
+        stiffness: 100,
+        damping: 30,
+        restDelta: 0.001
+    });
+
+    // Scroll-triggered scaling and perspective shifts using the smooth spring
+    const scale = useTransform(smoothProgress, [0, 0.5], [1, 1.1]);
+    const opacity = useTransform(smoothProgress, [0, 0.4], [1, 0]);
+    const zTranslate = useTransform(smoothProgress, [0, 0.5], [0, 200]);
 
     useEffect(() => {
         // Delay the entrance of background effects to allow logo to "sit" first

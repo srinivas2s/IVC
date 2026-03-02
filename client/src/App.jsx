@@ -11,6 +11,7 @@ import Team from './pages/Team';
 import Join from './pages/Join';
 import Achievements from './pages/Achievements';
 import LoadingScreen from './components/LoadingScreen';
+import SmoothScroll from './components/SmoothScroll';
 
 import InteractiveBackground from './components/InteractiveBackground';
 
@@ -26,6 +27,7 @@ function App() {
 
   return (
     <Router>
+      <SmoothScroll />
       <InteractiveBackground />
       <AnimatePresence>
         {loading ? (
