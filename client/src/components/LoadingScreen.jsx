@@ -3,9 +3,9 @@ import logo from '../assets/logo.png';
 
 const LoadingScreen = () => {
     const words = [
-        { text: "IDEATE", id: "word-ideate", color: "text-[#FEDE00]" },
-        { text: "VISUALIZE", id: "word-visualize", color: "text-white" },
-        { text: "CREATE", id: "word-create", color: "text-[#FF3B30]" }
+        { text: "Ideate", id: "word-ideate", color: "text-[#FEDE00]" },
+        { text: "Visualize", id: "word-visualize", color: "text-white" },
+        { text: "Create", id: "word-create", color: "text-[#FF3B30]" }
     ];
 
     return (
@@ -22,21 +22,22 @@ const LoadingScreen = () => {
                     {/* Glass Container Wrapper */}
                     <div className="relative max-w-5xl mx-auto w-full p-8 md:p-16 lg:p-24 group min-h-[70vh] flex flex-col justify-center">
                         <div className="relative z-10 text-center">
-                            <motion.div
-                                initial={{ opacity: 0, scale: 0.8 }}
-                                animate={{ opacity: 1, scale: 1 }}
-                                transition={{ delay: 0.2, duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                                className="flex justify-center mb-12"
-                            >
+                            <div className="flex justify-center mb-12">
                                 <div className="relative">
                                     <motion.img
                                         layoutId="main-logo"
                                         src={logo}
                                         alt="IVC Logo"
+                                        transition={{
+                                            type: "spring",
+                                            stiffness: 45,
+                                            damping: 20,
+                                            mass: 1.2
+                                        }}
                                         className="relative w-32 h-32 md:w-44 md:h-44 drop-shadow-liquid"
                                     />
                                 </div>
-                            </motion.div>
+                            </div>
 
                             {/* Loading content - Fades Out */}
                             <div className="space-y-8">
@@ -49,9 +50,10 @@ const LoadingScreen = () => {
                                                 initial={{ opacity: 0, y: 20 }}
                                                 animate={{ opacity: 1, y: 0 }}
                                                 transition={{
-                                                    delay: 0.5 + (index * 0.2),
-                                                    duration: 0.8,
-                                                    ease: [0.16, 1, 0.3, 1]
+                                                    type: "spring",
+                                                    stiffness: 50,
+                                                    damping: 18,
+                                                    delay: 0.5 + (index * 0.2)
                                                 }}
                                                 className={`relative z-10 ${word.color}`}
                                             >

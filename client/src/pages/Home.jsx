@@ -138,6 +138,12 @@ const Home = () => {
                             layoutId="main-logo"
                             src={logo}
                             alt="IVC Logo"
+                            transition={{
+                                type: "spring",
+                                stiffness: 45,
+                                damping: 20,
+                                mass: 1.2
+                            }}
                             className="relative w-32 h-32 md:w-64 md:h-64 drop-shadow-[0_45px_100px_rgba(0,0,0,0.9)] z-20"
                             style={{ transform: "translateZ(40px)" }}
                         />
@@ -168,6 +174,11 @@ const Home = () => {
                             <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap group">
                                 <motion.span
                                     layoutId="word-ideate"
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 50,
+                                        damping: 18
+                                    }}
                                     className="text-[#FEDE00] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10 block"
                                 >
                                     Ideate
@@ -179,6 +190,11 @@ const Home = () => {
                             <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap">
                                 <motion.span
                                     layoutId="word-visualize"
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 50,
+                                        damping: 18
+                                    }}
                                     className="text-white drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10 block"
                                 >
                                     Visualize
@@ -190,6 +206,11 @@ const Home = () => {
                             <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap">
                                 <motion.span
                                     layoutId="word-create"
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 50,
+                                        damping: 18
+                                    }}
                                     className="text-[#FF3B30] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10 block"
                                 >
                                     Create
