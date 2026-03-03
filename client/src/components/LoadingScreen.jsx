@@ -13,10 +13,8 @@ const LoadingScreen = () => {
             initial={{ opacity: 1, scale: 1 }}
             exit={{
                 opacity: 0,
-                scale: 1.05,
-                filter: "blur(20px)",
-                pointerEvents: "none",
-                transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
+                pointerEvents: 'none',
+                transition: { duration: 0.3, ease: "easeOut" }
             }}
             className="fixed inset-0 z-[100] bg-[#020408]"
         >

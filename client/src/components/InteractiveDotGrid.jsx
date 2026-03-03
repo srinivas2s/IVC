@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 
 const InteractiveDotGrid = ({
     dotSize = 0.8,
@@ -11,56 +11,83 @@ const InteractiveDotGrid = ({
     const canvasRef = useRef(null);
     const mouseRef = useRef({ x: -1000, y: -1000 });
     const lastMouseRef = useRef({ x: -1000, y: -1000 });
-    const pointsRef = useRef([]);
+    const colorMixRef = useRef(0);
+    const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
+        const checkMobile = () => {
+            setIsMobile(window.innerWidth < 768);
+        };
+        checkMobile();
+        window.addEventListener('resize', checkMobile);
+
         const canvas = canvasRef.current;
         if (!canvas) return;
-        const ctx = canvas.getContext('2d');
+        const ctx = canvas.getContext('2d', { alpha: true });
         let animationFrameId;
 
         const resize = () => {
             canvas.width = window.innerWidth;
             canvas.height = window.innerHeight;
-
-            // Dots are now static except for cursor interaction
         };
 
-        const handleMouseMove = (e) => {
-            lastMouseRef.current = { ...mouseRef.current };
-            mouseRef.current = { x: e.clientX, y: e.clientY };
+        const handleInput = (clientX, clientY) => {
+            const dx = clientX - mouseRef.current.x;
+            const dy = clientY - mouseRef.current.y;
+            const dist = Math.sqrt(dx * dx + dy * dy);
+
+            // Cycle color based on movement distance
+            if (dist > 1) {
+                colorMixRef.current = (colorMixRef.current + dist * 0.005) % (Math.PI * 2);
+            }
+
+            mouseRef.current = { x: clientX, y: clientY };
         };
 
+        const handleMouseMove = (e) => handleInput(e.clientX, e.clientY);
         const handleTouchMove = (e) => {
             if (e.touches[0]) {
-                lastMouseRef.current = { ...mouseRef.current };
-                mouseRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                handleInput(e.touches[0].clientX, e.touches[0].clientY);
             }
+        };
+
+        const handleClick = () => {
+            // Significant color jump on click
+            colorMixRef.current = (colorMixRef.current + Math.PI / 2) % (Math.PI * 2);
         };
 
         window.addEventListener('resize', resize);
         window.addEventListener('mousemove', handleMouseMove);
-        window.addEventListener('touchmove', handleTouchMove);
+        window.addEventListener('click', handleClick);
+        window.addEventListener('touchstart', (e) => {
+            if (e.touches[0]) {
+                handleInput(e.touches[0].clientX, e.touches[0].clientY);
+                // Also trigger click color jump on touch start
+                colorMixRef.current = (colorMixRef.current + Math.PI / 4) % (Math.PI * 2);
+            }
+        }, { passive: true });
+        window.addEventListener('touchmove', handleTouchMove, { passive: true });
         resize();
+
+        // Extremely dense for the ultimate rich look on mobile
+        const spacing = window.innerWidth < 768 ? dotSpacing * 0.7 : dotSpacing;
+        const currentGlowRadius = window.innerWidth < 768 ? 140 : glowRadius;
+        const glowRadiusSq = currentGlowRadius * currentGlowRadius;
 
         const render = (time) => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            const cols = Math.ceil(canvas.width / dotSpacing) + 1;
-            const rows = Math.ceil(canvas.height / dotSpacing) + 1;
+            // Smoother trail for mobile responsiveness
+            lastMouseRef.current.x += (mouseRef.current.x - lastMouseRef.current.x) * (isMobile ? 0.2 : 0.15);
+            lastMouseRef.current.y += (mouseRef.current.y - lastMouseRef.current.y) * (isMobile ? 0.2 : 0.15);
 
-            // Smoothly update lastMouse to create a "lagging" trail effect
-            lastMouseRef.current.x += (mouseRef.current.x - lastMouseRef.current.x) * 0.12;
-            lastMouseRef.current.y += (mouseRef.current.y - lastMouseRef.current.y) * 0.12;
-
-
-
-            const glowRadiusSq = glowRadius * glowRadius;
+            const cols = Math.ceil(canvas.width / spacing) + 1;
+            const rows = Math.ceil(canvas.height / spacing) + 1;
 
             for (let i = 0; i < cols; i++) {
                 for (let j = 0; j < rows; j++) {
-                    const x = i * dotSpacing;
-                    const y = j * dotSpacing;
+                    const x = i * spacing;
+                    const y = j * spacing;
 
                     const dx = x - mouseRef.current.x;
                     const dy = y - mouseRef.current.y;
@@ -72,29 +99,24 @@ const InteractiveDotGrid = ({
 
                     const distSq = Math.min(d1Sq, d2Sq);
 
-                    let opacity = 0.04;
-                    let size = dotSize;
-                    let color = dotColor;
-
                     if (distSq < glowRadiusSq) {
-                        const distance = Math.sqrt(distSq);
-                        const force = (glowRadius - distance) / glowRadius;
-                        const influence = Math.pow(force, 1.2);
+                        const dist = Math.sqrt(distSq);
+                        const influence = (currentGlowRadius - dist) / currentGlowRadius;
 
-                        opacity = 0.04 + (influence * 0.9);
-                        size = dotSize + (influence * 3.5);
+                        const size = dotSize + (influence * (isMobile ? 6 : 4.5)); // Larger glow on mobile
+                        const opacity = 0.04 + (influence * 0.95);
 
-                        // Gradient Color interpolation (Cyan to Purple)
-                        const mix = (Math.sin(time * 0.001 + (i + j) * 0.1) + 1) / 2;
-                        color = mix > 0.5 ? purpleColor : cyanColor;
+                        const mix = (Math.sin(colorMixRef.current + (i + j) * 0.1) + 1) / 2;
+                        const color = mix > 0.5 ? purpleColor : cyanColor;
+
                         ctx.fillStyle = color.replace(/[\d.]+\)$/g, `${opacity})`);
+                        ctx.fillRect(x - size / 2, y - size / 2, size, size);
                     } else {
-                        // Ambient flicker
-                        const flicker = Math.sin(time * 0.001 + (i * 0.3) + (j * 0.3)) * 0.02;
-                        ctx.fillStyle = dotColor.replace(/[\d.]+\)$/g, `${Math.max(0.01, opacity + flicker)})`);
+                        // Ambient flickering/static dots
+                        const flicker = isMobile ? 0 : Math.sin(colorMixRef.current + (i * 0.3) + (j * 0.3)) * 0.02;
+                        ctx.fillStyle = dotColor.replace(/[\d.]+\)$/g, `${Math.max(0.01, 0.04 + flicker)})`);
+                        ctx.fillRect(x - dotSize / 2, y - dotSize / 2, dotSize, dotSize);
                     }
-
-                    ctx.fillRect(x - size / 2, y - size / 2, size, size);
                 }
             }
 
@@ -104,18 +126,24 @@ const InteractiveDotGrid = ({
         render(0);
 
         return () => {
+            window.removeEventListener('resize', checkMobile);
             window.removeEventListener('resize', resize);
             window.removeEventListener('mousemove', handleMouseMove);
             window.removeEventListener('touchmove', handleTouchMove);
+            window.removeEventListener('click', handleClick);
             cancelAnimationFrame(animationFrameId);
         };
-    }, [dotSize, dotSpacing, dotColor, cyanColor, purpleColor, glowRadius]);
+    }, [dotSize, dotSpacing, dotColor, cyanColor, purpleColor, glowRadius, isMobile]);
 
     return (
         <canvas
             ref={canvasRef}
-            className="fixed inset-0 pointer-events-none z-10"
-            style={{ mixBlendMode: 'screen', opacity: 0.9 }}
+            className="fixed inset-0 pointer-events-none z-[-50] will-change-transform"
+            style={{
+                mixBlendMode: 'screen',
+                opacity: isMobile ? 0.7 : 0.9,
+                pointerEvents: 'none' // STRICTLY ENSURE NO CLICK BLOCKING
+            }}
         />
     );
 };

@@ -12,7 +12,6 @@ const links = [
     { name: 'Domains', id: 'domains' },
     { name: 'Projects', id: 'projects' },
     { name: 'Achievements', id: 'achievements' },
-    { name: 'Join IVC', id: 'join' },
 ];
 
 const Navbar = () => {
