@@ -102,9 +102,9 @@ const Navbar = () => {
                                 }}
                                 className="flex flex-col justify-center select-none min-w-0 overflow-hidden"
                             >
-                                <span className="text-[5px] sm:text-[11px] text-white leading-none mb-0.5 sm:mb-1 uppercase tracking-[0.15em] font-medium opacity-60 truncate">Vidyavardhaka Sangha ®, Mysore</span>
-                                <span className="text-[8px] sm:text-[18px] text-white font-black leading-none mb-1 sm:mb-1.5 tracking-tight truncate">Vidyavardhaka College of Engineering</span>
-                                <span className="text-[5px] sm:text-[12px] text-white leading-none font-medium opacity-50 truncate">Autonomous institute affiliated to VTU, Belagavi</span>
+                                <span className="text-[6px] sm:text-[11px] text-white/70 leading-tight uppercase tracking-[0.12em] font-medium truncate mb-0.5">Vidyavardhaka Sangha ®, Mysore</span>
+                                <span className="text-[10px] sm:text-[21px] text-white font-bold leading-tight tracking-tight truncate mb-0.5">Vidyavardhaka College of Engineering</span>
+                                <span className="text-[6px] sm:text-[13px] text-white/50 leading-tight font-medium truncate">Autonomous institute affiliated to VTU, Belagavi</span>
                             </motion.div>
                         </div>
                     </div>

@@ -64,9 +64,9 @@ const LoadingScreen = () => {
                             {/* Loading content - Fades Out */}
                             <div className="space-y-8">
                                 {/* Tagline with smooth reveal */}
-                                <div className="relative flex flex-row items-center justify-center gap-4 md:gap-8 text-sm sm:text-lg md:text-3xl font-extrabold tracking-[0.15em] md:tracking-[0.4em] uppercase text-center px-4 max-w-[90vw] mx-auto">
+                                <div className="relative flex flex-row items-center justify-center gap-3 md:gap-8 px-4 max-w-[95vw] mx-auto">
                                     {words.map((word, index) => (
-                                        <div key={word.id} className="relative flex items-center">
+                                        <div key={word.id} className="flex items-center">
                                             <motion.span
                                                 layoutId={word.id}
                                                 initial={{ opacity: 0, y: 20 }}
@@ -77,10 +77,13 @@ const LoadingScreen = () => {
                                                     damping: 18,
                                                     delay: 0.5 + (index * 0.2)
                                                 }}
-                                                className={`relative z-10 ${word.color}`}
+                                                className={`text-lg sm:text-2xl md:text-5xl font-black italic uppercase tracking-tighter whitespace-nowrap ${word.color} drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]`}
                                             >
                                                 {word.text}
                                             </motion.span>
+                                            {index < words.length - 1 && (
+                                                <div className="w-1 h-1 md:w-2 md:h-2 rounded-full bg-white/20 blur-[0.5px] mx-3 md:mx-6 shrink-0 mt-1" />
+                                            )}
                                         </div>
                                     ))}
                                 </div>
