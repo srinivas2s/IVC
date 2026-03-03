@@ -55,6 +55,8 @@ const InteractiveDotGrid = ({
 
 
 
+            const glowRadiusSq = glowRadius * glowRadius;
+
             for (let i = 0; i < cols; i++) {
                 for (let j = 0; j < rows; j++) {
                     const x = i * dotSpacing;
@@ -62,19 +64,20 @@ const InteractiveDotGrid = ({
 
                     const dx = x - mouseRef.current.x;
                     const dy = y - mouseRef.current.y;
-                    const d1 = Math.sqrt(dx * dx + dy * dy);
+                    const d1Sq = dx * dx + dy * dy;
 
                     const tdx = x - lastMouseRef.current.x;
                     const tdy = y - lastMouseRef.current.y;
-                    const d2 = Math.sqrt(tdx * tdx + tdy * tdy);
+                    const d2Sq = tdx * tdx + tdy * tdy;
 
-                    const distance = Math.min(d1, d2);
+                    const distSq = Math.min(d1Sq, d2Sq);
 
                     let opacity = 0.04;
                     let size = dotSize;
                     let color = dotColor;
 
-                    if (distance < glowRadius) {
+                    if (distSq < glowRadiusSq) {
+                        const distance = Math.sqrt(distSq);
                         const force = (glowRadius - distance) / glowRadius;
                         const influence = Math.pow(force, 1.2);
 

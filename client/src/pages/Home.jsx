@@ -148,14 +148,20 @@ const Home = () => {
                             style={{ transform: "translateZ(40px)" }}
                         />
 
-                        {/* Dynamic Rim Light / Glint */}
+                        {/* Shared Logo Bloom Transition */}
                         <motion.div
+                            layoutId="logo-glow"
                             animate={{
                                 x: mousePos.x * 2,
                                 y: mousePos.y * 2,
-                                opacity: [0.3, 0.6, 0.3]
                             }}
-                            className="absolute inset-[-20%] bg-gradient-to-tr from-white/10 to-transparent blur-3xl rounded-full z-10 pointer-events-none"
+                            transition={{
+                                type: "spring",
+                                stiffness: 45,
+                                damping: 20,
+                                mass: 1.2
+                            }}
+                            className="absolute inset-[-40%] bg-gradient-to-tr from-cyan-500/15 to-purple-500/15 blur-3xl rounded-full z-10 pointer-events-none"
                         />
                     </div>
 

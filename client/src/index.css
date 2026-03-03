@@ -124,3 +124,29 @@ body {
   background-size: 50px 50px;
   background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
 }
+
+@keyframes nebula-move {
+  0% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+
+  33% {
+    transform: translate(10%, -10%) scale(1.1) rotate(2deg);
+  }
+
+  66% {
+    transform: translate(-5%, 15%) scale(0.9) rotate(-2deg);
+  }
+
+  100% {
+    transform: translate(0, 0) scale(1) rotate(0deg);
+  }
+}
+
+.animate-nebula {
+  animation: nebula-move 25s infinite ease-in-out alternate;
+}
+
+.animate-nebula-reverse {
+  animation: nebula-move 30s infinite ease-in-out alternate-reverse;
+}

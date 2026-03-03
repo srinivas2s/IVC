@@ -10,10 +10,13 @@ const LoadingScreen = () => {
 
     return (
         <motion.div
-            initial={{ opacity: 1 }}
+            initial={{ opacity: 1, scale: 1 }}
             exit={{
                 opacity: 0,
-                transition: { duration: 0.8, ease: "circIn" }
+                scale: 1.05,
+                filter: "blur(20px)",
+                pointerEvents: "none",
+                transition: { duration: 1.2, ease: [0.16, 1, 0.3, 1] }
             }}
             className="fixed inset-0 z-[100] bg-[#020408]"
         >
@@ -24,17 +27,36 @@ const LoadingScreen = () => {
                         <div className="relative z-10 text-center">
                             <div className="flex justify-center mb-12">
                                 <div className="relative">
+                                    {/* Shared Logo Bloom */}
+                                    <motion.div
+                                        layoutId="logo-glow"
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{
+                                            opacity: [0.4, 0.7, 0.4],
+                                            scale: [0.9, 1.1, 0.9]
+                                        }}
+                                        exit={{ opacity: 0, scale: 2, filter: "blur(60px)" }}
+                                        transition={{
+                                            opacity: { duration: 3, repeat: Infinity, ease: "easeInOut" },
+                                            scale: { duration: 4, repeat: Infinity, ease: "easeInOut" },
+                                            layout: { type: "spring", stiffness: 45, damping: 20, mass: 1.2 }
+                                        }}
+                                        className="absolute inset-[-40%] bg-gradient-to-tr from-cyan-500/30 to-purple-500/30 blur-3xl rounded-full z-0"
+                                    />
                                     <motion.img
                                         layoutId="main-logo"
                                         src={logo}
                                         alt="IVC Logo"
+                                        initial={{ opacity: 0, scale: 0.8 }}
+                                        animate={{ opacity: 1, scale: 1 }}
+                                        exit={{ scale: 1.2, opacity: 0, filter: "blur(15px)" }}
                                         transition={{
                                             type: "spring",
                                             stiffness: 45,
                                             damping: 20,
                                             mass: 1.2
                                         }}
-                                        className="relative w-32 h-32 md:w-44 md:h-44 drop-shadow-liquid"
+                                        className="relative w-32 h-32 md:w-44 md:h-44 drop-shadow-liquid z-10"
                                     />
                                 </div>
                             </div>
@@ -97,4 +119,4 @@ const LoadingScreen = () => {
     );
 };
 
-export default LoadingScreen;
+export default LoadingScreen; 
