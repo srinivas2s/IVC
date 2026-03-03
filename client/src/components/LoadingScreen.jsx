@@ -64,27 +64,23 @@ const LoadingScreen = () => {
                             {/* Loading content - Fades Out */}
                             <div className="space-y-8">
                                 {/* Tagline with smooth reveal */}
-                                <div className="relative flex flex-row items-center justify-center gap-3 md:gap-8 px-4 max-w-[95vw] mx-auto">
+                                <div className="relative flex flex-row items-center justify-center gap-6 md:gap-12 px-4 max-w-[95vw] mx-auto">
                                     {words.map((word, index) => (
-                                        <div key={word.id} className="flex items-center">
-                                            <motion.span
-                                                layoutId={word.id}
-                                                initial={{ opacity: 0, y: 20 }}
-                                                animate={{ opacity: 1, y: 0 }}
-                                                transition={{
-                                                    type: "spring",
-                                                    stiffness: 50,
-                                                    damping: 18,
-                                                    delay: 0.5 + (index * 0.2)
-                                                }}
-                                                className={`text-lg sm:text-2xl md:text-5xl font-black italic uppercase tracking-tighter whitespace-nowrap ${word.color} drop-shadow-[0_10px_20px_rgba(0,0,0,0.5)]`}
-                                            >
-                                                {word.text}
-                                            </motion.span>
-                                            {index < words.length - 1 && (
-                                                <div className="w-1 h-1 md:w-2 md:h-2 rounded-full bg-white/20 blur-[0.5px] mx-3 md:mx-6 shrink-0 mt-1" />
-                                            )}
-                                        </div>
+                                        <motion.span
+                                            key={word.id}
+                                            layoutId={word.id}
+                                            initial={{ opacity: 0, y: 20 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            transition={{
+                                                type: "spring",
+                                                stiffness: 50,
+                                                damping: 18,
+                                                delay: 0.5 + (index * 0.2)
+                                            }}
+                                            className={`text-2xl sm:text-4xl md:text-6xl font-black italic uppercase tracking-tighter whitespace-nowrap ${word.color} drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]`}
+                                        >
+                                            {word.text}
+                                        </motion.span>
                                     ))}
                                 </div>
 
@@ -92,27 +88,12 @@ const LoadingScreen = () => {
                                 <motion.p
                                     initial={{ opacity: 0, y: 10 }}
                                     animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 2, duration: 1 }}
-                                    className="text-[10px] md:text-xs tracking-[0.3em] text-gray-500/60 uppercase font-medium"
+                                    transition={{ delay: 1.5, duration: 1 }}
+                                    className="text-[10px] md:text-xs tracking-[0.4em] text-gray-400 font-bold uppercase"
                                 >
                                     Innovating the Future
                                 </motion.p>
 
-                                {/* Loading progress indicator */}
-                                <div className="relative h-[1px] max-w-xs mx-auto overflow-hidden">
-                                    <motion.div
-                                        initial={{ x: '-100%' }}
-                                        animate={{ x: '100%' }}
-                                        transition={{
-                                            duration: 2,
-                                            repeat: Infinity,
-                                            ease: "easeInOut",
-                                            delay: 0.5
-                                        }}
-                                        className="absolute inset-0 bg-gradient-to-r from-transparent via-ivc-primary to-transparent"
-                                    />
-                                    <div className="absolute inset-0 bg-white/10" />
-                                </div>
                             </div>
                         </div>
                     </div>

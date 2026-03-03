@@ -191,8 +191,6 @@ const Home = () => {
                                 </motion.span>
                             </h1>
 
-                            <div className="w-1 h-1 md:w-2 md:h-2 rounded-full bg-white/20 blur-[1px] shrink-0" />
-
                             <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap">
                                 <motion.span
                                     layoutId="word-visualize"
@@ -206,8 +204,6 @@ const Home = () => {
                                     Visualize
                                 </motion.span>
                             </h1>
-
-                            <div className="w-1 h-1 md:w-2 md:h-2 rounded-full bg-white/20 blur-[1px] shrink-0" />
 
                             <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap">
                                 <motion.span
