@@ -13,16 +13,29 @@ import Achievements from './pages/Achievements';
 import LoadingScreen from './components/LoadingScreen';
 import SmoothScroll from './components/SmoothScroll';
 import InteractiveBackground from './components/InteractiveBackground';
+import logo from './assets/logo.png';
 
 function App() {
   const [loading, setLoading] = useState(true);
   const [showJoinModal, setShowJoinModal] = useState(false);
+  const [isPastHome, setIsPastHome] = useState(false);
 
   useEffect(() => {
+    const handleScroll = () => {
+      // Show corner logo and hide navbar when scrolled past home
+      setIsPastHome(window.scrollY > 400);
+    };
+
+    window.addEventListener('scroll', handleScroll, { passive: true });
+
     const timer = setTimeout(() => {
       setLoading(false);
     }, 2500);
-    return () => clearTimeout(timer);
+
+    return () => {
+      clearTimeout(timer);
+      window.removeEventListener('scroll', handleScroll);
+    };
   }, []);
 
   return (
@@ -44,22 +57,50 @@ function App() {
             transition={{ duration: 0.8, ease: "easeOut" }}
             className="min-h-screen text-ivc-text font-sans selection:bg-ivc-primary selection:text-white flex flex-col relative w-full overflow-x-hidden"
           >
-            <Navbar />
+            {/* Smooth flying logo transition */}
+            {isPastHome && (
+              <div className="fixed top-6 left-6 z-[100] group">
+                <motion.img
+                  layoutId="main-logo"
+                  src={logo}
+                  alt="IVC Logo"
+                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                  className="w-12 h-12 md:w-16 md:h-16 cursor-pointer drop-shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:scale-110 transition-transform duration-300"
+                />
+                {/* Tooltip or Label */}
+                <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest text-white/70 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                  Back to Top
+                </div>
+              </div>
+            )}
+
+            <AnimatePresence>
+              {!isPastHome && (
+                <motion.div
+                  initial={{ y: -100, opacity: 0 }}
+                  animate={{ y: 0, opacity: 1 }}
+                  exit={{ y: -100, opacity: 0 }}
+                  transition={{ duration: 0.5, ease: [0.16, 1, 0.3, 1] }}
+                  className="fixed top-0 left-0 right-0 z-50 pointer-events-none"
+                >
+                  <div className="pointer-events-auto">
+                    <Navbar />
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+
             <main className="flex-grow relative z-10 w-full overflow-x-hidden">
-              <section id="home"><Home /></section>
+              <section id="home"><Home isPastHome={isPastHome} /></section>
               <section id="about"><About /></section>
               <section id="team"><Team /></section>
               <section id="events"><Events /></section>
               <section id="domains"><Domains /></section>
               <section id="projects"><Projects /></section>
               <section id="achievements" className="pb-12"><Achievements /></section>
-              {/* Join section is now hidden from the main flow, accessible via modal */}
             </main>
 
-            <footer
-              className="pt-12 pb-10 text-center liquid-glass relative z-20 w-full overflow-x-hidden group transition-all duration-500"
-            >
-
+            <footer className="pt-12 pb-10 text-center liquid-glass relative z-20 w-full overflow-x-hidden group transition-all duration-500">
               <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-8 text-left">
                   <div className="max-w-sm">
@@ -106,14 +147,11 @@ function App() {
                 </div>
 
                 <div className="mt-6 pt-4 flex justify-center">
-                  <p className="text-white font-black text-lg md:text-xl tracking-tighter opacity-90 italic uppercase">
-                    &copy; 2026 Innovation & Visionaries Club
-                  </p>
+                  <p className="text-white font-black text-lg md:text-xl tracking-tighter opacity-90 italic uppercase">&copy; 2026 Innovation & Visionaries Club</p>
                 </div>
               </div>
             </footer>
 
-            {/* Join Modal Overlay */}
             <AnimatePresence>
               {showJoinModal && (
                 <motion.div
@@ -122,10 +160,7 @@ function App() {
                   exit={{ opacity: 0 }}
                   className="fixed inset-0 z-[100] flex items-center justify-center px-4"
                 >
-                  <div
-                    className="absolute inset-0 bg-black/60 backdrop-blur-3xl"
-                    onClick={() => setShowJoinModal(false)}
-                  />
+                  <div className="absolute inset-0 bg-black/60 backdrop-blur-3xl" onClick={() => setShowJoinModal(false)} />
                   <motion.div
                     initial={{ scale: 0.9, opacity: 0, y: 20 }}
                     animate={{ scale: 1, opacity: 1, y: 0 }}
@@ -133,32 +168,24 @@ function App() {
                     data-lenis-prevent
                     className="relative z-10 w-full max-w-4xl max-h-[85vh] overflow-y-auto bg-[#05070a]/90 border border-white/10 rounded-[40px] shadow-[0_30px_100px_rgba(0,0,0,0.8)]"
                   >
-                    {/* Glowing Holographic Scan Line */}
                     <motion.div
                       animate={{ top: ['0%', '100%', '0%'] }}
                       transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
                       className="absolute left-0 right-0 h-[2px] bg-cyan-400 shadow-[0_0_30px_#22d3ee,0_0_60px_#22d3ee] opacity-50 pointer-events-none z-20"
                     />
-
-                    {/* Intense Scanning Aura */}
                     <motion.div
                       animate={{ top: ['0%', '100%', '0%'] }}
                       transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
                       className="absolute left-0 right-0 h-[200px] bg-gradient-to-b from-transparent via-cyan-500/[0.12] to-transparent pointer-events-none z-10"
                     />
-                    <button
-                      onClick={() => setShowJoinModal(false)}
-                      className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]"
-                    >
+                    <button onClick={() => setShowJoinModal(false)} className="absolute top-8 right-8 text-white/50 hover:text-white transition-colors z-[110]">
                       <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12"></path></svg>
                     </button>
                     <div className="p-8 md:p-12">
                       <Join isModal={true} />
                       <div className="flex justify-center items-center gap-6 pt-8 opacity-40">
                         <div className="h-[1px] flex-1 bg-gradient-to-r from-transparent to-white/20"></div>
-                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white">
-                          By joining, you agree to innovate and push boundaries
-                        </span>
+                        <span className="text-[10px] font-black uppercase tracking-[0.3em] text-white">By joining, you agree to innovate and push boundaries</span>
                         <div className="h-[1px] flex-1 bg-gradient-to-l from-transparent to-white/20"></div>
                       </div>
                     </div>

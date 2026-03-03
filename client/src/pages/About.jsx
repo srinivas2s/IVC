@@ -13,27 +13,6 @@ const About = () => (
             through collaboration, technology, and mentorship.
         </p>
 
-        <motion.div
-            initial={{ opacity: 0, y: 30 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.5, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="flex flex-col sm:flex-row items-center justify-center gap-8"
-        >
-            <LiquidButton
-                onClick={() => document.getElementById('join')?.scrollIntoView({ behavior: 'smooth' })}
-                variant="glass"
-            >
-                Get Started
-            </LiquidButton>
-
-            <LiquidButton
-                onClick={() => document.getElementById('projects')?.scrollIntoView({ behavior: 'smooth' })}
-                variant="glass"
-            >
-                Explore Work
-            </LiquidButton>
-        </motion.div>
     </div>
 );
 

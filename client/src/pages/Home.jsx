@@ -1,8 +1,8 @@
 import { useState, useEffect, useRef } from 'react';
-import { motion, useScroll, useTransform, useSpring } from 'framer-motion';
+import { motion, useScroll, useTransform, useSpring, AnimatePresence } from 'framer-motion';
 import logo from '../assets/logo.png';
 
-const Home = () => {
+const Home = ({ isPastHome }) => {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [isMobile, setIsMobile] = useState(false);
     const [isLoaded, setIsLoaded] = useState(false);
@@ -134,19 +134,25 @@ const Home = () => {
                 >
                     {/* Floating Branding Core (Front Layer) */}
                     <div className="relative mb-8 md:mb-16 flex flex-col items-center" style={{ transform: "translateZ(120px)", transformStyle: "preserve-3d" }}>
-                        <motion.img
-                            layoutId="main-logo"
-                            src={logo}
-                            alt="IVC Logo"
-                            transition={{
-                                type: "spring",
-                                stiffness: 45,
-                                damping: 20,
-                                mass: 1.2
-                            }}
-                            className="relative w-32 h-32 md:w-64 md:h-64 drop-shadow-[0_45px_100px_rgba(0,0,0,0.9)] z-20"
-                            style={{ transform: "translateZ(40px)" }}
-                        />
+                        <AnimatePresence mode="wait">
+                            {!isPastHome && (
+                                <motion.img
+                                    layoutId="main-logo"
+                                    src={logo}
+                                    alt="IVC Logo"
+                                    initial={{ opacity: 1 }}
+                                    exit={{ opacity: 0 }}
+                                    transition={{
+                                        type: "spring",
+                                        stiffness: 45,
+                                        damping: 20,
+                                        mass: 1.2
+                                    }}
+                                    className="relative w-32 h-32 md:w-64 md:h-64 drop-shadow-[0_45px_100px_rgba(0,0,0,0.9)] z-20"
+                                    style={{ transform: "translateZ(40px)" }}
+                                />
+                            )}
+                        </AnimatePresence>
 
                         {/* Shared Logo Bloom Transition */}
                         <motion.div
