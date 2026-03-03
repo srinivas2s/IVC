@@ -12,6 +12,7 @@ const InteractiveDotGrid = ({
     const mouseRef = useRef({ x: -1000, y: -1000 });
     const lastMouseRef = useRef({ x: -1000, y: -1000 });
     const colorMixRef = useRef(0);
+    const clickCountRef = useRef(0);
     const [isMobile, setIsMobile] = useState(false);
 
     useEffect(() => {
@@ -52,7 +53,7 @@ const InteractiveDotGrid = ({
         };
 
         const handleClick = () => {
-            // Significant color jump on click
+            clickCountRef.current = (clickCountRef.current + 1) % 2;
             colorMixRef.current = (colorMixRef.current + Math.PI / 2) % (Math.PI * 2);
         };
 
@@ -62,8 +63,7 @@ const InteractiveDotGrid = ({
         window.addEventListener('touchstart', (e) => {
             if (e.touches[0]) {
                 handleInput(e.touches[0].clientX, e.touches[0].clientY);
-                // Also trigger click color jump on touch start
-                colorMixRef.current = (colorMixRef.current + Math.PI / 4) % (Math.PI * 2);
+                handleClick();
             }
         }, { passive: true });
         window.addEventListener('touchmove', handleTouchMove, { passive: true });
@@ -107,7 +107,14 @@ const InteractiveDotGrid = ({
                         const opacity = 0.04 + (influence * 0.95);
 
                         const mix = (Math.sin(colorMixRef.current + (i + j) * 0.1) + 1) / 2;
-                        const color = mix > 0.5 ? purpleColor : cyanColor;
+
+                        // Force color based on click count if significant interaction exists
+                        let color;
+                        if (clickCountRef.current === 1) {
+                            color = purpleColor;
+                        } else {
+                            color = cyanColor;
+                        }
 
                         ctx.fillStyle = color.replace(/[\d.]+\)$/g, `${opacity})`);
                         ctx.fillRect(x - size / 2, y - size / 2, size, size);

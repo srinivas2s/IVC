@@ -141,9 +141,6 @@ const Join = ({ isModal = false }) => {
                                 </motion.div>
                             </div>
 
-                            <p className="text-[10px] text-center text-gray-600 font-black uppercase tracking-[0.4em] mt-10 opacity-50">
-                                INNOVATORS // VISIONARIES // CREATORS
-                            </p>
                         </motion.form>
                     )}
                 </AnimatePresence>
