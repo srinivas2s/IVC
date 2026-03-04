@@ -30,7 +30,7 @@ const Events = () => {
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-5xl md:text-8xl font-black text-center text-gradient tracking-tight uppercase italic"
+                    className="text-4xl md:text-6xl font-black text-center text-gradient tracking-normal uppercase italic px-10 py-2 overflow-visible"
                 >
                     EVENTS
                 </motion.h2>

@@ -4,13 +4,13 @@ import LiquidButton from '../components/LiquidButton';
 const Team = () => (
     <div className="pt-32 px-4 max-w-7xl mx-auto text-center">
         <motion.h2
-            initial={{ opacity: 0, y: 30 }}
+            initial={{ opacity: 0, y: 20 }}
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
-            transition={{ delay: 0.3, duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-            className="text-4xl md:text-5xl font-black mb-12 md:mb-16 text-white tracking-tighter"
+            transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+            className="text-4xl md:text-6xl font-black mb-12 md:mb-16 text-center text-gradient tracking-normal uppercase italic px-10 py-2 overflow-visible"
         >
-            Meet the <span className="text-gradient">Team</span>
+            Meet the Team
         </motion.h2>
 
         <div className="grid grid-cols-1 md:grid-cols-4 gap-10 mb-16">
