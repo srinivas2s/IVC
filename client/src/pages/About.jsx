@@ -69,11 +69,23 @@ const About = () => {
                     {cards.map((card, index) => (
                         <motion.div
                             key={index}
-                            initial={{ opacity: 0, x: index === 0 ? -50 : 50 }}
-                            whileInView={{ opacity: 1, x: 0 }}
+                            initial={{
+                                opacity: 0,
+                                x: index === 0 ? -150 : 150,
+                                filter: 'blur(10px)'
+                            }}
+                            whileInView={{
+                                opacity: 1,
+                                x: 0,
+                                filter: 'blur(0px)'
+                            }}
                             whileHover={{ scale: 1.02, y: -5 }}
-                            viewport={{ once: true }}
-                            transition={{ duration: 0.8, delay: index * 0.2 }}
+                            viewport={{ once: true, margin: "-100px" }}
+                            transition={{
+                                duration: 1.2,
+                                delay: index * 0.1,
+                                ease: [0.16, 1, 0.3, 1]
+                            }}
                             className={`p-10 md:p-14 rounded-[40px] ${card.className} relative overflow-hidden group flex flex-col justify-center min-h-[350px] shadow-2xl cursor-pointer`}
                         >
                             <h3 className="text-3xl md:text-5xl font-black italic uppercase tracking-tighter mb-8 text-white group-hover:text-ivc-primary transition-colors duration-500">
