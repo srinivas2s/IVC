@@ -28,7 +28,7 @@
 }
 
 .text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-ivc-secondary via-white to-ivc-accent animate-text-shimmer bg-[length:200%_auto];
+  @apply bg-clip-text text-transparent bg-gradient-to-r from-ivc-secondary via-white to-ivc-secondary animate-text-shimmer bg-[length:200%_auto];
 }
 
 @keyframes text-shimmer {
