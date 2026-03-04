@@ -5,7 +5,6 @@ import logo from '../assets/logo.png';
 const Home = ({ isPastHome }) => {
     const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
     const [isMobile, setIsMobile] = useState(false);
-    const [isLoaded, setIsLoaded] = useState(false);
     const containerRef = useRef(null);
 
     const { scrollYProgress } = useScroll({
@@ -30,7 +29,7 @@ const Home = ({ isPastHome }) => {
         window.addEventListener('resize', checkMobile);
 
         // Delay the entrance of background effects to allow logo to "sit" first
-        const timer = setTimeout(() => setIsLoaded(true), 1200);
+        const timer = setTimeout(() => { }, 1200);
 
         const handleOrientation = (e) => {
             if (e.beta && e.gamma && !isMobile) {
@@ -48,7 +47,7 @@ const Home = ({ isPastHome }) => {
                     if (permission === 'granted') {
                         window.addEventListener('deviceorientation', handleOrientation);
                     }
-                } catch (error) {
+                } catch {
                     console.error('Gyroscope permission denied');
                 }
             } else if (!isMobile) {
