@@ -139,7 +139,8 @@ const Home = ({ isPastHome }) => {
                                     src={logo}
                                     alt="IVC Logo"
                                     initial={{ opacity: 1 }}
-                                    exit={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    exit={{ opacity: 1 }}
                                     transition={{
                                         type: "spring",
                                         stiffness: 45,

@@ -1,6 +1,6 @@
-import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
-import { Target, Eye, Lightbulb, Zap, Rocket } from 'lucide-react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { useState } from 'react';
+import { Lightbulb, Zap, Rocket, ChevronLeft, ChevronRight } from 'lucide-react';
 
 const PillarCard = ({ icon: Icon, title, description, delay }) => (
     <motion.div
@@ -24,6 +24,24 @@ const PillarCard = ({ icon: Icon, title, description, delay }) => (
 );
 
 const About = () => {
+    const [activeIndex, setActiveIndex] = useState(0);
+
+    const cards = [
+        {
+            title: "Our Mission",
+            content: "To create an ecosystem where curiosity is encouraged, failure is celebrated as learning, and every student becomes a value creator through collaborative excellence.",
+            className: "liquid-glass"
+        },
+        {
+            title: "Our Vision",
+            content: "To become the paramount student-driven innovation hub in India, producing the next generation of engineers who don't just find jobs, but create them.",
+            className: "liquid-glass border-ivc-primary/20 bg-ivc-primary/5"
+        }
+    ];
+
+    const nextCard = () => setActiveIndex((prev) => (prev + 1) % cards.length);
+    const prevCard = () => setActiveIndex((prev) => (prev - 1 + cards.length) % cards.length);
+
     return (
         <section className="relative w-full py-24 md:py-40 overflow-hidden">
             {/* Background Decorative Elements */}
@@ -32,9 +50,7 @@ const About = () => {
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 {/* Hero Header */}
-                <div className="max-w-4xl mx-auto text-center mb-24 md:mb-32">
-
-
+                <div className="max-w-4xl mx-auto text-center mb-16 md:mb-24">
                     <motion.h2
                         initial={{ opacity: 0, y: 30 }}
                         whileInView={{ opacity: 1, y: 0 }}
@@ -53,35 +69,42 @@ const About = () => {
                     </motion.p>
                 </div>
 
-                {/* Mission & Vision Grid */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-32">
-                    <motion.div
-                        initial={{ opacity: 0, x: -50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="p-8 md:p-12 rounded-[40px] liquid-glass relative overflow-hidden group"
-                    >
-                        <h3 className="text-3xl md:text-4xl font-black italic uppercase tracking-tighter mb-6 text-white">
-                            Our Mission
-                        </h3>
-                        <p className="text-base md:text-lg text-white/70 font-black leading-relaxed">
-                            To create an ecosystem where curiosity is encouraged, failure is celebrated as learning, and every student becomes a value creator through collaborative excellence.
-                        </p>
-                    </motion.div>
+                {/* Swipeable Mission & Vision - Right Aligned */}
+                <div className="relative max-w-3xl ml-auto mb-32">
+                    <div className="overflow-hidden px-4 py-8">
+                        <motion.div
+                            drag="x"
+                            dragConstraints={{ left: 0, right: 0 }}
+                            onDragEnd={(e, { offset, velocity }) => {
+                                const swipe = offset.x;
+                                if (swipe < -50) nextCard();
+                                else if (swipe > 50) prevCard();
+                            }}
+                            className="relative cursor-grab active:cursor-grabbing"
+                        >
+                            <AnimatePresence mode="wait">
+                                <motion.div
+                                    key={activeIndex}
+                                    initial={{ opacity: 0, x: 100 }}
+                                    animate={{ opacity: 1, x: 0 }}
+                                    exit={{ opacity: 0, x: -100 }}
+                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
+                                    className={`p-10 md:p-16 rounded-[40px] ${cards[activeIndex].className} relative overflow-hidden group min-h-[320px] flex flex-col justify-center`}
+                                >
+                                    <h3 className="text-3xl md:text-5xl font-black italic uppercase tracking-tighter mb-8 text-white">
+                                        {cards[activeIndex].title}
+                                    </h3>
+                                    <p className="text-lg md:text-2xl text-white/70 font-black leading-relaxed">
+                                        {cards[activeIndex].content}
+                                    </p>
+                                </motion.div>
+                            </AnimatePresence>
+                        </motion.div>
+                    </div>
 
-                    <motion.div
-                        initial={{ opacity: 0, x: 50 }}
-                        whileInView={{ opacity: 1, x: 0 }}
-                        viewport={{ once: true }}
-                        className="p-8 md:p-12 rounded-[40px] liquid-glass relative overflow-hidden group border-ivc-primary/20 bg-ivc-primary/5"
-                    >
-                        <h3 className="text-3xl md:text-4xl font-black italic uppercase tracking-tighter mb-6 text-white">
-                            Our Vision
-                        </h3>
-                        <p className="text-base md:text-lg text-white/70 font-black leading-relaxed">
-                            To become the paramount student-driven innovation hub in India, producing the next generation of engineers who don't just find jobs, but create them.
-                        </p>
-                    </motion.div>
+
+
+
                 </div>
 
                 {/* The Three Pillars */}
