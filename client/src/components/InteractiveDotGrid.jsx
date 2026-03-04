@@ -74,7 +74,7 @@ const InteractiveDotGrid = ({
         const currentGlowRadius = isMobile ? 120 : glowRadius;
         const glowRadiusSq = currentGlowRadius * currentGlowRadius;
 
-        const render = (time) => {
+        const render = () => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
             lastMouseRef.current.x += (mouseRef.current.x - lastMouseRef.current.x) * (isMobile ? 0.15 : 0.15);

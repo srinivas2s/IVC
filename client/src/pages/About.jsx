@@ -27,12 +27,12 @@ const About = () => {
     const cards = [
         {
             title: "Our Mission",
-            content: "To create an ecosystem where curiosity is encouraged, failure is celebrated as learning, and every student becomes a value creator through collaborative excellence.",
+            content: "To promote hands-on innovation, multidisciplinary collaboration, industry connection, and community-driven impact while building future-ready leaders.",
             className: "liquid-glass"
         },
         {
             title: "Our Vision",
-            content: "To become the paramount student-driven innovation hub in India, producing the next generation of engineers who don't just find jobs, but create them.",
+            content: "To nurture a generation of creators who apply science, technology, and design thinking to build solutions that positively impact people, planet, and prosperity.",
             className: "liquid-glass border-ivc-primary/20 bg-ivc-primary/5"
         }
     ];

@@ -37,11 +37,7 @@ const Achievements = () => (
             ))}
         </div>
 
-        <div className="flex justify-center">
-            <LiquidButton variant="glass">
-                View All Milestones
-            </LiquidButton>
-        </div>
+        
     </div>
 );
 export default Achievements;
