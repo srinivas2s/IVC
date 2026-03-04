@@ -23,6 +23,7 @@ export default {
       fontFamily: {
         heading: ['Sora', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
+        display: ['Orbitron', 'sans-serif'],
       },
       borderRadius: {
         'ios-xl': '24px',

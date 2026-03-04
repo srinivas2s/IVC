@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Menu, ArrowLeft } from 'lucide-react';
+import { Menu, X, ArrowLeft } from 'lucide-react';
 import logo from '../assets/logo.png';
 import vvceLogo from '../assets/vvce-logo.png';
 
@@ -30,7 +30,7 @@ const Navbar = ({ isPastHome }) => {
     useEffect(() => {
         const handleScroll = () => {
             const sections = links.map(link => document.getElementById(link.id));
-            const scrollPosition = window.scrollY + 100; // Offset for navbar
+            const scrollPosition = window.scrollY + 100;
 
             for (const section of sections) {
                 if (section && section.offsetTop <= scrollPosition && (section.offsetTop + section.offsetHeight) > scrollPosition) {
@@ -105,12 +105,12 @@ const Navbar = ({ isPastHome }) => {
                         animate={{ opacity: 1 }}
                         exit={{ opacity: 0 }}
                         onClick={() => setIsOpen(false)}
-                        className="fixed inset-0 bg-black/40 backdrop-blur-[4px] z-[150] pointer-events-auto"
+                        className="fixed inset-0 bg-black/60 backdrop-blur-[8px] z-[150] pointer-events-auto"
                     />
                 )}
             </AnimatePresence>
 
-            {/* Menu Sidebar (Right Side) */}
+            {/* Premium Menu Sidebar (Right Side) */}
             <AnimatePresence>
                 {isOpen && (
                     <motion.div
@@ -118,38 +118,61 @@ const Navbar = ({ isPastHome }) => {
                         animate={{ x: 0, opacity: 1 }}
                         exit={{ x: '100%', opacity: 0 }}
                         transition={{ type: "spring", stiffness: 400, damping: 40 }}
-                        className="fixed top-6 right-6 w-[280px] z-[200] pointer-events-auto"
+                        className="fixed top-6 right-6 bottom-6 w-[300px] z-[200] pointer-events-auto"
                     >
-                        <div className="w-full relative group">
-                            <div className="w-full bg-black/60 p-6 shadow-[0_20px_50px_rgba(0,0,0,0.6),inset_0_1px_1px_rgba(255,255,255,0.1)] relative flex flex-col border border-white/10 rounded-[32px] overflow-hidden backdrop-blur-3xl">
-                                <div className="flex justify-end mb-6">
-                                    <button onClick={() => setIsOpen(false)} className="p-2 text-white/50 hover:text-white transition-colors">
-                                        <ArrowLeft size={24} className="rotate-180" />
+                        <div className="w-full h-full relative group">
+                            <div className="w-full h-full bg-[#080a0f]/90 p-8 shadow-[0_20px_80px_rgba(0,0,0,0.8)] relative flex flex-col border border-white/10 rounded-[32px] overflow-hidden backdrop-blur-3xl">
+                                {/* Gradient decoration */}
+                                <div className="absolute top-0 right-0 w-32 h-32 bg-ivc-secondary/5 blur-[60px] rounded-full" />
+                                <div className="absolute bottom-0 left-0 w-32 h-32 bg-ivc-primary/5 blur-[60px] rounded-full" />
+
+                                {/* Close button */}
+                                <div className="flex justify-between items-center mb-10">
+                                    <span className="text-[9px] font-black text-white/20 uppercase tracking-[0.4em]">Navigation</span>
+                                    <button
+                                        onClick={() => setIsOpen(false)}
+                                        className="w-10 h-10 flex items-center justify-center rounded-xl bg-white/5 border border-white/10 text-white/50 hover:text-white hover:bg-white/10 transition-all duration-300"
+                                    >
+                                        <X size={18} />
                                     </button>
                                 </div>
 
-                                <ul className="flex flex-col space-y-4 text-left">
+                                {/* Links */}
+                                <ul className="flex flex-col space-y-1 text-left flex-1">
                                     {links.map((link, index) => (
                                         <motion.li
                                             key={link.name}
-                                            initial={{ opacity: 0, x: -15 }}
+                                            initial={{ opacity: 0, x: 20 }}
                                             animate={{ opacity: 1, x: 0 }}
-                                            transition={{ delay: index * 0.05 }}
+                                            transition={{ delay: 0.1 + index * 0.04 }}
                                         >
                                             <button
                                                 onClick={() => scrollToSection(link.id)}
-                                                className={`block w-full text-left text-[15px] font-black tracking-[0.2em] transition-all uppercase ${activeSection === link.id ? 'text-ivc-secondary text-glow translate-x-1' : 'text-white/70 hover:text-white hover:translate-x-1'}`}
+                                                className={`block w-full text-left py-3 px-4 rounded-xl text-[14px] font-black tracking-[0.15em] transition-all uppercase relative group/link ${activeSection === link.id
+                                                        ? 'text-ivc-secondary bg-ivc-secondary/5 border border-ivc-secondary/10'
+                                                        : 'text-white/50 hover:text-white hover:bg-white/5 border border-transparent'
+                                                    }`}
                                             >
-                                                {link.name}
+                                                <span className="relative z-10 flex items-center gap-3">
+                                                    {/* Active indicator dot */}
+                                                    {activeSection === link.id && (
+                                                        <motion.div
+                                                            layoutId="nav-active"
+                                                            className="w-1.5 h-1.5 rounded-full bg-ivc-secondary shadow-[0_0_10px_rgba(34,211,238,0.5)]"
+                                                        />
+                                                    )}
+                                                    {link.name}
+                                                </span>
                                             </button>
                                         </motion.li>
                                     ))}
                                 </ul>
 
-                                <div className="mt-8 pt-8 border-t border-white/10 flex flex-col items-center">
-                                    <img src={logo} className="h-14 w-auto mb-4" alt="IVC Logo" />
-                                    <div className="text-[10px] tracking-[0.2em] text-white uppercase font-black text-center whitespace-nowrap">
-                                        Ideate . Visualize . Create
+                                {/* Bottom branding */}
+                                <div className="pt-8 border-t border-white/5 flex flex-col items-center gap-4">
+                                    <img src={logo} className="h-12 w-auto opacity-60" alt="IVC Logo" />
+                                    <div className="text-[9px] tracking-[0.3em] text-white/20 uppercase font-black text-center">
+                                        Ideate · Visualize · Create
                                     </div>
                                 </div>
                             </div>

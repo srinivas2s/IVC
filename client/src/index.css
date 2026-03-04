@@ -4,7 +4,10 @@
 
 @layer base {
   body {
-    @apply bg-ivc-bg text-ivc-text overflow-x-hidden antialiased;
+    background: #060b18;
+    color: #ffffff;
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
     font-family: 'Inter', sans-serif;
   }
 
@@ -14,64 +17,73 @@
   h4,
   h5,
   h6 {
-    font-family: 'Sora', sans-serif;
-    @apply tracking-tight;
+    font-family: 'Orbitron', sans-serif;
+    letter-spacing: 0.05em;
   }
 }
 
-.liquid-glass {
-  @apply backdrop-blur-[12px] md:backdrop-blur-liquid bg-white/5 border border-white/10 shadow-ios;
+/* ===== TECHSOLSTICE-STYLE DESIGN SYSTEM ===== */
+
+/* Dark navy blue background with subtle radial gradient */
+.bg-base {
+  background: radial-gradient(ellipse at 50% 0%, #0d1525 0%, #060b18 60%, #030510 100%);
 }
 
-.dark .liquid-glass {
-  @apply bg-black/30 border-white/5;
+/* Blueprint Grid Background */
+.bg-blueprint {
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.025) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.025) 1px, transparent 1px);
+  background-size: 60px 60px;
 }
 
-.text-gradient {
-  @apply bg-clip-text text-transparent bg-gradient-to-r from-ivc-secondary via-white to-ivc-secondary animate-text-shimmer bg-[length:200%_auto];
+/* Ambient gradient bg */
+.bg-ambient {
+  background: radial-gradient(ellipse at 30% 20%, rgba(34, 211, 238, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 70% 80%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 50%, #0d1525 0%, #060b18 100%);
 }
 
-@keyframes text-shimmer {
-  0% {
-    background-position: 0% 50%;
-  }
-
-  50% {
-    background-position: 100% 50%;
-  }
-
-  100% {
-    background-position: 0% 50%;
-  }
+/* Glowing border card */
+.glow-card {
+  position: relative;
+  background: rgba(255, 255, 255, 0.015);
+  border: 1px solid rgba(34, 211, 238, 0.08);
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.animate-text-shimmer {
-  animation: text-shimmer 4s ease infinite;
+.glow-card:hover {
+  border-color: rgba(34, 211, 238, 0.25);
+  box-shadow: 0 0 40px rgba(34, 211, 238, 0.06), inset 0 0 40px rgba(34, 211, 238, 0.02);
+  background: rgba(255, 255, 255, 0.025);
 }
 
-.ios-tap-active {
-  @apply active:scale-95 transition-transform duration-200 ease-ios;
+/* Section watermark text */
+.watermark {
+  position: absolute;
+  font-family: 'Orbitron', sans-serif;
+  font-weight: 900;
+  font-size: clamp(5rem, 15vw, 14rem);
+  color: rgba(255, 255, 255, 0.012);
+  text-transform: uppercase;
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  letter-spacing: 0.05em;
 }
 
-.glass-button {
-  @apply relative overflow-hidden backdrop-blur-md bg-white/10 border border-white/20 shadow-ios transition-all duration-300;
+/* Cyan glow text */
+.text-glow-cyan {
+  text-shadow: 0 0 20px rgba(34, 211, 238, 0.4), 0 0 60px rgba(34, 211, 238, 0.15);
 }
 
-.glass-button::before {
-  content: '';
-  @apply absolute inset-0 bg-gradient-to-tr from-white/10 to-transparent opacity-0 transition-opacity duration-300;
+/* Dot Matrix Pattern */
+.dot-matrix {
+  background-image: radial-gradient(circle, rgba(34, 211, 238, 0.12) 1px, transparent 1px);
+  background-size: 10px 10px;
 }
 
-.glass-button:hover::before {
-  @apply opacity-100;
-}
-
-
-.will-change-transform {
-  will-change: transform, opacity;
-}
-
-/* Hide scrollbar globally */
+/* Scrollbar hidden */
 ::-webkit-scrollbar {
   display: none;
 }
@@ -79,24 +91,30 @@
 html,
 body {
   -ms-overflow-style: none;
-  /* IE and Edge */
   scrollbar-width: none;
-  /* Firefox */
 }
+
+/* Selection */
+::selection {
+  background: rgba(34, 211, 238, 0.3);
+  color: white;
+}
+
+/* ===== ANIMATIONS ===== */
 
 @keyframes float {
 
   0%,
   100% {
-    transform: translateY(0) scale(1);
+    transform: translateY(0);
   }
 
   50% {
-    transform: translateY(-20px) scale(1.05);
+    transform: translateY(-20px);
   }
 }
 
-@keyframes pulse-soft {
+@keyframes pulse-glow {
 
   0%,
   100% {
@@ -108,45 +126,78 @@ body {
   }
 }
 
-.animate-float {
-  animation: float 10s ease-in-out infinite;
-}
-
-.animate-pulse-slow {
-  animation: pulse-soft 8s ease-in-out infinite;
-}
-
-.text-glow {
-  text-shadow: 0 0 15px rgba(255, 222, 0, 0.3);
-}
-
-.bg-grid {
-  background-size: 50px 50px;
-  background-image: radial-gradient(circle, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
-}
-
-@keyframes nebula-move {
+@keyframes nebula-drift {
   0% {
-    transform: translate(0, 0) scale(1) rotate(0deg);
+    transform: translate(0, 0) scale(1);
   }
 
   33% {
-    transform: translate(10%, -10%) scale(1.1) rotate(2deg);
+    transform: translate(10%, -10%) scale(1.1);
   }
 
   66% {
-    transform: translate(-5%, 15%) scale(0.9) rotate(-2deg);
+    transform: translate(-5%, 15%) scale(0.9);
   }
 
   100% {
-    transform: translate(0, 0) scale(1) rotate(0deg);
+    transform: translate(0, 0) scale(1);
   }
 }
 
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes scan-line {
+  0% {
+    top: -10%;
+  }
+
+  100% {
+    top: 110%;
+  }
+}
+
+@keyframes shimmer-sweep {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(200%);
+  }
+}
+
+.animate-float {
+  animation: float 8s ease-in-out infinite;
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
+}
+
 .animate-nebula {
-  animation: nebula-move 25s infinite ease-in-out alternate;
+  animation: nebula-drift 25s ease-in-out infinite alternate;
 }
 
 .animate-nebula-reverse {
-  animation: nebula-move 30s infinite ease-in-out alternate-reverse;
+  animation: nebula-drift 30s ease-in-out infinite alternate-reverse;
+}
+
+.animate-marquee {
+  animation: marquee 30s linear infinite;
+}
+
+.animate-scan {
+  animation: scan-line 6s linear infinite;
+}
+
+.animate-shimmer {
+  animation: shimmer-sweep 3s ease-in-out infinite;
 }

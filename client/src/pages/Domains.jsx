@@ -1,105 +1,87 @@
-import { motion, useMotionValue, useSpring } from 'framer-motion';
-import { useRef } from 'react';
+import { motion } from 'framer-motion';
+import { Globe, Brain, Cpu, Briefcase, Palette, Bot } from 'lucide-react';
 
-const DomainCard = ({ title, description }) => {
-    const cardRef = useRef(null);
-    const mouseX = useMotionValue(0);
-    const mouseY = useMotionValue(0);
-
-    const springConfig = { damping: 20, stiffness: 150 };
-    const rotateX = useSpring(mouseY, springConfig);
-    const rotateY = useSpring(mouseX, springConfig);
-
-    const handleMouseMove = (e) => {
-        if (!cardRef.current) return;
-        const rect = cardRef.current.getBoundingClientRect();
-        const centerX = rect.left + rect.width / 2;
-        const centerY = rect.top + rect.height / 2;
-
-        const dx = (e.clientX - centerX) / (rect.width / 2) * 10;
-        const dy = (e.clientY - centerY) / (rect.height / 2) * -10;
-
-        mouseX.set(dx);
-        mouseY.set(dy);
-    };
-
-    const handleMouseLeave = () => {
-        mouseX.set(0);
-        mouseY.set(0);
-    };
-
-    return (
-        <motion.div
-            ref={cardRef}
-            onMouseMove={handleMouseMove}
-            onMouseLeave={handleMouseLeave}
-            style={{ rotateX, rotateY, transformStyle: "preserve-3d" }}
-            whileHover={{ scale: 1.05, y: -10 }}
-            whileTap={{ scale: 0.95 }}
-            className="group relative p-6 md:p-10 rounded-[28px] md:rounded-[32px] bg-white/[0.03] backdrop-blur-2xl border border-white/10 shadow-2xl overflow-hidden cursor-pointer"
-        >
-            {/* Liquid Highlight Effect */}
-            <div className="absolute inset-0 bg-gradient-to-br from-white/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-
-            {/* Shimmer line */}
-            <div className="absolute -inset-[100%] bg-[linear-gradient(45deg,transparent_25%,rgba(255,255,255,0.1)_50%,transparent_75%)] bg-[length:250%_250%] opacity-0 group-hover:opacity-100 animate-liquid pointer-events-none" />
-
-            <div className="relative z-10" style={{ transform: "translateZ(50px)" }}>
-                <h3 className="text-3xl font-black mb-4 text-white tracking-tighter group-hover:text-ivc-secondary transition-colors">
-                    {title}
-                </h3>
-                <p className="text-gray-400 text-lg leading-relaxed font-medium">
-                    {description}
-                </p>
-
-                <div className="mt-8 flex items-center gap-3 text-ivc-primary font-black tracking-[0.2em] text-[10px] uppercase">
-                    Explore Domain
-                    <span className="group-hover:translate-x-3 transition-transform duration-300">-&gt;</span>
-                </div>
-            </div>
-
-            {/* Bottom Glow */}
-            <div className="absolute bottom-[-20%] right-[-20%] w-32 h-32 bg-ivc-primary/10 blur-[50px] rounded-full group-hover:bg-ivc-secondary/20 transition-colors" />
-        </motion.div>
-    );
-};
+const fadeUp = (delay = 0) => ({
+    initial: { opacity: 0, y: 40 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-50px" },
+    transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }
+});
 
 const Domains = () => {
     const domains = [
-        { title: 'Web Development', description: 'Crafting high-performance, pixel-perfect digital experiences with modern web technologies.' },
-        { title: 'AI & ML', description: 'Building intelligent systems and exploring the depths of neural networks and data science.' },
-        { title: 'IoT & Hardware', description: 'Connecting the physical and digital worlds through innovative electronics and smart systems.' },
-        { title: 'Entrepreneurship', description: 'Nurturing the next generation of founders through business strategy and innovation.' },
-        { title: 'UI/UX Design', description: 'Designing intuitive, aesthetically stunning interfaces that prioritize user experience.' },
-        { title: 'Robotics', description: 'Designing and building autonomous machines and robotic systems for future impact.' }
+        { title: 'Web Development', desc: 'Crafting high-performance, pixel-perfect digital experiences with modern web technologies.', icon: Globe },
+        { title: 'AI & ML', desc: 'Building intelligent systems and exploring neural networks and data science.', icon: Brain },
+        { title: 'IoT & Hardware', desc: 'Connecting the physical and digital worlds through smart electronics and systems.', icon: Cpu },
+        { title: 'Entrepreneurship', desc: 'Nurturing the next generation of founders through business strategy and innovation.', icon: Briefcase },
+        { title: 'UI/UX Design', desc: 'Designing intuitive, stunning interfaces that prioritize user experience.', icon: Palette },
+        { title: 'Robotics', desc: 'Designing and building autonomous machines and robotic systems for future impact.', icon: Bot },
     ];
 
     return (
-        <div className="pt-40 pb-24 px-4 max-w-7xl mx-auto min-h-screen">
-            <motion.h2
-                initial={{ opacity: 0, y: 20 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                className="text-4xl md:text-6xl font-black mb-12 md:mb-20 text-center text-gradient tracking-normal uppercase italic px-10 py-2 overflow-visible"
-            >
-                Our Domains
-            </motion.h2>
+        <section className="relative py-32 md:py-48 overflow-hidden bg-blueprint">
+            {/* Watermark */}
+            <div className="watermark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">DOMAINS</div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-                {domains.map((domain, index) => (
-                    <motion.div
-                        key={domain.title}
-                        initial={{ opacity: 0, y: 40 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: 0.4 + (index * 0.1), duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                    >
-                        <DomainCard {...domain} />
-                    </motion.div>
-                ))}
+            {/* Ambient glow */}
+            <div className="absolute top-0 left-0 w-[40vw] h-[40vw] bg-cyan-500/[0.03] blur-[150px] rounded-full pointer-events-none" />
+            <div className="absolute bottom-0 right-0 w-[30vw] h-[30vw] bg-indigo-500/[0.03] blur-[150px] rounded-full pointer-events-none" />
+
+            <div className="max-w-7xl mx-auto px-6 relative z-10">
+                {/* Header */}
+                <motion.div {...fadeUp()} className="mb-20">
+                    <h2 className="font-display text-4xl md:text-7xl lg:text-8xl font-black tracking-wider uppercase mb-4">
+                        OUR <span className="text-cyan-400 text-glow-cyan">DOMAINS</span>
+                    </h2>
+                    <div className="h-[2px] w-16 bg-cyan-400/50 mb-6" />
+                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/30 uppercase max-w-xl">
+                        Six specialized verticals where innovation meets execution
+                    </p>
+                </motion.div>
+
+                {/* Domain Grid - TechSolstice staggered layout */}
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {domains.map((domain, i) => {
+                        const Icon = domain.icon;
+                        return (
+                            <motion.div
+                                key={i}
+                                {...fadeUp(0.05 + i * 0.06)}
+                                className="glow-card rounded-2xl p-8 md:p-10 group cursor-pointer relative overflow-hidden"
+                            >
+                                {/* Number */}
+                                <div className="absolute top-6 right-6 w-10 h-10 rounded-lg border border-white/5 flex items-center justify-center">
+                                    <span className="font-display text-xs text-white/15">{String(i + 1).padStart(2, '0')}</span>
+                                </div>
+
+                                {/* Shimmer on hover */}
+                                <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                                </div>
+
+                                <div className="w-12 h-12 rounded-xl bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center mb-6 group-hover:bg-cyan-400/10 group-hover:border-cyan-400/25 transition-all duration-500">
+                                    <Icon className="text-cyan-400/70 group-hover:text-cyan-400 transition-colors" size={22} />
+                                </div>
+
+                                <h3 className="font-display text-lg md:text-xl font-black tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase mb-4">
+                                    {domain.title}
+                                </h3>
+                                <p className="text-white/25 text-sm leading-relaxed font-medium group-hover:text-white/45 transition-colors">
+                                    {domain.desc}
+                                </p>
+
+                                <div className="mt-8 font-display text-[10px] tracking-[0.3em] text-cyan-400/40 uppercase group-hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                    EXPLORE <span className="group-hover:translate-x-1 transition-transform">→</span>
+                                </div>
+
+                                {/* Bottom glow line */}
+                                <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[50%] h-[1px] bg-gradient-to-r from-transparent via-cyan-400/15 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                            </motion.div>
+                        );
+                    })}
+                </div>
             </div>
-        </div>
+        </section>
     );
 };
 

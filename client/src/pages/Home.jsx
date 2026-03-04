@@ -12,71 +12,22 @@ const Home = ({ isPastHome }) => {
         offset: ["start start", "end start"]
     });
 
-    // Create a smooth spring for the scroll progress to avoid jitter
-    const smoothProgress = useSpring(scrollYProgress, {
-        stiffness: 100,
-        damping: 30,
-        restDelta: 0.001
-    });
-
-    // Scroll-triggered scaling and perspective shifts using the smooth spring
-    const scale = useTransform(smoothProgress, [0, 0.5], [1, 1.1]);
-    const zTranslate = useTransform(smoothProgress, [0, 0.5], [0, 200]);
+    const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30, restDelta: 0.001 });
+    const logoY = useTransform(smoothProgress, [0, 1], [0, -150]);
+    const logoScale = useTransform(smoothProgress, [0, 0.5], [1, 0.8]);
+    const textOpacity = useTransform(smoothProgress, [0, 0.3], [1, 0]);
 
     useEffect(() => {
         const checkMobile = () => setIsMobile(window.innerWidth < 768);
         checkMobile();
         window.addEventListener('resize', checkMobile);
-
-        // Delay the entrance of background effects to allow logo to "sit" first
-        const timer = setTimeout(() => { }, 1200);
-
-        const handleOrientation = (e) => {
-            if (e.beta && e.gamma && !isMobile) {
-                const x = (e.gamma / 30) * 15;
-                const y = ((e.beta - 45) / 30) * 15;
-                setMousePos({ x, y });
-            }
-        };
-
-        const requestPermission = async () => {
-            if (!isMobile && typeof DeviceOrientationEvent !== 'undefined' &&
-                typeof DeviceOrientationEvent.requestPermission === 'function') {
-                try {
-                    const permission = await DeviceOrientationEvent.requestPermission();
-                    if (permission === 'granted') {
-                        window.addEventListener('deviceorientation', handleOrientation);
-                    }
-                } catch {
-                    console.error('Gyroscope permission denied');
-                }
-            } else if (!isMobile) {
-                window.addEventListener('deviceorientation', handleOrientation);
-            }
-        };
-
-        requestPermission();
-        return () => {
-            clearTimeout(timer);
-            window.removeEventListener('resize', checkMobile);
-            window.removeEventListener('deviceorientation', handleOrientation);
-        };
-    }, [isMobile]);
+        return () => window.removeEventListener('resize', checkMobile);
+    }, []);
 
     const handleMouseMove = (e) => {
         if (isMobile) return;
-        const { clientX, clientY } = e;
-        const x = (clientX / window.innerWidth - 0.5) * 20;
-        const y = (clientY / window.innerHeight - 0.5) * 20;
-        setMousePos({ x, y });
-    };
-
-    const handleTouchMove = (e) => {
-        // Only track touch for effects if we really want to, but keep it light
-        if (isMobile) return;
-        const touch = e.touches[0];
-        const x = (touch.clientX / window.innerWidth - 0.5) * 15;
-        const y = (touch.clientY / window.innerHeight - 0.5) * 15;
+        const x = (e.clientX / window.innerWidth - 0.5) * 20;
+        const y = (e.clientY / window.innerHeight - 0.5) * 20;
         setMousePos({ x, y });
     };
 
@@ -84,217 +35,147 @@ const Home = ({ isPastHome }) => {
         <div
             ref={containerRef}
             onMouseMove={handleMouseMove}
-            onTouchMove={handleTouchMove}
-            className="relative isolate min-h-screen flex items-center justify-center pt-12 md:pt-32 lg:pt-48 overflow-visible bg-transparent"
-            style={{ perspective: isMobile ? "none" : "1500px" }}
+            className="relative min-h-screen flex flex-col items-center justify-center overflow-hidden bg-blueprint"
         >
-            {/* 3D Space - Environment Layer - Disabled on mobile for performance */}
-            {!isMobile && (
-                <div className="fixed inset-0 z-0 pointer-events-none" style={{ transformStyle: "preserve-3d" }}>
-                    {/* Dynamic Space Grid - Warps with tilt */}
-                    <motion.div
-                        animate={{
-                            rotateX: 60 + (mousePos.y * 0.2),
-                            rotateZ: mousePos.x * 0.1,
-                            y: mousePos.y * 5
-                        }}
-                        className="absolute bottom-[-20%] left-[-50%] w-[200%] h-[100%] opacity-10"
-                        style={{
-                            backgroundImage: `linear-gradient(to right, rgba(255,255,255,0.1) 1px, transparent 1px), linear-gradient(to bottom, rgba(255,255,255,0.1) 1px, transparent 1px)`,
-                            backgroundSize: '80px 80px',
-                            transform: "rotateX(70deg)",
-                            maskImage: 'radial-gradient(circle at center, black, transparent 80%)'
-                        }}
-                    />
+            {/* Ambient glow orbs */}
+            <div className="absolute top-[-20%] left-[-10%] w-[60vw] h-[60vw] bg-cyan-500/[0.04] rounded-full blur-[150px] animate-nebula pointer-events-none" />
+            <div className="absolute bottom-[-20%] right-[-10%] w-[50vw] h-[50vw] bg-indigo-500/[0.04] rounded-full blur-[150px] animate-nebula-reverse pointer-events-none" />
 
-                    {/* Particles removed as per user request */}
-                </div>
-            )}
+            {/* Scan line effect */}
+            <div className="absolute inset-0 pointer-events-none overflow-hidden">
+                <div className="absolute left-0 right-0 h-[1px] bg-cyan-400/20 shadow-[0_0_20px_rgba(34,211,238,0.3)] animate-scan" />
+            </div>
 
+            {/* Central content */}
             <motion.div
-                style={{
-                    scale,
-                    z: zTranslate,
-                    transformStyle: "preserve-3d"
-                }}
-                className="relative z-10 w-full max-w-7xl px-4 flex flex-col items-center"
+                style={{ y: logoY, scale: logoScale }}
+                className="relative z-10 flex flex-col items-center px-4"
             >
-                {/* Magnetic Core with Refined Physics */}
+                {/* 3D Logo with glow */}
                 <motion.div
                     animate={{
-                        rotateX: mousePos.y * -0.2,
-                        rotateY: mousePos.x * 0.2,
+                        rotateX: mousePos.y * -0.15,
+                        rotateY: mousePos.x * 0.15,
                     }}
-                    transition={{ type: "spring", stiffness: 35, damping: 35 }}
-                    style={{ transformStyle: "preserve-3d" }}
-                    className="relative flex flex-col items-center w-full"
+                    transition={{ type: "spring", stiffness: 50, damping: 30 }}
+                    className="relative mb-8"
+                    style={{ perspective: '1000px' }}
                 >
-                    {/* Floating Branding Core (Front Layer) */}
-                    <div className="relative mb-8 md:mb-16 flex flex-col items-center" style={{ transform: "translateZ(120px)", transformStyle: "preserve-3d" }}>
-                        <AnimatePresence mode="wait">
-                            {!isPastHome && (
-                                <motion.img
-                                    layoutId="main-logo"
-                                    src={logo}
-                                    alt="IVC Logo"
-                                    initial={{ opacity: 1 }}
-                                    animate={{ opacity: 1 }}
-                                    exit={{ opacity: 1 }}
-                                    transition={{
-                                        type: "spring",
-                                        stiffness: 45,
-                                        damping: 20,
-                                        mass: 1.2
-                                    }}
-                                    className="relative w-32 h-32 md:w-64 md:h-64 drop-shadow-[0_45px_100px_rgba(0,0,0,0.9)] z-20"
-                                    style={{ transform: "translateZ(40px)" }}
-                                />
-                            )}
-                        </AnimatePresence>
+                    {/* Glow ring behind logo */}
+                    <motion.div
+                        animate={{ rotate: 360 }}
+                        transition={{ duration: 20, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-[-30%] rounded-full border border-cyan-500/10 pointer-events-none"
+                    />
+                    <motion.div
+                        animate={{ rotate: -360 }}
+                        transition={{ duration: 30, repeat: Infinity, ease: "linear" }}
+                        className="absolute inset-[-50%] rounded-full border border-indigo-500/5 pointer-events-none"
+                    />
 
-                        {/* Shared Logo Bloom Transition */}
-                        <motion.div
-                            layoutId="logo-glow"
-                            animate={{
-                                x: mousePos.x * 2,
-                                y: mousePos.y * 2,
-                            }}
-                            transition={{
-                                type: "spring",
-                                stiffness: 45,
-                                damping: 20,
-                                mass: 1.2
-                            }}
-                            className="absolute inset-[-40%] bg-gradient-to-tr from-cyan-500/15 to-purple-500/15 blur-3xl rounded-full z-10 pointer-events-none"
-                        />
-                    </div>
+                    {/* Ambient logo glow */}
+                    <div className="absolute inset-[-40%] bg-gradient-to-tr from-cyan-500/10 to-indigo-500/10 blur-[80px] rounded-full pointer-events-none" />
 
-                    {/* Unified Horizontal Branding Row with Specular Shine */}
-                    <div className="w-full flex justify-center pointer-events-none px-4" style={{ transform: "translateZ(60px)", transformStyle: "preserve-3d" }}>
-                        <div
-                            className="flex flex-row items-center justify-center gap-3 md:gap-8 lg:gap-10 relative"
-                        >
-                            {/* Specular Light Sweep */}
-                            <motion.div
-                                animate={{ x: ['-100%', '200%'] }}
-                                transition={{ duration: 4, repeat: Infinity, ease: "linear", delay: 2 }}
-                                className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent skew-x-12 z-0"
+                    <AnimatePresence mode="wait">
+                        {!isPastHome && (
+                            <motion.img
+                                layoutId="main-logo"
+                                src={logo}
+                                alt="IVC Logo"
+                                initial={{ opacity: 0, scale: 0.5 }}
+                                animate={{ opacity: 1, scale: 1 }}
+                                exit={{ opacity: 0 }}
+                                transition={{ type: "spring", stiffness: 50, damping: 20 }}
+                                className="relative w-32 h-32 md:w-48 md:h-48 lg:w-56 lg:h-56 drop-shadow-[0_0_60px_rgba(34,211,238,0.3)] z-10"
                             />
-
-                            <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap group">
-                                <motion.span
-                                    layoutId="word-ideate"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{
-                                        type: "spring",
-                                        stiffness: 50,
-                                        damping: 18,
-                                        delay: 0.5
-                                    }}
-                                    className="text-[#FEDE00] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10 block"
-                                >
-                                    Ideate
-                                </motion.span>
-                            </h1>
-
-                            <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap">
-                                <motion.span
-                                    layoutId="word-visualize"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{
-                                        type: "spring",
-                                        stiffness: 50,
-                                        damping: 18,
-                                        delay: 0.6
-                                    }}
-                                    className="text-white drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10 block"
-                                >
-                                    Visualize
-                                </motion.span>
-                            </h1>
-
-                            <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap">
-                                <motion.span
-                                    layoutId="word-create"
-                                    initial={{ opacity: 0, y: 20 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{
-                                        type: "spring",
-                                        stiffness: 50,
-                                        damping: 18,
-                                        delay: 0.7
-                                    }}
-                                    className="text-[#FF3B30] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10 block"
-                                >
-                                    Create
-                                </motion.span>
-                            </h1>
-                        </div>
-                    </div>
+                        )}
+                    </AnimatePresence>
                 </motion.div>
 
-                {/* 3D Floating Hero Bar - The Marquee Container */}
+                {/* Club name - massive Orbitron typography */}
                 <motion.div
-                    initial={{ opacity: 0, y: 50, filter: 'blur(10px)' }}
-                    animate={{ opacity: 1, y: 0, filter: 'blur(0px)' }}
-                    transition={{ delay: 1.2, duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
-                    className="mt-16 md:mt-24 w-full max-w-full px-0 relative group"
-                    style={{ transform: "translateZ(50px)", transformStyle: "preserve-3d" }}
+                    style={{ opacity: textOpacity }}
+                    className="text-center"
                 >
-                    {/* 3D Floating elements near the bar */}
-                    <div className="absolute -top-10 -left-10 w-20 h-20 bg-ivc-primary/20 blur-2xl rounded-full z-0 animate-pulse" style={{ transform: "translateZ(30px)" }}></div>
-                    <div className="absolute -bottom-10 -right-10 w-24 h-24 bg-ivc-secondary/20 blur-2xl rounded-full z-0 animate-pulse" style={{ transform: "translateZ(40px)" }}></div>
+                    <motion.h1
+                        initial={{ opacity: 0, y: 30 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.3, duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                        className="font-display text-3xl sm:text-5xl md:text-7xl lg:text-8xl font-black tracking-wider uppercase text-white mb-4"
+                    >
+                        <span className="text-cyan-400 text-glow-cyan">I</span>
+                        <span className="text-white/90">VC</span>
+                    </motion.h1>
 
-                    <div className="liquid-glass rounded-xl md:rounded-3xl p-[1.5px] overflow-hidden shadow-[0_60px_120px_rgba(0,0,0,0.8)] border border-white/5 relative" style={{ transformStyle: "preserve-3d" }}>
-                        <div className="relative py-4 md:py-7 px-8 md:px-12 flex flex-col items-center bg-[#05070a]/60 backdrop-blur-3xl overflow-hidden" style={{ transform: "translateZ(10px)" }}>
-                            <div className="absolute inset-0 bg-gradient-to-br from-white/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            <div className="flex whitespace-nowrap">
-                                <motion.div
-                                    animate={{ x: ["0%", "-50%"] }}
-                                    transition={{
-                                        duration: 25,
-                                        repeat: Infinity,
-                                        ease: "linear"
-                                    }}
-                                    className="flex shrink-0 items-center"
-                                >
-                                    {[
-                                        "Where ideas meet execution and passion becomes impact",
-                                        "Building a community of learners leaders and changemakers",
-                                        "Learn. Build Innovate Together"
-                                    ].map((text, i) => (
-                                        <div key={i} className="flex items-center">
-                                            <span className="text-xs md:text-sm font-black tracking-[0.4em] text-white uppercase mx-10 md:mx-16">
-                                                {text}
-                                            </span>
-                                            <div className="w-1.5 h-1.5 rounded-full bg-ivc-primary/50 mx-4" />
-                                        </div>
-                                    ))}
-                                    {/* Duplicate for seamless loop */}
-                                    {[
-                                        "Where ideas meet execution and passion becomes impact",
-                                        "Building a community of learners leaders and changemakers",
-                                        "Learn. Build Innovate Together"
-                                    ].map((text, i) => (
-                                        <div key={`dup-${i}`} className="flex items-center">
-                                            <span className="text-xs md:text-sm font-black tracking-[0.4em] text-white uppercase mx-10 md:mx-16">
-                                                {text}
-                                            </span>
-                                            <div className="w-1.5 h-1.5 rounded-full bg-ivc-primary/50 mx-4" />
-                                        </div>
-                                    ))}
-                                </motion.div>
-                            </div>
+                    <motion.div
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.5, duration: 1 }}
+                        className="flex items-center justify-center gap-4 md:gap-6 mb-6"
+                    >
+                        <div className="h-[1px] w-12 md:w-20 bg-gradient-to-r from-transparent to-cyan-500/50" />
+                        <span className="font-display text-[10px] md:text-xs tracking-[0.4em] text-cyan-400/80 uppercase">
+                            Innovators & Visionaries Club
+                        </span>
+                        <div className="h-[1px] w-12 md:w-20 bg-gradient-to-l from-transparent to-cyan-500/50" />
+                    </motion.div>
+
+                    <motion.p
+                        initial={{ opacity: 0, y: 20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.7, duration: 1 }}
+                        className="font-display text-[10px] md:text-[13px] tracking-[0.3em] text-white/30 uppercase"
+                    >
+                        Vidyavardhaka College of Engineering, Mysuru
+                    </motion.p>
+                </motion.div>
+            </motion.div>
+
+            {/* Tagline Marquee Bar */}
+            <motion.div
+                initial={{ opacity: 0, y: 40 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: 1.2, duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
+                className="absolute bottom-24 md:bottom-32 left-0 right-0 border-y border-white/5 py-4 overflow-hidden z-10"
+            >
+                <div className="flex whitespace-nowrap animate-marquee">
+                    {[...Array(2)].map((_, j) => (
+                        <div key={j} className="flex items-center shrink-0">
+                            {["IDEATE", "VISUALIZE", "CREATE", "INNOVATE", "BUILD", "LEAD"].map((word, i) => (
+                                <span key={`${j}-${i}`} className="flex items-center">
+                                    <span className={`font-display text-sm md:text-lg tracking-[0.3em] mx-8 md:mx-14 ${i % 2 === 0 ? 'text-cyan-400/60' : 'text-white/20'}`}>
+                                        {word}
+                                    </span>
+                                    <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/30" />
+                                </span>
+                            ))}
                         </div>
+                    ))}
+                </div>
+            </motion.div>
 
-                        {/* 3D Bevel/Edge Effect for the Hero Bar */}
-                        <div className="absolute inset-0 border-r-[4px] border-b-[4px] border-white/5 pointer-events-none rounded-xl md:rounded-3xl"></div>
-                    </div>
+            {/* Scroll indicator */}
+            <motion.div
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: 2 }}
+                className="absolute bottom-8 md:bottom-12 flex flex-col items-center gap-2 z-10"
+            >
+                <span className="font-display text-[8px] text-white/20 uppercase tracking-[0.5em]">Scroll</span>
+                <motion.div
+                    animate={{ y: [0, 8, 0] }}
+                    transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                    className="w-4 h-7 rounded-full border border-white/10 flex justify-center pt-1.5"
+                >
+                    <motion.div
+                        animate={{ y: [0, 6, 0], opacity: [1, 0.3, 1] }}
+                        transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                        className="w-0.5 h-1.5 bg-cyan-400/50 rounded-full"
+                    />
                 </motion.div>
             </motion.div>
         </div>
     );
 };
-export default Home
+
+export default Home;
