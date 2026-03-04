@@ -19,6 +19,7 @@ function App() {
   const [loading, setLoading] = useState(true);
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [isPastHome, setIsPastHome] = useState(false);
+  const [isFooterInView, setIsFooterInView] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -37,6 +38,24 @@ function App() {
       window.removeEventListener('scroll', handleScroll);
     };
   }, []);
+
+  useEffect(() => {
+    if (loading) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setIsFooterInView(entry.isIntersecting);
+      },
+      { threshold: 0, rootMargin: '0px 0px 400px 0px' } // Detect footer 400px before it enters viewport
+    );
+
+    const footerElement = document.querySelector('footer');
+    if (footerElement) observer.observe(footerElement);
+
+    return () => {
+      if (footerElement) observer.unobserve(footerElement);
+    };
+  }, [loading]);
 
   return (
     <Router>
@@ -58,21 +77,29 @@ function App() {
             className="min-h-screen text-ivc-text font-sans selection:bg-ivc-primary selection:text-white flex flex-col relative w-full overflow-x-hidden"
           >
             {/* Smooth flying logo transition */}
-            {isPastHome && (
-              <div className="fixed top-6 left-6 z-[90] group">
-                <motion.img
-                  layoutId="main-logo"
-                  src={logo}
-                  alt="IVC Logo"
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                  className="w-12 h-12 md:w-24 md:h-24 cursor-pointer drop-shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:scale-110 transition-transform duration-300"
-                />
-                {/* Tooltip or Label */}
-                <div className="absolute left-full ml-6 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-[12px] font-black uppercase tracking-widest text-white/70 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
-                  Back to Top
-                </div>
-              </div>
-            )}
+            <AnimatePresence>
+              {isPastHome && !isFooterInView && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.8, x: -20 }}
+                  animate={{ opacity: 1, scale: 1, x: 0 }}
+                  exit={{ opacity: 0, scale: 0.8, x: -20 }}
+                  transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
+                  className="fixed top-6 left-6 z-[90] group"
+                >
+                  <motion.img
+                    layoutId="main-logo"
+                    src={logo}
+                    alt="IVC Logo"
+                    onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    className="w-12 h-12 md:w-24 md:h-24 cursor-pointer drop-shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:scale-110 transition-transform duration-300"
+                  />
+                  {/* Tooltip or Label */}
+                  <div className="absolute left-full ml-6 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-[12px] font-black uppercase tracking-widest text-white/70 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                    Back to Top
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <AnimatePresence>
               {!isPastHome && (

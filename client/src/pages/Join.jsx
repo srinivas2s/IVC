@@ -49,9 +49,9 @@ const Join = ({ isModal = false }) => {
                 {/* Header Section */}
                 <div className="text-center mb-12 px-4">
                     <motion.h2
-                        className="text-4xl md:text-6xl font-black mb-4 text-white tracking-tight uppercase"
+                        className="text-4xl md:text-6xl font-black mb-4 text-gradient tracking-tight uppercase px-4 py-2 overflow-visible"
                     >
-                        Join <span className="text-gradient">IVC</span>
+                        Join IVC
                     </motion.h2>
                     <p className="text-gray-400 font-bold tracking-wide text-sm uppercase">
                         Empowering the next generation of <span className="text-white">visionaries</span>.
