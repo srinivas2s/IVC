@@ -162,7 +162,6 @@ const Events = () => {
                                                     <Triangle className="text-white/40 w-5 h-5 fill-white/40" />
                                                 </>
                                             )}
-                                            <Sparkles className="w-5 h-5 text-ivc-primary opacity-50" />
                                         </div>
                                     </div>
                                 </div>
