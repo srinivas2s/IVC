@@ -15,8 +15,8 @@ const Achievements = () => (
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 mb-16">
             {[
-                { val: '10+', label: 'Hackathons Won', color: 'text-ivc-primary' },
-                { val: '50+', label: 'Projects Completed', color: 'text-ivc-secondary' }
+                { val: '2+', label: 'Hackathons Won', color: 'text-ivc-primary' },
+                { val: '0', label: 'Projects Completed', color: 'text-ivc-secondary' }
             ].map((stat, i) => (
                 <motion.div
                     key={i}

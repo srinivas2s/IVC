@@ -5,9 +5,10 @@ const PillarCard = ({ icon: Icon, title, description, delay }) => (
     <motion.div
         initial={{ opacity: 0, y: 30 }}
         whileInView={{ opacity: 1, y: 0 }}
+        whileHover={{ scale: 1.02, y: -5 }}
         viewport={{ once: true }}
         transition={{ delay, duration: 0.8 }}
-        className="group relative p-8 rounded-[32px] liquid-glass flex flex-col items-start text-left overflow-hidden h-full"
+        className="group relative p-8 rounded-[32px] liquid-glass flex flex-col items-start text-left overflow-hidden h-full cursor-pointer"
     >
         <div className="absolute inset-0 bg-gradient-to-br from-ivc-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
         <div className="relative z-10 w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-500">
@@ -70,9 +71,10 @@ const About = () => {
                             key={index}
                             initial={{ opacity: 0, x: index === 0 ? -50 : 50 }}
                             whileInView={{ opacity: 1, x: 0 }}
+                            whileHover={{ scale: 1.02, y: -5 }}
                             viewport={{ once: true }}
                             transition={{ duration: 0.8, delay: index * 0.2 }}
-                            className={`p-10 md:p-14 rounded-[40px] ${card.className} relative overflow-hidden group flex flex-col justify-center min-h-[350px] shadow-2xl`}
+                            className={`p-10 md:p-14 rounded-[40px] ${card.className} relative overflow-hidden group flex flex-col justify-center min-h-[350px] shadow-2xl cursor-pointer`}
                         >
                             <h3 className="text-3xl md:text-5xl font-black italic uppercase tracking-tighter mb-8 text-white group-hover:text-ivc-primary transition-colors duration-500">
                                 {card.title}

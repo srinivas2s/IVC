@@ -15,6 +15,18 @@ const events = [
         image: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2088&auto=format&fit=crop",
         type: "Workshop",
         gradient: "from-cyan-500/20 to-purple-500/20",
+    },
+    {
+        id: 2,
+        title: "OpenCV",
+        fullTitle: "OpenCV Vision Workshop",
+        date: "TBA",
+        time: "TBA",
+        location: "IVC Innovation Lab",
+        description: "Dive into Computer Vision with OpenCV. Learn image processing, object detection, and the fundamentals of AI-driven vision.",
+        image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=2070&auto=format&fit=crop",
+        type: "Workshop",
+        gradient: "from-blue-500/20 to-emerald-500/20",
     }
 ];
 
@@ -23,58 +35,56 @@ const Events = () => {
 
     return (
         <div className="pt-32 pb-24 px-6 max-w-7xl mx-auto overflow-hidden">
-            {/* Header Section */}
+            {/* Header Section Section - Centered */}
             <div className="flex flex-col items-center mb-16 space-y-4">
                 <motion.h2
                     initial={{ opacity: 0, y: 20 }}
                     whileInView={{ opacity: 1, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-4xl md:text-6xl font-black text-center text-gradient tracking-normal uppercase italic px-10 py-2 overflow-visible"
+                    className="text-4xl md:text-6xl font-black text-center text-gradient tracking-normal uppercase italic py-2 overflow-visible"
                 >
                     EVENTS
                 </motion.h2>
                 <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
             </div>
 
-            {/* Centered Small Card */}
-            <div className="flex justify-center">
-                <div className="w-full max-w-sm">
-                    {events.map((event, index) => (
-                        <motion.div
-                            key={event.id}
-                            layoutId={`card-${event.id}`}
-                            onClick={() => setSelectedId(event.id)}
-                            initial={{ opacity: 0, scale: 0.9 }}
-                            whileInView={{ opacity: 1, scale: 1 }}
-                            viewport={{ once: true }}
-                            transition={{ delay: index * 0.1 }}
-                            className="group relative h-64 glass-card border-white/5 rounded-[32px] overflow-hidden cursor-pointer hover:border-white/20 transition-all duration-500"
-                        >
-                            <motion.img
-                                src={event.image}
-                                alt={event.title}
-                                className="w-full h-full object-cover brightness-50 group-hover:scale-110 transition-transform duration-1000"
-                            />
-                            <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+            {/* Horizontal Workshop Grid */}
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
+                {events.map((event, index) => (
+                    <motion.div
+                        key={event.id}
+                        layoutId={`card-${event.id}`}
+                        onClick={() => setSelectedId(event.id)}
+                        initial={{ opacity: 0, scale: 0.9 }}
+                        whileInView={{ opacity: 1, scale: 1 }}
+                        viewport={{ once: true }}
+                        transition={{ delay: index * 0.1 }}
+                        className="group relative h-64 glass-card border-white/5 rounded-[32px] overflow-hidden cursor-pointer hover:border-white/20 transition-all duration-500"
+                    >
+                        <motion.img
+                            src={event.image}
+                            alt={event.title}
+                            className="w-full h-full object-cover brightness-50 group-hover:scale-110 transition-transform duration-1000"
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
 
-                            <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                                <span className="text-[9px] font-black text-ivc-primary uppercase tracking-[0.4em] mb-2 opacity-80 italic">
-                                    {event.type}
-                                </span>
-                                <h3 className="text-xl font-black text-white group-hover:text-ivc-secondary transition-colors uppercase italic tracking-tighter">
-                                    {event.title}
-                                </h3>
-                                <div className="mt-4 flex items-center gap-2 text-[10px] font-black text-white/40 uppercase tracking-widest group-hover:text-white transition-colors">
-                                    View Info <ChevronRight size={12} />
-                                </div>
+                        <div className="absolute inset-0 p-8 flex flex-col justify-end">
+                            <span className="text-[9px] font-black text-ivc-primary uppercase tracking-[0.4em] mb-2 opacity-80 italic">
+                                {event.type}
+                            </span>
+                            <h3 className="text-xl font-black text-white group-hover:text-ivc-secondary transition-colors uppercase italic tracking-tighter">
+                                {event.title}
+                            </h3>
+                            <div className="mt-4 flex items-center gap-2 text-[10px] font-black text-white/40 uppercase tracking-widest group-hover:text-white transition-colors">
+                                Coming Soon
                             </div>
+                        </div>
 
-                            {/* Hover Glow */}
-                            <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${event.gradient} blur-[50px] rounded-full opacity-0 group-hover:opacity-60 transition-opacity duration-700`}></div>
-                        </motion.div>
-                    ))}
-                </div>
+                        {/* Hover Glow */}
+                        <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${event.gradient} blur-[50px] rounded-full opacity-0 group-hover:opacity-60 transition-opacity duration-700`}></div>
+                    </motion.div>
+                ))}
             </div>
 
             {/* Modal for Details */}
@@ -138,9 +148,12 @@ const Events = () => {
                                     </p>
 
                                     <div className="mt-10 pt-8 border-t border-white/5 flex items-center justify-between">
-                                        <LiquidButton variant="primary" className="!px-8">
-                                            Join Program
-                                        </LiquidButton>
+                                        <motion.button
+                                            whileHover={{ x: 10, color: '#fff' }}
+                                            className="text-[11px] font-black text-ivc-primary uppercase tracking-[0.4em] italic flex items-center gap-3 transition-colors group"
+                                        >
+                                            REGISTER NOW
+                                        </motion.button>
 
                                         <div className="flex gap-3">
                                             {events.find(e => e.id === selectedId).title.includes("GitHub") && (
