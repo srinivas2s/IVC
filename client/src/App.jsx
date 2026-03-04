@@ -80,11 +80,11 @@ function App() {
             <AnimatePresence>
               {isPastHome && !isFooterInView && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.8, x: -20 }}
+                  initial={{ opacity: 0, scale: 0.8, x: 20 }}
                   animate={{ opacity: 1, scale: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, x: -20 }}
+                  exit={{ opacity: 0, scale: 0.8, x: 20 }}
                   transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="fixed top-6 left-6 z-[90] group"
+                  className="fixed top-6 right-6 z-[90] group"
                 >
                   <motion.img
                     layoutId="main-logo"
@@ -94,7 +94,7 @@ function App() {
                     className="w-12 h-12 md:w-24 md:h-24 cursor-pointer drop-shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:scale-110 transition-transform duration-300"
                   />
                   {/* Tooltip or Label */}
-                  <div className="absolute left-full ml-6 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-[12px] font-black uppercase tracking-widest text-white/70 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                  <div className="absolute right-full mr-6 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-[12px] font-black uppercase tracking-widest text-white/70 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                     Back to Top
                   </div>
                 </motion.div>
@@ -129,14 +129,14 @@ function App() {
 
             <footer className="pt-12 pb-10 text-center liquid-glass relative z-20 w-full overflow-x-hidden group transition-all duration-500">
               <div className="max-w-7xl mx-auto px-6 relative z-10">
-                <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-8 text-left">
-                  <div className="max-w-sm">
-                    <img src={logo} alt="IVC Logo" className="w-20 h-20 mb-6 drop-shadow-[0_0_20px_rgba(255,255,255,0.25)] hover:scale-110 transition-transform duration-500" />
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-12 mb-12 items-center">
+                  {/* Left Column: Tagline & Socials */}
+                  <div className="flex flex-col items-center md:items-start text-center md:text-left">
                     <h3 className="text-white text-xl font-black italic uppercase tracking-tighter mb-2">INNOVATORS & VISIONARIES CLUB</h3>
                     <p className="text-gray-400 text-sm leading-relaxed max-w-[320px] font-black opacity-80 mb-6">
                       A community dedicated to fostering innovation, creativity, and technical excellence among students.
                     </p>
-                    <div className="flex gap-4 mt-6">
+                    <div className="flex gap-4">
                       <a href="https://www.instagram.com/the.official.ivc?igsh=MTBpbGRiZ3JzdnN2bw==" target="_blank" rel="noreferrer" className="w-10 h-10 rounded-full bg-white/5 flex items-center justify-center text-white/40 hover:text-[#E1306C] hover:bg-[#E1306C]/10 hover:border-[#E1306C]/40 hover:shadow-[0_0_20px_rgba(225,48,108,0.3)] transition-all duration-300 border border-white/5 active:scale-95">
                         <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.162 6.162 6.162 6.162-2.759 6.162-6.162-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.791-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.209-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z" /></svg>
                       </a>
@@ -152,30 +152,32 @@ function App() {
                     </div>
                   </div>
 
-                  <div className="flex flex-col gap-4">
-                    <h4 className="text-white font-black uppercase tracking-widest text-xs">Quick Links</h4>
-                    <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-400 hover:text-white transition-colors text-sm text-left font-black">About IVC</button>
-                    <button onClick={() => document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-400 hover:text-white transition-colors text-sm text-left font-black">Latest Events</button>
+                  {/* Middle Column: Animated Logo */}
+                  <div className="flex flex-col items-center justify-center">
+                    <img
+                      src={logo}
+                      alt="IVC Logo"
+                      className="w-28 h-28 md:w-36 md:h-36 drop-shadow-[0_0_30px_rgba(255,255,255,0.3)] hover:scale-110 transition-transform duration-500 cursor-pointer"
+                      onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+                    />
+                  </div>
+
+                  {/* Right Column: Quick Links */}
+                  <div className="flex flex-col items-center md:items-end text-center md:text-right">
+                    <h4 className="text-white font-black uppercase tracking-widest text-xs mb-6 opacity-50">Quick Links</h4>
+                    <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-400 hover:text-white transition-colors text-sm md:text-right font-black mb-4">About IVC</button>
+                    <button onClick={() => document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-400 hover:text-white transition-colors text-sm md:text-right font-black mb-4">Latest Events</button>
                     <button
                       onClick={() => setShowJoinModal(true)}
-                      className="text-white font-black hover:scale-105 transition-all text-sm text-left uppercase italic tracking-widest group relative w-fit mt-2"
+                      className="text-white font-black hover:scale-105 transition-all text-sm md:text-right uppercase italic tracking-widest group relative w-fit mt-2 md:ml-auto"
                     >
                       JOIN OUR COMMUNITY
-                      <span className="absolute -bottom-1 left-0 w-0 h-[2px] bg-white transition-all duration-300 group-hover:w-full"></span>
+                      <span className="absolute -bottom-1 right-0 w-0 h-[2px] bg-white transition-all duration-300 group-hover:w-full"></span>
                     </button>
                   </div>
-
-                  <div className="flex flex-col gap-4 md:text-right">
-                    <h4 className="text-white font-black uppercase tracking-widest text-xs">Designed & Developed by</h4>
-                    <a href="mailto:srinivas2006.srini@gmail.com" className="group block">
-                      <p className="text-white font-black text-lg transition-colors">Srinivas P</p>
-                      <p className="text-gray-400 text-xs font-black opacity-60">srinivas2006.srini@gmail.com</p>
-                    </a>
-                  </div>
                 </div>
-
                 <div className="mt-6 pt-4 flex justify-center">
-                  <p className="text-white font-black text-lg md:text-xl tracking-tighter opacity-90 italic uppercase">&copy; 2026 Innovation & Visionaries Club</p>
+                  <p className="text-white font-black text-lg md:text-xl tracking-tighter opacity-90 italic uppercase">&copy; 2026 Innovators & Visionaries Club</p>
                 </div>
               </div>
             </footer>
