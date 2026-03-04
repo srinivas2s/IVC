@@ -22,7 +22,6 @@ const Home = ({ isPastHome }) => {
 
     // Scroll-triggered scaling and perspective shifts using the smooth spring
     const scale = useTransform(smoothProgress, [0, 0.5], [1, 1.1]);
-    const opacity = useTransform(smoothProgress, [0, 0.4], [1, 0]);
     const zTranslate = useTransform(smoothProgress, [0, 0.5], [0, 200]);
 
     useEffect(() => {
@@ -116,7 +115,6 @@ const Home = ({ isPastHome }) => {
             <motion.div
                 style={{
                     scale,
-                    opacity,
                     z: zTranslate,
                     transformStyle: "preserve-3d"
                 }}

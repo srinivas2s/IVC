@@ -69,20 +69,24 @@ const InteractiveDotGrid = ({
         window.addEventListener('touchmove', handleTouchMove, { passive: true });
         resize();
 
-        // Extremely dense for the ultimate rich look on mobile
-        const spacing = window.innerWidth < 768 ? dotSpacing * 0.7 : dotSpacing;
-        const currentGlowRadius = window.innerWidth < 768 ? 140 : glowRadius;
+        // Reduced density for better performance, especially on mobile
+        const spacing = isMobile ? dotSpacing * 2.5 : dotSpacing;
+        const currentGlowRadius = isMobile ? 120 : glowRadius;
         const glowRadiusSq = currentGlowRadius * currentGlowRadius;
 
         const render = (time) => {
             ctx.clearRect(0, 0, canvas.width, canvas.height);
 
-            // Smoother trail for mobile responsiveness
-            lastMouseRef.current.x += (mouseRef.current.x - lastMouseRef.current.x) * (isMobile ? 0.2 : 0.15);
-            lastMouseRef.current.y += (mouseRef.current.y - lastMouseRef.current.y) * (isMobile ? 0.2 : 0.15);
+            lastMouseRef.current.x += (mouseRef.current.x - lastMouseRef.current.x) * (isMobile ? 0.15 : 0.15);
+            lastMouseRef.current.y += (mouseRef.current.y - lastMouseRef.current.y) * (isMobile ? 0.15 : 0.15);
 
             const cols = Math.ceil(canvas.width / spacing) + 1;
             const rows = Math.ceil(canvas.height / spacing) + 1;
+
+            // Pre-calculate color strings to avoid expensive 'replace' in the hot loop
+            const cyanBase = cyanColor.split(',').slice(0, 3).join(',');
+            const purpleBase = purpleColor.split(',').slice(0, 3).join(',');
+            const dotColorBase = dotColor.split(',').slice(0, 3).join(',');
 
             for (let i = 0; i < cols; i++) {
                 for (let j = 0; j < rows; j++) {
@@ -103,30 +107,24 @@ const InteractiveDotGrid = ({
                         const dist = Math.sqrt(distSq);
                         const influence = (currentGlowRadius - dist) / currentGlowRadius;
 
-                        const size = dotSize + (influence * (isMobile ? 6 : 4.5)); // Larger glow on mobile
-                        const opacity = 0.04 + (influence * 0.95);
+                        const size = dotSize + (influence * (isMobile ? 4 : 4.5));
+                        const opacity = 0.04 + (influence * 0.9);
 
-                        const mix = (Math.sin(colorMixRef.current + (i + j) * 0.1) + 1) / 2;
-
-                        // Force color based on click count if significant interaction exists
-                        let color;
-                        if (clickCountRef.current === 1) {
-                            color = purpleColor;
-                        } else {
-                            color = cyanColor;
-                        }
-
-                        ctx.fillStyle = color.replace(/[\d.]+\)$/g, `${opacity})`);
+                        const colorBase = clickCountRef.current === 1 ? purpleBase : cyanBase;
+                        ctx.fillStyle = `${colorBase}, ${opacity})`;
                         ctx.fillRect(x - size / 2, y - size / 2, size, size);
-                    } else {
-                        // Ambient flickering/static dots
-                        const flicker = isMobile ? 0 : Math.sin(colorMixRef.current + (i * 0.3) + (j * 0.3)) * 0.02;
-                        ctx.fillStyle = dotColor.replace(/[\d.]+\)$/g, `${Math.max(0.01, 0.04 + flicker)})`);
+                    } else if (!isMobile) {
+                        // Skip ambient static on mobile for massive performance gain
+                        const flicker = Math.sin(colorMixRef.current + (i * 0.3) + (j * 0.3)) * 0.02;
+                        ctx.fillStyle = `${dotColorBase}, ${0.04 + flicker})`;
+                        ctx.fillRect(x - dotSize / 2, y - dotSize / 2, dotSize, dotSize);
+                    } else if (i % 2 === 0 && j % 2 === 0) {
+                        // Sparse ambient on mobile
+                        ctx.fillStyle = `${dotColorBase}, 0.03)`;
                         ctx.fillRect(x - dotSize / 2, y - dotSize / 2, dotSize, dotSize);
                     }
                 }
             }
-
             animationFrameId = requestAnimationFrame(render);
         };
 

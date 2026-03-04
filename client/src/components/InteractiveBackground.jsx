@@ -43,7 +43,7 @@ const InteractiveBackground = () => {
                         y: mousePosition.y * 0.04,
                     }}
                     transition={{ type: "smooth", duration: 2 }}
-                    className="absolute top-[-10%] left-[-10%] w-[100%] h-[100%] bg-cyan-500/5 rounded-full blur-[130px] mix-blend-screen opacity-40 animate-nebula"
+                    className={`absolute top-[-10%] left-[-10%] w-[100%] h-[100%] bg-cyan-500/5 rounded-full blur-[130px] mix-blend-screen opacity-40 ${!isMobile ? 'animate-nebula' : ''}`}
                 />
 
                 {/* Purple Nebula - Simplified on mobile */}
@@ -53,7 +53,7 @@ const InteractiveBackground = () => {
                         y: mousePosition.y * -0.05,
                     }}
                     transition={{ type: "smooth", duration: 2.5 }}
-                    className="absolute bottom-[-10%] right-[-10%] w-[90%] h-[90%] bg-purple-600/5 rounded-full blur-[150px] mix-blend-screen opacity-30 animate-nebula-reverse"
+                    className={`absolute bottom-[-10%] right-[-10%] w-[90%] h-[90%] bg-purple-600/5 rounded-full blur-[150px] mix-blend-screen opacity-30 ${!isMobile ? 'animate-nebula-reverse' : ''}`}
                 />
 
                 {/* Stars - Less stars on mobile */}

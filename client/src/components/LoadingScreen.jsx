@@ -47,7 +47,6 @@ const LoadingScreen = () => {
                                         alt="IVC Logo"
                                         initial={{ opacity: 0, scale: 0.8 }}
                                         animate={{ opacity: 1, scale: 1 }}
-                                        exit={{ scale: 1.2, opacity: 0, filter: "blur(15px)" }}
                                         transition={{
                                             type: "spring",
                                             stiffness: 45,

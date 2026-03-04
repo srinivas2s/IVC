@@ -65,10 +65,10 @@ function App() {
                   src={logo}
                   alt="IVC Logo"
                   onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                  className="w-12 h-12 md:w-16 md:h-16 cursor-pointer drop-shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:scale-110 transition-transform duration-300"
+                  className="w-12 h-12 md:w-24 md:h-24 cursor-pointer drop-shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:scale-110 transition-transform duration-300"
                 />
                 {/* Tooltip or Label */}
-                <div className="absolute left-full ml-4 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-md border border-white/10 px-3 py-1 rounded-full text-[10px] font-black uppercase tracking-widest text-white/70 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                <div className="absolute left-full ml-6 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-[12px] font-black uppercase tracking-widest text-white/70 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                   Back to Top
                 </div>
               </div>
