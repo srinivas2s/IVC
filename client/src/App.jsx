@@ -59,7 +59,7 @@ function App() {
           >
             {/* Smooth flying logo transition */}
             {isPastHome && (
-              <div className="fixed top-6 left-6 z-[100] group">
+              <div className="fixed top-6 left-6 z-[90] group">
                 <motion.img
                   layoutId="main-logo"
                   src={logo}
@@ -104,6 +104,7 @@ function App() {
               <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <div className="flex flex-col md:flex-row justify-between items-center gap-8 mb-8 text-left">
                   <div className="max-w-sm">
+                    <img src={logo} alt="IVC Logo" className="w-20 h-20 mb-6 drop-shadow-[0_0_20px_rgba(255,255,255,0.25)] hover:scale-110 transition-transform duration-500" />
                     <h3 className="text-white text-xl font-black italic uppercase tracking-tighter mb-2">INNOVATORS & VISIONARIES CLUB</h3>
                     <p className="text-gray-400 text-sm leading-relaxed max-w-[320px] font-black opacity-80 mb-6">
                       A community dedicated to fostering innovation, creativity, and technical excellence among students.
@@ -138,7 +139,7 @@ function App() {
                   </div>
 
                   <div className="flex flex-col gap-4 md:text-right">
-                    <h4 className="text-white font-black uppercase tracking-widest text-xs">Developer</h4>
+                    <h4 className="text-white font-black uppercase tracking-widest text-xs">Designed & Developed by</h4>
                     <a href="mailto:srinivas2006.srini@gmail.com" className="group block">
                       <p className="text-white font-black text-lg transition-colors">Srinivas P</p>
                       <p className="text-gray-400 text-xs font-black opacity-60">srinivas2006.srini@gmail.com</p>

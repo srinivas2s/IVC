@@ -14,7 +14,7 @@ const links = [
     { name: 'Achievements', id: 'achievements' },
 ];
 
-const Navbar = () => {
+const Navbar = ({ isPastHome }) => {
     const [isOpen, setIsOpen] = useState(false);
     const [activeSection, setActiveSection] = useState('home');
 
@@ -44,96 +44,123 @@ const Navbar = () => {
     }, []);
 
     return (
-        <nav className="fixed left-1/2 -translate-x-1/2 z-50 top-6 w-[95%] max-w-7xl">
-            {/* Main Navbar Bar */}
-            <div className={`
-                relative bg-[#020408]/40 backdrop-blur-[20px] border border-white/10 rounded-[24px] items-center justify-between px-4 sm:px-10 py-3 sm:py-5 flex-nowrap shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)]
-                ${isOpen ? 'hidden' : 'flex'}
-                group/nav
-            `}>
-                {/* Subtle Bloom behind the bar */}
-                <div className="absolute inset-x-10 inset-y-0 bg-ivc-primary/5 blur-3xl opacity-0 group-hover/nav:opacity-100 transition-opacity duration-1000 -z-10" />
-
-                <div className="flex items-center gap-2 sm:gap-6 flex-1 min-w-0">
-                    <div className="flex items-center select-none min-w-0">
-                        <div className="overflow-hidden shrink-0">
-                            <motion.span
-                                initial={{ x: '100%', opacity: 0, filter: 'blur(10px)' }}
-                                animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
-                                transition={{
-                                    duration: 1.2,
-                                    ease: [0.16, 1, 0.3, 1],
-                                    delay: 0.3
-                                }}
-                                className="text-white font-light text-xl sm:text-3xl tracking-tighter block mr-2 sm:mr-6"
-                            >
-                                inunity
-                            </motion.span>
-                        </div>
-
-                        <motion.div
-                            initial={{ scaleY: 0, opacity: 0 }}
-                            animate={{ scaleY: 1, opacity: 1 }}
-                            transition={{ duration: 0.8, delay: 0.2 }}
-                            className="w-[1px] h-8 sm:h-14 bg-white/20 shrink-0"
-                        />
-
-                        <div className="flex items-center gap-2 sm:gap-5 ml-2 sm:ml-6 min-w-0 overflow-hidden">
-                            <motion.img
-                                src={vvceLogo}
-                                alt="VVCE Logo"
-                                initial={{ x: '-100%', opacity: 0, filter: 'blur(10px)', scale: 0.8 }}
-                                animate={{ x: 0, opacity: 1, filter: 'blur(0px)', scale: 1 }}
-                                transition={{
-                                    duration: 1.2,
-                                    ease: [0.16, 1, 0.3, 1],
-                                    delay: 0.4
-                                }}
-                                className="h-10 sm:h-20 w-auto brightness-110 shrink-0"
-                            />
-                            <motion.div
-                                initial={{ x: '-30%', opacity: 0, filter: 'blur(8px)' }}
-                                animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
-                                transition={{
-                                    duration: 1.3,
-                                    ease: [0.16, 1, 0.3, 1],
-                                    delay: 0.5
-                                }}
-                                className="flex flex-col justify-center select-none min-w-0 overflow-hidden"
-                            >
-                                <span className="text-[6px] sm:text-[11px] text-white/70 leading-tight uppercase tracking-[0.12em] font-medium truncate mb-0.5">Vidyavardhaka Sangha ®, Mysore</span>
-                                <span className="text-[10px] sm:text-[21px] text-white font-bold leading-tight tracking-tight truncate mb-0.5">Vidyavardhaka College of Engineering</span>
-                                <span className="text-[6px] sm:text-[13px] text-white/50 leading-tight font-medium truncate">Autonomous institute affiliated to VTU, Belagavi</span>
-                            </motion.div>
-                        </div>
-                    </div>
-                </div>
-
-                <div className="flex shrink-0">
-                    <button
-                        onClick={() => setIsOpen(true)}
-                        className="inline-flex flex-col items-center justify-center p-2 w-10 h-10 sm:w-14 sm:h-14 space-y-1.5 sm:space-y-2.5 text-ivc-text rounded-2xl hover:bg-white/5 transition-all group/btn active:scale-90"
+        <nav className={`fixed z-[100] transition-all duration-700 ease-[0.16,1,0.3,1] ${isPastHome ? 'top-6 right-6 left-auto translate-x-0 w-auto' : 'top-6 left-1/2 -translate-x-1/2 w-[95%] max-w-7xl'}`}>
+            <AnimatePresence mode="wait">
+                {!isPastHome ? (
+                    <motion.div
+                        key="full-nav"
+                        initial={{ opacity: 0, y: -20 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, scale: 0.95 }}
+                        className={`
+                            relative bg-[#020408]/40 backdrop-blur-[20px] border border-white/10 rounded-[24px] items-center justify-between px-4 sm:px-10 py-3 sm:py-5 flex-nowrap shadow-[0_30px_60px_-15px_rgba(0,0,0,0.6)]
+                            ${isOpen ? 'hidden' : 'flex'}
+                            group/nav
+                        `}
                     >
-                        <span className="sr-only">Open main menu</span>
-                        {[0, 1, 2].map((i) => (
-                            <motion.div
-                                key={i}
-                                initial={{ width: 0, opacity: 0 }}
-                                animate={{
-                                    width: i === 1 ? (window.innerWidth < 640 ? 18 : 24) : (window.innerWidth < 640 ? 12 : 18),
-                                    opacity: 1
-                                }}
-                                transition={{
-                                    duration: 0.8,
-                                    delay: 0.6 + (i * 0.1),
-                                    ease: [0.16, 1, 0.3, 1]
-                                }}
-                                className="h-[2px] sm:h-[3px] bg-white rounded-full group-hover/btn:bg-ivc-primary transition-colors"
-                            />
-                        ))}
-                    </button>
-                </div>
-            </div>
+                        {/* Subtle Bloom behind the bar */}
+                        <div className="absolute inset-x-10 inset-y-0 bg-ivc-primary/5 blur-3xl opacity-0 group-hover/nav:opacity-100 transition-opacity duration-1000 -z-10" />
+
+                        <div className="flex items-center gap-2 sm:gap-6 flex-1 min-w-0">
+                            <div className="flex items-center select-none min-w-0">
+                                <div className="overflow-hidden shrink-0">
+                                    <motion.span
+                                        initial={{ x: '100%', opacity: 0, filter: 'blur(10px)' }}
+                                        animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
+                                        transition={{
+                                            duration: 1.2,
+                                            ease: [0.16, 1, 0.3, 1],
+                                            delay: 0.3
+                                        }}
+                                        className="text-white font-light text-xl sm:text-3xl tracking-tighter block mr-2 sm:mr-6"
+                                    >
+                                        inunity
+                                    </motion.span>
+                                </div>
+
+                                <motion.div
+                                    initial={{ scaleY: 0, opacity: 0 }}
+                                    animate={{ scaleY: 1, opacity: 1 }}
+                                    transition={{ duration: 0.8, delay: 0.2 }}
+                                    className="w-[1px] h-8 sm:h-14 bg-white/20 shrink-0"
+                                />
+
+                                <div className="flex items-center gap-2 sm:gap-5 ml-2 sm:ml-6 min-w-0 overflow-hidden">
+                                    <motion.img
+                                        src={vvceLogo}
+                                        alt="VVCE Logo"
+                                        initial={{ x: '-100%', opacity: 0, filter: 'blur(10px)', scale: 0.8 }}
+                                        animate={{ x: 0, opacity: 1, filter: 'blur(0px)', scale: 1 }}
+                                        transition={{
+                                            duration: 1.2,
+                                            ease: [0.16, 1, 0.3, 1],
+                                            delay: 0.4
+                                        }}
+                                        className="h-10 sm:h-20 w-auto brightness-110 shrink-0"
+                                    />
+                                    <motion.div
+                                        initial={{ x: '-30%', opacity: 0, filter: 'blur(8px)' }}
+                                        animate={{ x: 0, opacity: 1, filter: 'blur(0px)' }}
+                                        transition={{
+                                            duration: 1.3,
+                                            ease: [0.16, 1, 0.3, 1],
+                                            delay: 0.5
+                                        }}
+                                        className="flex flex-col justify-center select-none min-w-0 overflow-hidden"
+                                    >
+                                        <span className="text-[6px] sm:text-[11px] text-white/70 leading-tight uppercase tracking-[0.12em] font-medium truncate mb-0.5">Vidyavardhaka Sangha ®, Mysore</span>
+                                        <span className="text-[10px] sm:text-[21px] text-white font-bold leading-tight tracking-tight truncate mb-0.5">Vidyavardhaka College of Engineering</span>
+                                        <span className="text-[6px] sm:text-[13px] text-white/50 leading-tight font-medium truncate">Autonomous institute affiliated to VTU, Belagavi</span>
+                                    </motion.div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div className="flex shrink-0">
+                            <button
+                                onClick={() => setIsOpen(true)}
+                                className="inline-flex flex-col items-center justify-center p-2 w-10 h-10 sm:w-14 sm:h-14 space-y-1.5 sm:space-y-2.5 text-ivc-text rounded-2xl hover:bg-white/5 transition-all group/btn active:scale-90"
+                            >
+                                <span className="sr-only">Open main menu</span>
+                                {[0, 1, 2].map((i) => (
+                                    <motion.div
+                                        key={i}
+                                        initial={{ width: 0, opacity: 0 }}
+                                        animate={{
+                                            width: i === 1 ? (window.innerWidth < 640 ? 18 : 24) : (window.innerWidth < 640 ? 12 : 18),
+                                            opacity: 1
+                                        }}
+                                        transition={{
+                                            duration: 0.8,
+                                            delay: 0.6 + (i * 0.1),
+                                            ease: [0.16, 1, 0.3, 1]
+                                        }}
+                                        className="h-[2px] sm:h-[3px] bg-white rounded-full group-hover/btn:bg-ivc-primary transition-colors"
+                                    />
+                                ))}
+                            </button>
+                        </div>
+                    </motion.div>
+                ) : (
+                    <motion.button
+                        key="compact-nav"
+                        initial={{ opacity: 0, scale: 0.8 }}
+                        animate={{ opacity: 1, scale: 1 }}
+                        exit={{ opacity: 0, scale: 0.8 }}
+                        onClick={() => setIsOpen(true)}
+                        className={`
+                            p-3 sm:p-5 bg-[#020408]/60 backdrop-blur-[24px] border border-white/10 rounded-[20px] shadow-[0_20px_40px_rgba(0,0,0,0.4)] flex items-center justify-center group/btn active:scale-95 transition-all cursor-pointer
+                            ${isOpen ? 'hidden' : 'flex'}
+                        `}
+                    >
+                        <div className="flex flex-col gap-1.5 items-center">
+                            <div className="w-6 h-[2px] bg-white rounded-full group-hover/btn:bg-ivc-primary transition-colors"></div>
+                            <div className="w-4 h-[2px] bg-white rounded-full group-hover/btn:bg-ivc-primary transition-colors ml-2"></div>
+                            <div className="w-6 h-[2px] bg-white rounded-full group-hover/btn:bg-ivc-primary transition-colors"></div>
+                        </div>
+                    </motion.button>
+                )}
+            </AnimatePresence>
 
             {/* Menu Backdrop */}
             <AnimatePresence>
