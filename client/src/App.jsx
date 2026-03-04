@@ -80,11 +80,11 @@ function App() {
             <AnimatePresence>
               {isPastHome && !isFooterInView && (
                 <motion.div
-                  initial={{ opacity: 0, scale: 0.8, x: 20 }}
+                  initial={{ opacity: 0, scale: 0.8, x: -20 }}
                   animate={{ opacity: 1, scale: 1, x: 0 }}
-                  exit={{ opacity: 0, scale: 0.8, x: 20 }}
+                  exit={{ opacity: 0, scale: 0.8, x: -20 }}
                   transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                  className="fixed top-6 right-6 z-[90] group"
+                  className="fixed top-6 left-6 z-[90] group"
                 >
                   <motion.img
                     layoutId="main-logo"
@@ -94,7 +94,7 @@ function App() {
                     className="w-12 h-12 md:w-24 md:h-24 cursor-pointer drop-shadow-[0_0_20px_rgba(34,211,238,0.3)] hover:scale-110 transition-transform duration-300"
                   />
                   {/* Tooltip or Label */}
-                  <div className="absolute right-full mr-6 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-[12px] font-black uppercase tracking-widest text-white/70 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
+                  <div className="absolute left-full ml-6 top-1/2 -translate-y-1/2 bg-black/40 backdrop-blur-md border border-white/10 px-4 py-2 rounded-full text-[12px] font-black uppercase tracking-widest text-white/70 opacity-0 group-hover:opacity-100 transition-opacity whitespace-nowrap pointer-events-none">
                     Back to Top
                   </div>
                 </motion.div>
@@ -166,6 +166,20 @@ function App() {
                   <div className="flex flex-col items-center md:items-end text-center md:text-right">
                     <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-400 hover:text-white transition-colors text-sm md:text-right font-black mb-4">About IVC</button>
                     <button onClick={() => document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-400 hover:text-white transition-colors text-sm md:text-right font-black mb-4">Latest Events</button>
+                    <a
+                      href="/IVC_Code_of_Conduct_One_Page.pdf"
+                      download="IVC_Code_of_Conduct.pdf"
+                      className="text-gray-400 hover:text-white transition-colors text-sm md:text-right font-black mb-4"
+                    >
+                      Code of Conduct
+                    </a>
+                    <a
+                      href="/I&V CLUB.pdf"
+                      download="IVC_Program_Structure.pdf"
+                      className="text-gray-400 hover:text-white transition-colors text-sm md:text-right font-black mb-4"
+                    >
+                      Structure of Programs
+                    </a>
                     <button
                       onClick={() => setShowJoinModal(true)}
                       className="text-white font-black hover:scale-105 transition-all text-sm md:text-right uppercase italic tracking-widest group relative w-fit mt-2 md:ml-auto"
