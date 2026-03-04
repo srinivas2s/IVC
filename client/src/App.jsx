@@ -164,7 +164,6 @@ function App() {
 
                   {/* Right Column: Quick Links */}
                   <div className="flex flex-col items-center md:items-end text-center md:text-right">
-                    <h4 className="text-white font-black uppercase tracking-widest text-xs mb-6 opacity-50">Quick Links</h4>
                     <button onClick={() => document.getElementById('about')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-400 hover:text-white transition-colors text-sm md:text-right font-black mb-4">About IVC</button>
                     <button onClick={() => document.getElementById('events')?.scrollIntoView({ behavior: 'smooth' })} className="text-gray-400 hover:text-white transition-colors text-sm md:text-right font-black mb-4">Latest Events</button>
                     <button
