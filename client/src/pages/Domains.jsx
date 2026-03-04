@@ -34,7 +34,7 @@ const Domains = () => {
                         OUR <span className="text-cyan-400 text-glow-cyan">DOMAINS</span>
                     </h2>
                     <div className="h-[2px] w-16 bg-cyan-400/50 mb-6" />
-                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/30 uppercase max-w-xl">
+                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase max-w-xl">
                         Six specialized verticals where innovation meets execution
                     </p>
                 </motion.div>
@@ -51,7 +51,7 @@ const Domains = () => {
                             >
                                 {/* Number */}
                                 <div className="absolute top-6 right-6 w-10 h-10 rounded-lg border border-white/5 flex items-center justify-center">
-                                    <span className="font-display text-xs text-white/15">{String(i + 1).padStart(2, '0')}</span>
+                                    <span className="font-display text-xs text-white/30">{String(i + 1).padStart(2, '0')}</span>
                                 </div>
 
                                 {/* Shimmer on hover */}
@@ -86,4 +86,5 @@ const Domains = () => {
 };
 
 export default Domains;
+
 

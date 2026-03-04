@@ -31,7 +31,7 @@ const Team = () => {
                         THE <span className="text-cyan-400 text-glow-cyan">TEAM</span>
                     </h2>
                     <div className="h-[2px] w-16 bg-cyan-400/50 mx-auto mb-6" />
-                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/30 uppercase">
+                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
                         The passionate innovators driving IVC forward
                     </p>
                 </motion.div>
@@ -46,13 +46,13 @@ const Team = () => {
                         >
                             {/* Number */}
                             <div className="absolute top-4 right-4 w-8 h-8 rounded-lg border border-white/5 flex items-center justify-center">
-                                <span className="font-display text-[10px] text-white/15">{String(i + 1).padStart(2, '0')}</span>
+                                <span className="font-display text-[10px] text-white/30">{String(i + 1).padStart(2, '0')}</span>
                             </div>
 
                             {/* Avatar */}
                             <div className="relative mx-auto mb-6 w-24 h-24">
                                 <div className="w-24 h-24 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:border-cyan-400/30 transition-all duration-500">
-                                    <span className="font-display text-2xl font-black text-white/15 group-hover:text-cyan-400/40 transition-colors duration-500">
+                                    <span className="font-display text-2xl font-black text-white/30 group-hover:text-cyan-400/40 transition-colors duration-500">
                                         {member.initials}
                                     </span>
                                 </div>
@@ -73,13 +73,13 @@ const Team = () => {
 
                             {/* Social links on hover */}
                             <div className="flex justify-center gap-3 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                <a href="#" className="w-8 h-8 rounded-lg border border-white/5 flex items-center justify-center text-white/20 hover:text-cyan-400 hover:border-cyan-400/20 transition-all">
+                                <a href="#" className="w-8 h-8 rounded-lg border border-white/5 flex items-center justify-center text-white/40 hover:text-cyan-400 hover:border-cyan-400/20 transition-all">
                                     <Linkedin size={13} />
                                 </a>
-                                <a href="#" className="w-8 h-8 rounded-lg border border-white/5 flex items-center justify-center text-white/20 hover:text-cyan-400 hover:border-cyan-400/20 transition-all">
+                                <a href="#" className="w-8 h-8 rounded-lg border border-white/5 flex items-center justify-center text-white/40 hover:text-cyan-400 hover:border-cyan-400/20 transition-all">
                                     <Github size={13} />
                                 </a>
-                                <a href="#" className="w-8 h-8 rounded-lg border border-white/5 flex items-center justify-center text-white/20 hover:text-cyan-400 hover:border-cyan-400/20 transition-all">
+                                <a href="#" className="w-8 h-8 rounded-lg border border-white/5 flex items-center justify-center text-white/40 hover:text-cyan-400 hover:border-cyan-400/20 transition-all">
                                     <Mail size={13} />
                                 </a>
                             </div>
@@ -95,4 +95,5 @@ const Team = () => {
 };
 
 export default Team;
+
 

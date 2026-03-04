@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    background: #050a15;
+    background: #02040a;
     color: #ffffff;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -22,42 +22,38 @@
   }
 }
 
-/* ===== TECHSOLSTICE DESIGN SYSTEM ===== */
+/* ===== TECHSOLSTICE DESIGN SYSTEM REFINEMENT ===== */
 
-/* Cross/Plus sign grid background - like TechSolstice */
+/* High-fidelity crosshair grid pattern like TechSolstice */
 .bg-cross-grid {
+  background-color: #02040a;
   background-image:
-    radial-gradient(circle, rgba(34, 211, 238, 0.08) 1px, transparent 1px);
+    radial-gradient(circle at center, rgba(34, 211, 238, 0.25) 0.5px, transparent 0.5px),
+    linear-gradient(to right, rgba(34, 211, 238, 0.08) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(34, 211, 238, 0.08) 1px, transparent 1px);
   background-size: 40px 40px;
+  background-position: center center;
 }
 
-/* Blueprint grid alternate */
-.bg-blueprint {
-  background-image:
-    linear-gradient(rgba(34, 211, 238, 0.02) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 211, 238, 0.02) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-
-/* Viewport edge glow - always visible, inset */
+/* Inset viewport glow - more pronounced like TechSolstice */
 .viewport-glow {
   box-shadow:
-    inset 0 0 80px rgba(34, 211, 238, 0.03),
-    inset 0 0 200px rgba(34, 211, 238, 0.015);
+    inset 0 0 100px rgba(34, 211, 238, 0.05),
+    inset 0 0 200px rgba(34, 211, 238, 0.02);
 }
 
-/* Glow card */
+/* Glow Card Refinement */
 .glow-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.015);
-  border: 1px solid rgba(34, 211, 238, 0.06);
+  background: rgba(255, 255, 255, 0.01);
+  border: 1px solid rgba(255, 255, 255, 0.03);
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glow-card:hover {
   border-color: rgba(34, 211, 238, 0.2);
-  box-shadow: 0 0 40px rgba(34, 211, 238, 0.05), inset 0 0 40px rgba(34, 211, 238, 0.02);
-  background: rgba(255, 255, 255, 0.025);
+  background: rgba(34, 211, 238, 0.02);
+  box-shadow: 0 0 40px rgba(34, 211, 238, 0.05);
 }
 
 /* Watermark */
@@ -65,13 +61,13 @@
   position: absolute;
   font-family: 'Orbitron', sans-serif;
   font-weight: 900;
-  font-size: clamp(4rem, 14vw, 13rem);
-  color: rgba(255, 255, 255, 0.012);
+  font-size: clamp(5rem, 15vw, 15rem);
+  color: rgba(255, 255, 255, 0.025);
   text-transform: uppercase;
   white-space: nowrap;
   pointer-events: none;
   user-select: none;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.1em;
 }
 
 /* Cyan glow text */
@@ -79,10 +75,45 @@
   text-shadow: 0 0 20px rgba(34, 211, 238, 0.4), 0 0 60px rgba(34, 211, 238, 0.15);
 }
 
-/* Dot matrix for footer */
+/* Dot matrix */
 .dot-matrix {
   background-image: radial-gradient(circle, rgba(34, 211, 238, 0.1) 1px, transparent 1px);
-  background-size: 10px 10px;
+  background-size: 8px 8px;
+}
+
+/* Marquee speed adjustment */
+.animate-marquee {
+  display: flex;
+  width: max-content;
+  animation: marquee 40s linear infinite;
+}
+
+@keyframes marquee {
+  0% {
+    transform: translateX(0);
+  }
+
+  100% {
+    transform: translateX(-50%);
+  }
+}
+
+@keyframes pulse-glow {
+
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+
+  50% {
+    opacity: 0.5;
+    transform: scale(1.05);
+  }
+}
+
+.animate-pulse-glow {
+  animation: pulse-glow 4s ease-in-out infinite;
 }
 
 /* Scrollbar hidden */
@@ -99,95 +130,4 @@ body {
 ::selection {
   background: rgba(34, 211, 238, 0.3);
   color: white;
-}
-
-/* ===== SCROLL TIMELINE ===== */
-.scroll-timeline {
-  position: fixed;
-  right: 24px;
-  top: 50%;
-  transform: translateY(-50%);
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0;
-}
-
-.scroll-timeline-line {
-  width: 1px;
-  height: 100%;
-  background: linear-gradient(to bottom, transparent, rgba(34, 211, 238, 0.1), rgba(34, 211, 238, 0.1), transparent);
-}
-
-/* ===== ANIMATIONS ===== */
-
-@keyframes float {
-
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-
-  50% {
-    transform: translateY(-20px);
-  }
-}
-
-@keyframes nebula-drift {
-  0% {
-    transform: translate(0, 0) scale(1);
-  }
-
-  33% {
-    transform: translate(8%, -8%) scale(1.08);
-  }
-
-  66% {
-    transform: translate(-4%, 12%) scale(0.92);
-  }
-
-  100% {
-    transform: translate(0, 0) scale(1);
-  }
-}
-
-@keyframes marquee {
-  0% {
-    transform: translateX(0);
-  }
-
-  100% {
-    transform: translateX(-50%);
-  }
-}
-
-@keyframes scan-line {
-  0% {
-    top: -5%;
-  }
-
-  100% {
-    top: 105%;
-  }
-}
-
-.animate-float {
-  animation: float 8s ease-in-out infinite;
-}
-
-.animate-nebula {
-  animation: nebula-drift 25s ease-in-out infinite alternate;
-}
-
-.animate-nebula-reverse {
-  animation: nebula-drift 30s ease-in-out infinite alternate-reverse;
-}
-
-.animate-marquee {
-  animation: marquee 30s linear infinite;
-}
-
-.animate-scan {
-  animation: scan-line 6s linear infinite;
 }

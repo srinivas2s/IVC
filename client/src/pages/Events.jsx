@@ -51,7 +51,7 @@ const Events = () => {
                         THE <span className="text-cyan-400 text-glow-cyan">EVENTS</span>
                     </h2>
                     <div className="h-[2px] w-16 bg-cyan-400/50 mx-auto mb-6" />
-                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/30 uppercase">
+                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
                         Workshops, hackathons, and experiences that transform ideas into reality
                     </p>
                 </motion.div>
@@ -88,10 +88,10 @@ const Events = () => {
                                 <h3 className="font-display text-2xl md:text-4xl font-black tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase mb-4">
                                     {event.title}
                                 </h3>
-                                <p className="text-white/30 text-sm leading-relaxed font-medium mb-6 max-w-md">
+                                <p className="text-white/50 text-sm leading-relaxed font-medium mb-6 max-w-md">
                                     {event.description}
                                 </p>
-                                <div className="flex items-center gap-4 text-white/20">
+                                <div className="flex items-center gap-4 text-white/40">
                                     <Calendar size={14} />
                                     <span className="font-display text-[10px] tracking-[0.3em] uppercase">Coming Soon</span>
                                 </div>
@@ -144,13 +144,13 @@ const Events = () => {
                                             { icon: Clock, text: events.find(e => e.id === selectedId).time },
                                             { icon: MapPin, text: events.find(e => e.id === selectedId).location },
                                         ].map((item, i) => (
-                                            <div key={i} className="flex items-center gap-3 text-white/30">
+                                            <div key={i} className="flex items-center gap-3 text-white/50">
                                                 <item.icon size={14} className="text-cyan-400/50" />
                                                 <span className="font-display text-[10px] tracking-[0.2em] uppercase">{item.text}</span>
                                             </div>
                                         ))}
                                     </div>
-                                    <p className="text-white/40 text-sm leading-relaxed font-medium mb-auto">
+                                    <p className="text-white/60 text-sm leading-relaxed font-medium mb-auto">
                                         {events.find(e => e.id === selectedId).description}
                                     </p>
                                     <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
@@ -160,8 +160,8 @@ const Events = () => {
                                         <div className="flex gap-2">
                                             {events.find(e => e.id === selectedId).title.includes("GitHub") && (
                                                 <>
-                                                    <Github className="text-white/20 w-4 h-4" />
-                                                    <Triangle className="text-white/20 w-4 h-4 fill-white/20" />
+                                                    <Github className="text-white/40 w-4 h-4" />
+                                                    <Triangle className="text-white/40 w-4 h-4 fill-white/20" />
                                                 </>
                                             )}
                                         </div>
@@ -177,4 +177,5 @@ const Events = () => {
 };
 
 export default Events;
+
 

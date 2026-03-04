@@ -60,7 +60,7 @@ const Achievements = () => {
                         OUR <span className="text-cyan-400 text-glow-cyan">ACHIEVEMENTS</span>
                     </h2>
                     <div className="h-[2px] w-16 bg-cyan-400/50 mx-auto mb-6" />
-                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/30 uppercase">
+                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
                         Numbers that reflect our dedication to innovation
                     </p>
                 </motion.div>
@@ -102,4 +102,5 @@ const Achievements = () => {
 };
 
 export default Achievements;
+
 

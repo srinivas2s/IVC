@@ -38,7 +38,7 @@ const Join = ({ isModal = false }) => {
                         JOIN <span className="text-cyan-400 text-glow-cyan">IVC</span>
                     </h2>
                     <div className="h-[2px] w-12 bg-cyan-400/50 mx-auto mb-4" />
-                    <p className="font-display text-[9px] md:text-[10px] tracking-[0.4em] text-white/30 uppercase">
+                    <p className="font-display text-[9px] md:text-[10px] tracking-[0.4em] text-white/50 uppercase">
                         Empowering the next generation of visionaries
                     </p>
                 </div>
@@ -61,7 +61,7 @@ const Join = ({ isModal = false }) => {
                                 <CheckCircle className="text-cyan-400" size={40} />
                             </motion.div>
                             <h3 className="font-display text-xl font-black tracking-wider text-white uppercase mb-3">Application Filed!</h3>
-                            <p className="text-white/30 text-sm font-medium mb-8">We'll review your credentials shortly.</p>
+                            <p className="text-white/50 text-sm font-medium mb-8">We'll review your credentials shortly.</p>
                             <button onClick={() => setStatus('')} className="font-display text-[10px] tracking-[0.3em] text-cyan-400/60 uppercase hover:text-cyan-400 transition-colors border border-cyan-400/10 px-6 py-3 rounded-lg hover:border-cyan-400/30">
                                 BACK TO FORM
                             </button>
@@ -85,11 +85,11 @@ const Join = ({ isModal = false }) => {
                                             animate={{ opacity: 1, y: 0 }}
                                             transition={{ delay: idx * 0.06 }}
                                         >
-                                            <label className="block font-display text-[9px] tracking-[0.3em] text-white/20 uppercase mb-2 ml-1">
+                                            <label className="block font-display text-[9px] tracking-[0.3em] text-white/40 uppercase mb-2 ml-1">
                                                 {field.label}
                                             </label>
                                             <div className="relative group">
-                                                <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300 ${focusedField === field.name ? 'text-cyan-400' : 'text-white/15'}`}>
+                                                <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300 ${focusedField === field.name ? 'text-cyan-400' : 'text-white/30'}`}>
                                                     <Icon size={16} />
                                                 </div>
                                                 <input
@@ -130,4 +130,5 @@ const Join = ({ isModal = false }) => {
 };
 
 export default Join;
+
 

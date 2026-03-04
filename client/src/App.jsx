@@ -175,13 +175,13 @@ function App() {
                       <div className="w-[1px] h-8 bg-white/[0.06]" />
                       <img src={vvceLogo} alt="VVCE" className="h-10 w-auto opacity-40" />
                     </div>
-                    <p className="text-white/20 text-sm leading-relaxed font-medium max-w-md mb-6">
+                    <p className="text-white/40 text-sm leading-relaxed font-medium max-w-md mb-6">
                       Vidyavardhaka College of Engineering, Mysuru<br />
                       Autonomous institute affiliated to VTU, Belagavi
                     </p>
                     <div className="flex flex-col gap-2 mb-8">
-                      <a href="/IVC_Code_of_Conduct_One_Page.pdf" download="IVC_Code_of_Conduct.pdf" className="font-display text-[9px] tracking-[0.3em] text-white/15 uppercase hover:text-cyan-400 transition-colors">↓ Code of Conduct</a>
-                      <a href="/I&V CLUB.pdf" download="IVC_Program_Structure.pdf" className="font-display text-[9px] tracking-[0.3em] text-white/15 uppercase hover:text-cyan-400 transition-colors">↓ Structure of Programs</a>
+                      <a href="/IVC_Code_of_Conduct_One_Page.pdf" download="IVC_Code_of_Conduct.pdf" className="font-display text-[9px] tracking-[0.3em] text-white/40 uppercase hover:text-cyan-400 transition-colors">↓ Code of Conduct</a>
+                      <a href="/I&V CLUB.pdf" download="IVC_Program_Structure.pdf" className="font-display text-[9px] tracking-[0.3em] text-white/40 uppercase hover:text-cyan-400 transition-colors">↓ Structure of Programs</a>
                     </div>
                     <div className="flex gap-3">
                       {[
@@ -189,32 +189,32 @@ function App() {
                         { href: "https://www.linkedin.com/in/innovators-and-visionaries-club-6992443a3", icon: "M19 0h-14c-2.761 0-5 2.239-5 5v14c0 2.761 2.239 5 5 5h14c2.761 0 5-2.239 5-5v-14c0-2.761-2.239-5-5-5zm-11 19h-3v-11h3v11zm-1.5-12.268c-.966 0-1.75-.79-1.75-1.764s.784-1.764 1.75-1.764 1.75.79 1.75 1.764-.783 1.764-1.75 1.764zm13.5 12.268h-3v-5.604c0-3.368-4-3.113-4 0v5.604h-3v-11h3v1.765c1.396-2.586 7-2.777 7 2.476v6.759z" },
                         { href: "https://x.com/ivc__official", icon: "M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z" },
                       ].map((s, i) => (
-                        <a key={i} href={s.href} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-lg border border-white/[0.05] flex items-center justify-center text-white/15 hover:text-cyan-400 hover:border-cyan-400/15 transition-all">
+                        <a key={i} href={s.href} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-lg border border-white/[0.05] flex items-center justify-center text-white/30 hover:text-cyan-400 hover:border-cyan-400/15 transition-all">
                           <svg className="w-4 h-4" fill="currentColor" viewBox="0 0 24 24"><path d={s.icon} /></svg>
                         </a>
                       ))}
-                      <a href="mailto:ivc.official01@gmail.com" className="w-9 h-9 rounded-lg border border-white/[0.05] flex items-center justify-center text-white/15 hover:text-cyan-400 hover:border-cyan-400/15 transition-all">
+                      <a href="mailto:ivc.official01@gmail.com" className="w-9 h-9 rounded-lg border border-white/[0.05] flex items-center justify-center text-white/30 hover:text-cyan-400 hover:border-cyan-400/15 transition-all">
                         <svg className="w-4 h-4" fill="none" stroke="currentColor" strokeWidth="2" viewBox="0 0 24 24"><path d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>
                       </a>
                     </div>
                   </div>
                   <div className="md:text-right">
-                    <h3 className="font-display text-base md:text-lg font-black tracking-wider text-white/50 uppercase mb-8">Contact</h3>
-                    <a href="mailto:ivc.official01@gmail.com" className="block font-display text-[10px] md:text-xs tracking-[0.2em] text-white/20 hover:text-cyan-400 transition-colors uppercase mb-8">
+                    <h3 className="font-display text-base md:text-lg font-black tracking-wider text-white/60 uppercase mb-8">Contact</h3>
+                    <a href="mailto:ivc.official01@gmail.com" className="block font-display text-[10px] md:text-xs tracking-[0.2em] text-white/40 hover:text-cyan-400 transition-colors uppercase mb-8">
                       ivc.official01@gmail.com
                     </a>
-                    <h4 className="font-display text-[9px] tracking-[0.3em] text-white/10 uppercase mb-4">Quick Links</h4>
+                    <h4 className="font-display text-[9px] tracking-[0.3em] text-white/30 uppercase mb-4">Quick Links</h4>
                     <div className="flex flex-col gap-2 md:items-end">
                       {['About', 'Events', 'Domains', 'Team'].map(l => (
                         <button key={l} onClick={() => document.getElementById(l.toLowerCase())?.scrollIntoView({ behavior: 'smooth' })}
-                          className="font-display text-[10px] tracking-[0.2em] text-white/15 hover:text-cyan-400 transition-colors uppercase">{l}</button>
+                          className="font-display text-[10px] tracking-[0.2em] text-white/40 hover:text-cyan-400 transition-colors uppercase">{l}</button>
                       ))}
                     </div>
                   </div>
                 </div>
                 <div className="pt-8 border-t border-white/[0.03] flex flex-col md:flex-row justify-between items-center gap-4">
-                  <span className="font-display text-[8px] tracking-[0.3em] text-white/10 uppercase">© 2026 Innovators & Visionaries Club</span>
-                  <span className="font-display text-[8px] tracking-[0.3em] text-white/10 uppercase">VVCE, Mysuru</span>
+                  <span className="font-display text-[8px] tracking-[0.3em] text-white/30 uppercase">© 2026 Innovators & Visionaries Club</span>
+                  <span className="font-display text-[8px] tracking-[0.3em] text-white/30 uppercase">VVCE, Mysuru</span>
                 </div>
               </div>
               <div className="relative h-20 md:h-28 overflow-hidden">
@@ -232,8 +232,6 @@ function App() {
                   <div className="absolute inset-0 bg-[#050a15]/85 backdrop-blur-xl" onClick={() => setShowJoinModal(false)} />
                   <motion.div initial={{ scale: 0.95, opacity: 0, y: 20 }} animate={{ scale: 1, opacity: 1, y: 0 }} exit={{ scale: 0.95, opacity: 0, y: 20 }}
                     data-lenis-prevent className="relative z-10 w-full max-w-3xl max-h-[85vh] overflow-y-auto bg-[#0a1020]/95 border border-white/[0.05] rounded-2xl shadow-[0_30px_100px_rgba(0,0,0,0.8)]">
-                    <motion.div animate={{ top: ['0%', '100%', '0%'] }} transition={{ duration: 5, repeat: Infinity, ease: "linear" }}
-                      className="absolute left-0 right-0 h-[1px] bg-cyan-400/15 shadow-[0_0_15px_rgba(34,211,238,0.15)] pointer-events-none z-20" />
                     <button onClick={() => setShowJoinModal(false)} className="absolute top-5 right-5 z-50 w-9 h-9 rounded-lg border border-white/[0.06] flex items-center justify-center text-white/25 hover:text-white transition-all">
                       <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M6 18L18 6M6 6l12 12" /></svg>
                     </button>

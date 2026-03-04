@@ -37,7 +37,7 @@ const About = () => {
                         <h2 className="font-display text-2xl md:text-4xl font-black tracking-wider uppercase text-white mb-8">
                             About <span className="text-cyan-400">the Institute</span>
                         </h2>
-                        <p className="text-white/40 text-sm md:text-base leading-relaxed font-medium">
+                        <p className="text-white/60 text-sm md:text-base leading-relaxed font-medium">
                             Vidyavardhaka College of Engineering, Mysuru — an autonomous institute affiliated to VTU, Belagavi.
                             We foster innovation, leadership, and teamwork, empowering students to become future-ready engineering professionals.
                         </p>
@@ -48,7 +48,7 @@ const About = () => {
                         <h2 className="font-display text-2xl md:text-4xl font-black tracking-wider uppercase text-white mb-8">
                             About <span className="text-cyan-400">IVC</span>
                         </h2>
-                        <p className="text-white/40 text-sm md:text-base leading-relaxed font-medium">
+                        <p className="text-white/60 text-sm md:text-base leading-relaxed font-medium">
                             The Innovation & Value Creation Club is a community dedicated to fostering innovation, creativity, and technical
                             excellence among students. We bridge the gap between academic theory and real-world impact through hands-on projects,
                             workshops, and hackathons.
@@ -67,7 +67,7 @@ const About = () => {
                             <div className={`font-display text-4xl md:text-7xl font-black ${i === 1 ? 'text-cyan-400 text-glow-cyan' : 'text-white'} mb-2`}>
                                 {stat.value}
                             </div>
-                            <div className="font-display text-[9px] md:text-[11px] tracking-[0.3em] text-white/30 uppercase">
+                            <div className="font-display text-[9px] md:text-[11px] tracking-[0.3em] text-white/50 uppercase">
                                 {stat.label}
                             </div>
                         </motion.div>
@@ -98,7 +98,7 @@ const About = () => {
                             <h3 className="font-display text-xl md:text-2xl font-black tracking-wider text-white mb-6 group-hover:text-cyan-400 transition-colors">
                                 {card.title}
                             </h3>
-                            <p className="text-white/40 text-sm md:text-base leading-relaxed font-medium group-hover:text-white/60 transition-colors">
+                            <p className="text-white/60 text-sm md:text-base leading-relaxed font-medium group-hover:text-white/60 transition-colors">
                                 {card.text}
                             </p>
                         </motion.div>
@@ -124,7 +124,7 @@ const About = () => {
                             >
                                 {/* Number badge */}
                                 <div className="absolute top-6 right-6 w-10 h-10 rounded-lg border border-white/5 flex items-center justify-center">
-                                    <span className="font-display text-xs text-white/20">{String(i + 1).padStart(2, '0')}</span>
+                                    <span className="font-display text-xs text-white/40">{String(i + 1).padStart(2, '0')}</span>
                                 </div>
 
                                 <div className="w-12 h-12 rounded-xl bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center mb-6 group-hover:bg-cyan-400/10 group-hover:border-cyan-400/30 transition-all duration-500">
@@ -134,7 +134,7 @@ const About = () => {
                                 <h3 className="font-display text-xl md:text-2xl font-black tracking-wider text-white mb-4 group-hover:text-cyan-400 transition-colors">
                                     {pillar.title}
                                 </h3>
-                                <p className="text-white/30 text-sm leading-relaxed font-medium group-hover:text-white/50 transition-colors">
+                                <p className="text-white/50 text-sm leading-relaxed font-medium group-hover:text-white/50 transition-colors">
                                     {pillar.desc}
                                 </p>
 
@@ -155,4 +155,5 @@ const About = () => {
 };
 
 export default About;
+
 

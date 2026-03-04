@@ -29,7 +29,7 @@ const Projects = () => {
                         OUR <span className="text-cyan-400 text-glow-cyan">PROJECTS</span>
                     </h2>
                     <div className="h-[2px] w-16 bg-cyan-400/50 mx-auto mb-6" />
-                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/30 uppercase">
+                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
                         Real-world solutions built by our community
                     </p>
                 </motion.div>
@@ -41,8 +41,8 @@ const Projects = () => {
                 ) : projects.length === 0 ? (
                     <motion.div {...fadeUp(0.2)} className="glow-card rounded-2xl p-16 text-center">
                         <div className="font-display text-6xl md:text-8xl font-black text-white/5 mb-6">00</div>
-                        <h3 className="font-display text-xl md:text-2xl font-black tracking-wider text-white/40 uppercase mb-4">Coming Soon</h3>
-                        <p className="text-white/20 text-sm font-medium max-w-md mx-auto">
+                        <h3 className="font-display text-xl md:text-2xl font-black tracking-wider text-white/60 uppercase mb-4">Coming Soon</h3>
+                        <p className="text-white/40 text-sm font-medium max-w-md mx-auto">
                             Projects are currently being developed. Check back soon for updates.
                         </p>
                     </motion.div>
@@ -78,4 +78,5 @@ const Projects = () => {
 };
 
 export default Projects;
+
 
