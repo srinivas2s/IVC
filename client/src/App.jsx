@@ -85,45 +85,40 @@ function App() {
             </AnimatePresence>
 
             {/* Scroll Timeline - right side - TechSolstice style */}
-            <AnimatePresence>
-              {isPastHome && (
+            <motion.div
+              initial={{ opacity: 0, x: 20 }}
+              animate={{ opacity: 1, x: 0 }}
+              className="fixed right-5 top-1/2 -translate-y-1/2 z-[60] hidden md:flex flex-col items-center gap-0"
+            >
+              {/* Timeline line */}
+              <div className="relative h-64 w-[1px] bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent">
+                {/* Glowing diamond indicator */}
                 <motion.div
-                  initial={{ opacity: 0, x: 20 }}
-                  animate={{ opacity: 1, x: 0 }}
-                  exit={{ opacity: 0, x: 20 }}
-                  className="fixed right-5 top-1/2 -translate-y-1/2 z-[60] hidden md:flex flex-col items-center gap-0"
+                  animate={{ top: `${(activeIdx / (sections.length - 1)) * 100}%` }}
+                  transition={{ type: "spring", stiffness: 200, damping: 25 }}
+                  className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2"
                 >
-                  {/* Timeline line */}
-                  <div className="relative h-64 w-[1px] bg-gradient-to-b from-transparent via-cyan-400/10 to-transparent">
-                    {/* Glowing diamond indicator */}
-                    <motion.div
-                      animate={{ top: `${(activeIdx / (sections.length - 1)) * 100}%` }}
-                      transition={{ type: "spring", stiffness: 200, damping: 25 }}
-                      className="absolute left-1/2 -translate-x-1/2 -translate-y-1/2"
-                    >
-                      <div className="w-3 h-3 rotate-45 bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.6),0_0_30px_rgba(34,211,238,0.3)]" />
-                    </motion.div>
-
-                    {/* Section dots */}
-                    {sections.map((section, i) => (
-                      <button
-                        key={section.id}
-                        onClick={() => document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' })}
-                        className="absolute left-1/2 -translate-x-1/2 group"
-                        style={{ top: `${(i / (sections.length - 1)) * 100}%` }}
-                      >
-                        <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${activeIdx === i ? 'bg-cyan-400 scale-150' : 'bg-white/15 hover:bg-white/30'
-                          }`} />
-                        {/* Label on hover */}
-                        <div className="absolute right-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
-                          <span className="font-display text-[8px] tracking-[0.2em] text-white/30 uppercase whitespace-nowrap">{section.label}</span>
-                        </div>
-                      </button>
-                    ))}
-                  </div>
+                  <div className="w-4 h-4 bg-cyan-400 shadow-[0_0_15px_rgba(34,211,238,0.8)]" style={{ clipPath: 'polygon(50% 0%, 100% 50%, 50% 100%, 0% 50%)' }} />
                 </motion.div>
-              )}
-            </AnimatePresence>
+
+                {/* Section dots */}
+                {sections.map((section, i) => (
+                  <button
+                    key={section.id}
+                    onClick={() => document.getElementById(section.id)?.scrollIntoView({ behavior: 'smooth' })}
+                    className="absolute left-1/2 -translate-x-1/2 group"
+                    style={{ top: `${(i / (sections.length - 1)) * 100}%` }}
+                  >
+                    <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${activeIdx === i ? 'opacity-0 scale-0' : 'bg-white/15 hover:bg-white/30 scale-100 opacity-100'
+                      }`} />
+                    {/* Label on hover */}
+                    <div className="absolute right-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
+                      <span className="font-display text-[8px] tracking-[0.2em] text-white/30 uppercase whitespace-nowrap">{section.label}</span>
+                    </div>
+                  </button>
+                ))}
+              </div>
+            </motion.div>
 
             <Navbar isPastHome={isPastHome} />
 

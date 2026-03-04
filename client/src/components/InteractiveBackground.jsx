@@ -3,83 +3,56 @@ import { motion } from 'framer-motion';
 const InteractiveBackground = () => {
     return (
         <div className="fixed inset-0 z-0 overflow-hidden bg-[#02040a]">
-            {/* TechSolstice-style crosshair grid */}
-            <div className="absolute inset-0 bg-cross-grid opacity-50" />
 
-            {/* ===== CLOUD / NEBULA BLOBS - TechSolstice style ===== */}
 
-            {/* Cloud 1 - Large cyan, top-left */}
+            {/* ===== HEAVY ATMOSPHERIC CLOUD LAYERS ===== */}
+            {/* Cloud 1 - Deep Cyan, base layer */}
             <motion.div
-                animate={{
-                    x: [0, 30, -15, 0],
-                    y: [0, -20, 15, 0],
-                    scale: [1, 1.05, 0.97, 1],
-                }}
-                transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-[-5%] left-[-5%] w-[55vw] h-[55vw] rounded-full pointer-events-none"
-                style={{
-                    background: 'radial-gradient(circle, rgba(34, 211, 238, 0.12) 0%, rgba(34, 211, 238, 0.04) 40%, transparent 70%)',
-                    filter: 'blur(80px)',
-                }}
-            />
-
-            {/* Cloud 2 - Indigo/purple, bottom-right */}
-            <motion.div
-                animate={{
-                    x: [0, -25, 20, 0],
-                    y: [0, 20, -25, 0],
-                    scale: [1, 0.95, 1.06, 1],
-                }}
+                animate={{ x: [0, 40, -20, 0], y: [0, -30, 25, 0], scale: [1, 1.1, 0.9, 1] }}
                 transition={{ duration: 30, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute bottom-[-10%] right-[-8%] w-[50vw] h-[50vw] rounded-full pointer-events-none"
+                className="absolute top-[-10%] left-[-10%] w-[70vw] h-[70vw] rounded-full pointer-events-none opacity-40"
                 style={{
-                    background: 'radial-gradient(circle, rgba(99, 102, 241, 0.1) 0%, rgba(99, 102, 241, 0.03) 40%, transparent 70%)',
-                    filter: 'blur(80px)',
-                }}
-            />
-
-            {/* Cloud 3 - Cyan center glow */}
-            <motion.div
-                animate={{
-                    scale: [1, 1.08, 1],
-                    opacity: [0.08, 0.14, 0.08],
-                }}
-                transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-[30%] left-[25%] w-[45vw] h-[45vw] rounded-full pointer-events-none"
-                style={{
-                    background: 'radial-gradient(circle, rgba(34, 211, 238, 0.15) 0%, rgba(6, 182, 212, 0.05) 35%, transparent 65%)',
+                    background: 'radial-gradient(circle, rgba(34, 211, 238, 0.15) 0%, rgba(34, 211, 238, 0.05) 45%, transparent 75%)',
                     filter: 'blur(100px)',
                 }}
             />
 
-            {/* Cloud 4 - Deep blue, mid-left */}
+            {/* Cloud 2 - Dark Indigo, heavy trailing layer */}
             <motion.div
-                animate={{
-                    x: [0, 15, -10, 0],
-                    y: [0, -15, 20, 0],
-                }}
-                transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-[55%] left-[-5%] w-[40vw] h-[40vw] rounded-full pointer-events-none"
+                animate={{ x: [0, -35, 30, 0], y: [0, 25, -40, 0], scale: [1, 0.9, 1.15, 1] }}
+                transition={{ duration: 35, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute bottom-[-15%] right-[-10%] w-[65vw] h-[65vw] rounded-full pointer-events-none opacity-30"
                 style={{
-                    background: 'radial-gradient(circle, rgba(59, 130, 246, 0.08) 0%, rgba(59, 130, 246, 0.02) 40%, transparent 70%)',
-                    filter: 'blur(90px)',
+                    background: 'radial-gradient(circle, rgba(99, 102, 241, 0.12) 0%, rgba(99, 102, 241, 0.04) 50%, transparent 80%)',
+                    filter: 'blur(110px)',
                 }}
             />
 
-            {/* Cloud 5 - Teal accent, top-right */}
+            {/* Cloud 3 - Deep Blue, center-left atmospheric density */}
             <motion.div
-                animate={{
-                    x: [0, -20, 12, 0],
-                    y: [0, 10, -18, 0],
-                    scale: [1, 1.03, 0.98, 1],
-                }}
-                transition={{ duration: 28, repeat: Infinity, ease: "easeInOut" }}
-                className="absolute top-[10%] right-[5%] w-[35vw] h-[35vw] rounded-full pointer-events-none"
+                animate={{ y: [0, 50, -30, 0], opacity: [0.15, 0.25, 0.15] }}
+                transition={{ duration: 25, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-[20%] left-[5%] w-[55vw] h-[55vw] rounded-full pointer-events-none"
                 style={{
-                    background: 'radial-gradient(circle, rgba(20, 184, 166, 0.08) 0%, rgba(20, 184, 166, 0.02) 40%, transparent 70%)',
-                    filter: 'blur(80px)',
+                    background: 'radial-gradient(circle, rgba(59, 130, 246, 0.1) 0%, transparent 70%)',
+                    filter: 'blur(120px)',
                 }}
             />
+
+            {/* Cloud 4 - Dark Maroon/Red accent (from previous theme) for depth */}
+            <motion.div
+                animate={{ x: [0, 20, -30, 0], scale: [1, 1.05, 0.95, 1] }}
+                transition={{ duration: 40, repeat: Infinity, ease: "easeInOut" }}
+                className="absolute top-[40%] right-[-5%] w-[50vw] h-[50vw] rounded-full pointer-events-none opacity-20"
+                style={{
+                    background: 'radial-gradient(circle, rgba(153, 27, 27, 0.08) 0%, transparent 65%)',
+                    filter: 'blur(100px)',
+                }}
+            />
+
+            {/* Heavy Overlay - Vignette for 'full dark' feel */}
+            <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(2,4,10,0.8)_100%)] pointer-events-none" />
+
 
             {/* Very subtle noise texture */}
             <div className="absolute inset-0 opacity-[0.015] pointer-events-none" style={{

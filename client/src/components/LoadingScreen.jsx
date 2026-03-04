@@ -69,7 +69,7 @@ const LoadingScreen = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.6 }}
-                        className="font-display text-[8px] tracking-[0.4em] text-white/30 uppercase"
+                        className="font-display text-[14px] font-black tracking-[0.4em] text-white/50 uppercase"
                     >
                         Innovators & Visionaries Club
                     </motion.p>

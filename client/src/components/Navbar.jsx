@@ -60,18 +60,18 @@ const Navbar = () => {
                                     {activeSection === link.id && (
                                         <motion.div
                                             layoutId="pill-bg"
-                                            className="absolute inset-0 bg-cyan-400/10 border border-cyan-400/15 rounded-full"
+                                            className="absolute inset-x-0.5 inset-y-1 bg-white/5 rounded-full"
                                             transition={{ type: "spring", stiffness: 400, damping: 30 }}
                                         />
                                     )}
                                     {activeSection === link.id && (
                                         <motion.div
                                             layoutId="pill-indicator"
-                                            className="absolute -top-0.5 left-1/2 -translate-x-1/2 w-5 h-[2px] bg-cyan-400 rounded-full shadow-[0_0_10px_rgba(34,211,238,0.6)]"
+                                            className="absolute -top-1.5 left-1/2 -translate-x-1/2 w-7 h-[3px] bg-white rounded-b-xl shadow-[0_0_15px_rgba(34,211,238,1),0_0_30px_rgba(34,211,238,0.6)] z-20"
                                             transition={{ type: "spring", stiffness: 400, damping: 30 }}
                                         />
                                     )}
-                                    <span className={`relative z-10 font-display text-[9px] md:text-[10px] tracking-[0.12em] uppercase whitespace-nowrap transition-colors duration-300 ${activeSection === link.id ? 'text-cyan-400' : 'text-white/30 hover:text-white/60'
+                                    <span className={`relative z-10 font-display text-[10px] md:text-[11px] font-bold tracking-wide transition-colors duration-300 ${activeSection === link.id ? 'text-white' : 'text-white/40 hover:text-white/70'
                                         }`}>
                                         {link.name}
                                     </span>
