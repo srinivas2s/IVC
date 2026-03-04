@@ -46,7 +46,7 @@ const Achievements = () => {
     ];
 
     return (
-        <section className="relative py-32 md:py-48 overflow-hidden ">
+        <section className="relative py-32 md:py-48 overflow-hidden">
             {/* Watermark */}
             <div className="watermark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">STATS</div>
 
@@ -86,7 +86,7 @@ const Achievements = () => {
                                 </div>
 
                                 {/* Label */}
-                                <div className="font-display text-[8px] md:text-[10px] tracking-[0.3em] text-white/25 uppercase">
+                                <div className="font-display text-[8px] md:text-[10px] tracking-[0.3em] text-white/40 uppercase">
                                     {stat.label}
                                 </div>
 
@@ -102,5 +102,3 @@ const Achievements = () => {
 };
 
 export default Achievements;
-
-

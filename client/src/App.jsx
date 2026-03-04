@@ -14,6 +14,7 @@ import LoadingScreen from './components/LoadingScreen';
 import InteractiveBackground from './components/InteractiveBackground';
 import logo from './assets/logo.png';
 import vvceLogo from './assets/vvce-logo.png';
+import robotImg from './assets/robot.png';
 
 const sections = [
   { id: 'home', label: '01' },
@@ -135,30 +136,44 @@ function App() {
               <section id="projects"><Projects /></section>
               <section id="achievements"><Achievements /></section>
 
-              {/* CTA Section */}
+              {/* CTA Section with Robot */}
               <section className="relative py-32 md:py-40 overflow-hidden">
-                <div className="max-w-5xl mx-auto px-6 text-center relative z-10">
-                  <motion.h2
-                    initial={{ opacity: 0, y: 40 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 0.8 }}
-                    className="font-display text-4xl md:text-7xl lg:text-8xl font-black tracking-wider uppercase mb-8"
-                  >
-                    READY TO <span className="text-cyan-400 text-glow-cyan">INNOVATE</span>?
-                  </motion.h2>
-                  <motion.div
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ delay: 0.2 }}
-                  >
-                    <button
-                      onClick={() => setShowJoinModal(true)}
-                      className="font-display text-[11px] md:text-[13px] tracking-[0.4em] uppercase px-10 md:px-14 py-4 md:py-5 rounded-full border border-cyan-400/20 bg-cyan-400/5 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400/40 hover:shadow-[0_0_40px_rgba(34,211,238,0.12)] transition-all duration-500"
+                <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center gap-12 lg:gap-0">
+                  {/* Text + Button - left side */}
+                  <div className="flex-1 text-center lg:text-left">
+                    <motion.h2
+                      initial={{ opacity: 0, y: 40 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ duration: 0.8 }}
+                      className="font-display text-4xl md:text-7xl lg:text-8xl font-black tracking-wider uppercase mb-8"
                     >
-                      JOIN IVC
-                    </button>
+                      READY TO <span className="text-cyan-400 text-glow-cyan">INNOVATE</span>?
+                    </motion.h2>
+                    <motion.div
+                      initial={{ opacity: 0, y: 20 }}
+                      whileInView={{ opacity: 1, y: 0 }}
+                      viewport={{ once: true }}
+                      transition={{ delay: 0.2 }}
+                    >
+                      <button
+                        onClick={() => setShowJoinModal(true)}
+                        className="font-display text-[11px] md:text-[13px] tracking-[0.4em] uppercase px-10 md:px-14 py-4 md:py-5 rounded-full border border-cyan-400/20 bg-cyan-400/5 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400/40 hover:shadow-[0_0_40px_rgba(34,211,238,0.12)] transition-all duration-500"
+                      >
+                        JOIN IVC
+                      </button>
+                    </motion.div>
+                  </div>
+                  {/* Robot - right side */}
+                  <motion.div
+                    initial={{ opacity: 0, x: 60 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    viewport={{ once: true }}
+                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative flex-shrink-0"
+                  >
+                    <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(34,211,238,0.1)_0%,transparent_60%)] blur-[50px] pointer-events-none" />
+                    <img src={robotImg} alt="Robot" className="relative w-56 md:w-72 lg:w-80 h-auto drop-shadow-[0_0_60px_rgba(34,211,238,0.2)] z-10" />
                   </motion.div>
                 </div>
               </section>

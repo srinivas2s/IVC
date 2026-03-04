@@ -27,6 +27,7 @@ const LoadingScreen = () => {
                     <div className="absolute inset-[-40%] bg-cyan-400/10 blur-[50px] rounded-full animate-pulse-glow" />
 
                     <motion.img
+                        layoutId="main-logo"
                         src={logo}
                         alt="IVC Logo"
                         className="relative w-32 h-32 md:w-44 md:h-44 drop-shadow-[0_0_50px_rgba(34,211,238,0.2)] z-10"
