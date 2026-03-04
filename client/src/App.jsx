@@ -69,20 +69,7 @@ function App() {
             transition={{ duration: 0.8 }}
             className="min-h-screen text-white font-body relative w-full overflow-x-hidden"
           >
-            {/* Floating logo - top left when scrolled */}
-            <AnimatePresence>
-              {isPastHome && (
-                <motion.div
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={{ opacity: 1, scale: 1 }}
-                  exit={{ opacity: 0, scale: 0.8 }}
-                  className="fixed top-4 left-5 z-[90] cursor-pointer"
-                  onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-                >
-                  <img src={logo} alt="IVC" className="w-9 h-9 md:w-12 md:h-12 drop-shadow-[0_0_15px_rgba(34,211,238,0.15)] hover:scale-110 transition-transform" />
-                </motion.div>
-              )}
-            </AnimatePresence>
+            {/* Removed floating logo as requested */}
 
             {/* Scroll Timeline - right side - TechSolstice style */}
             <motion.div
@@ -180,10 +167,10 @@ function App() {
               <div className="max-w-7xl mx-auto px-6 py-16 md:py-20 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 mb-16">
                   <div>
-                    <div className="flex items-center gap-4 mb-6">
-                      <img src={logo} alt="IVC" className="h-12 w-auto opacity-60" />
-                      <div className="w-[1px] h-8 bg-white/[0.06]" />
-                      <img src={vvceLogo} alt="VVCE" className="h-10 w-auto opacity-40" />
+                    <div className="flex items-center gap-6 mb-8">
+                      <img src={logo} alt="IVC" className="h-20 md:h-24 w-auto opacity-90 drop-shadow-[0_0_30px_rgba(34,211,238,0.2)]" />
+                      <div className="w-[1px] h-12 bg-white/[0.1]" />
+                      <img src={vvceLogo} alt="VVCE" className="h-16 md:h-20 w-auto opacity-80" />
                     </div>
                     <p className="text-white/40 text-sm leading-relaxed font-medium max-w-md mb-6">
                       Vidyavardhaka College of Engineering, Mysuru<br />
@@ -228,8 +215,8 @@ function App() {
                 </div>
               </div>
               <div className="relative h-20 md:h-28 overflow-hidden">
-                <div className="absolute inset-0 flex items-center justify-center">
-                  <span className="font-display text-5xl md:text-8xl font-black text-white/[0.012] tracking-[0.2em] uppercase select-none">IVC'26</span>
+                <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
+                  <span className="font-display text-7xl md:text-9xl lg:text-[12rem] font-black text-white/[0.08] tracking-[0.3em] uppercase select-none text-glow-white/10">IVC'26</span>
                 </div>
                 <div className="absolute inset-0 dot-matrix opacity-30" />
               </div>

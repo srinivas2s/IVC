@@ -40,8 +40,8 @@ const Counter = ({ target, suffix = '' }) => {
 const Achievements = () => {
     const stats = [
         { value: '2', label: 'HACKATHONS WON', icon: Trophy, highlight: true },
-        { value: '50', suffix: '+', label: 'ACTIVE MEMBERS', icon: Users },
-        { value: '10', suffix: '+', label: 'WORKSHOPS', icon: BookOpen },
+        { value: '30', suffix: '+', label: 'ACTIVE MEMBERS', icon: Users },
+        { value: '0', suffix: '+', label: 'WORKSHOPS', icon: BookOpen },
         { value: '6', label: 'ACTIVE DOMAINS', icon: Layers },
     ];
 
