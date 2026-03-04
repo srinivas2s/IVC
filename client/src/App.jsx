@@ -52,6 +52,9 @@ function App() {
         ) : (
           <motion.div
             key="content"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{ duration: 0.8, ease: "easeOut" }}
             className="min-h-screen text-ivc-text font-sans selection:bg-ivc-primary selection:text-white flex flex-col relative w-full overflow-x-hidden"
           >
             {/* Smooth flying logo transition */}
