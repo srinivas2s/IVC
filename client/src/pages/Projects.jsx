@@ -20,7 +20,7 @@ const Projects = () => {
     }, []);
 
     return (
-        <section className="relative py-32 md:py-48 overflow-hidden bg-blueprint">
+        <section className="relative py-32 md:py-48 overflow-hidden ">
             <div className="watermark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">PROJECTS</div>
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -78,3 +78,4 @@ const Projects = () => {
 };
 
 export default Projects;
+

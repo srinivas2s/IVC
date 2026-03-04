@@ -56,7 +56,7 @@ const Home = ({ isPastHome }) => {
             </motion.div>
 
             {/* Blueprint grid - subtle */}
-            <div className="absolute inset-0 bg-blueprint opacity-40 pointer-events-none" />
+            <div className="absolute inset-0  opacity-40 pointer-events-none" />
 
             {/* Scan line - sweeps top to bottom continuously */}
             <div className="absolute inset-0 pointer-events-none overflow-hidden">
@@ -281,3 +281,4 @@ const Home = ({ isPastHome }) => {
 };
 
 export default Home;
+

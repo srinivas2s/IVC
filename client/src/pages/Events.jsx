@@ -40,7 +40,7 @@ const Events = () => {
     const [selectedId, setSelectedId] = useState(null);
 
     return (
-        <section className="relative py-32 md:py-48 overflow-hidden bg-blueprint">
+        <section className="relative py-32 md:py-48 overflow-hidden ">
             {/* Watermark */}
             <div className="watermark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">EVENTS</div>
 
@@ -177,3 +177,4 @@ const Events = () => {
 };
 
 export default Events;
+

@@ -4,7 +4,7 @@
 
 @layer base {
   body {
-    background: #060b18;
+    background: #050a15;
     color: #ffffff;
     overflow-x: hidden;
     -webkit-font-smoothing: antialiased;
@@ -22,48 +22,50 @@
   }
 }
 
-/* ===== TECHSOLSTICE-STYLE DESIGN SYSTEM ===== */
+/* ===== TECHSOLSTICE DESIGN SYSTEM ===== */
 
-/* Dark navy blue background with subtle radial gradient */
-.bg-base {
-  background: radial-gradient(ellipse at 50% 0%, #0d1525 0%, #060b18 60%, #030510 100%);
+/* Cross/Plus sign grid background - like TechSolstice */
+.bg-cross-grid {
+  background-image:
+    radial-gradient(circle, rgba(34, 211, 238, 0.08) 1px, transparent 1px);
+  background-size: 40px 40px;
 }
 
-/* Blueprint Grid Background */
+/* Blueprint grid alternate */
 .bg-blueprint {
   background-image:
-    linear-gradient(rgba(34, 211, 238, 0.025) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(34, 211, 238, 0.025) 1px, transparent 1px);
+    linear-gradient(rgba(34, 211, 238, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.02) 1px, transparent 1px);
   background-size: 60px 60px;
 }
 
-/* Ambient gradient bg */
-.bg-ambient {
-  background: radial-gradient(ellipse at 30% 20%, rgba(34, 211, 238, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 70% 80%, rgba(99, 102, 241, 0.04) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 50%, #0d1525 0%, #060b18 100%);
+/* Viewport edge glow - always visible, inset */
+.viewport-glow {
+  box-shadow:
+    inset 0 0 80px rgba(34, 211, 238, 0.03),
+    inset 0 0 200px rgba(34, 211, 238, 0.015);
 }
 
-/* Glowing border card */
+/* Glow card */
 .glow-card {
   position: relative;
   background: rgba(255, 255, 255, 0.015);
-  border: 1px solid rgba(34, 211, 238, 0.08);
+  border: 1px solid rgba(34, 211, 238, 0.06);
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
 .glow-card:hover {
-  border-color: rgba(34, 211, 238, 0.25);
-  box-shadow: 0 0 40px rgba(34, 211, 238, 0.06), inset 0 0 40px rgba(34, 211, 238, 0.02);
+  border-color: rgba(34, 211, 238, 0.2);
+  box-shadow: 0 0 40px rgba(34, 211, 238, 0.05), inset 0 0 40px rgba(34, 211, 238, 0.02);
   background: rgba(255, 255, 255, 0.025);
 }
 
-/* Section watermark text */
+/* Watermark */
 .watermark {
   position: absolute;
   font-family: 'Orbitron', sans-serif;
   font-weight: 900;
-  font-size: clamp(5rem, 15vw, 14rem);
+  font-size: clamp(4rem, 14vw, 13rem);
   color: rgba(255, 255, 255, 0.012);
   text-transform: uppercase;
   white-space: nowrap;
@@ -77,9 +79,9 @@
   text-shadow: 0 0 20px rgba(34, 211, 238, 0.4), 0 0 60px rgba(34, 211, 238, 0.15);
 }
 
-/* Dot Matrix Pattern */
+/* Dot matrix for footer */
 .dot-matrix {
-  background-image: radial-gradient(circle, rgba(34, 211, 238, 0.12) 1px, transparent 1px);
+  background-image: radial-gradient(circle, rgba(34, 211, 238, 0.1) 1px, transparent 1px);
   background-size: 10px 10px;
 }
 
@@ -94,10 +96,28 @@ body {
   scrollbar-width: none;
 }
 
-/* Selection */
 ::selection {
   background: rgba(34, 211, 238, 0.3);
   color: white;
+}
+
+/* ===== SCROLL TIMELINE ===== */
+.scroll-timeline {
+  position: fixed;
+  right: 24px;
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 50;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
+
+.scroll-timeline-line {
+  width: 1px;
+  height: 100%;
+  background: linear-gradient(to bottom, transparent, rgba(34, 211, 238, 0.1), rgba(34, 211, 238, 0.1), transparent);
 }
 
 /* ===== ANIMATIONS ===== */
@@ -114,29 +134,17 @@ body {
   }
 }
 
-@keyframes pulse-glow {
-
-  0%,
-  100% {
-    opacity: 0.3;
-  }
-
-  50% {
-    opacity: 0.6;
-  }
-}
-
 @keyframes nebula-drift {
   0% {
     transform: translate(0, 0) scale(1);
   }
 
   33% {
-    transform: translate(10%, -10%) scale(1.1);
+    transform: translate(8%, -8%) scale(1.08);
   }
 
   66% {
-    transform: translate(-5%, 15%) scale(0.9);
+    transform: translate(-4%, 12%) scale(0.92);
   }
 
   100% {
@@ -156,30 +164,16 @@ body {
 
 @keyframes scan-line {
   0% {
-    top: -10%;
+    top: -5%;
   }
 
   100% {
-    top: 110%;
-  }
-}
-
-@keyframes shimmer-sweep {
-  0% {
-    transform: translateX(-100%);
-  }
-
-  100% {
-    transform: translateX(200%);
+    top: 105%;
   }
 }
 
 .animate-float {
   animation: float 8s ease-in-out infinite;
-}
-
-.animate-pulse-glow {
-  animation: pulse-glow 4s ease-in-out infinite;
 }
 
 .animate-nebula {
@@ -196,8 +190,4 @@ body {
 
 .animate-scan {
   animation: scan-line 6s linear infinite;
-}
-
-.animate-shimmer {
-  animation: shimmer-sweep 3s ease-in-out infinite;
 }

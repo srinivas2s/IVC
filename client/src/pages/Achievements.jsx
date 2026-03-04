@@ -46,7 +46,7 @@ const Achievements = () => {
     ];
 
     return (
-        <section className="relative py-32 md:py-48 overflow-hidden bg-blueprint">
+        <section className="relative py-32 md:py-48 overflow-hidden ">
             {/* Watermark */}
             <div className="watermark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">STATS</div>
 
@@ -102,3 +102,4 @@ const Achievements = () => {
 };
 
 export default Achievements;
+

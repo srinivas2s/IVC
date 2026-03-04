@@ -130,3 +130,4 @@ const Join = ({ isModal = false }) => {
 };
 
 export default Join;
+
