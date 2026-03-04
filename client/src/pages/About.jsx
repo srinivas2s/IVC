@@ -1,6 +1,5 @@
-import { motion, AnimatePresence } from 'framer-motion';
-import { useState } from 'react';
-import { Lightbulb, Zap, Rocket, ChevronLeft, ChevronRight } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Lightbulb, Zap, Rocket } from 'lucide-react';
 
 const PillarCard = ({ icon: Icon, title, description, delay }) => (
     <motion.div
@@ -24,8 +23,6 @@ const PillarCard = ({ icon: Icon, title, description, delay }) => (
 );
 
 const About = () => {
-    const [activeIndex, setActiveIndex] = useState(0);
-
     const cards = [
         {
             title: "Our Mission",
@@ -38,9 +35,6 @@ const About = () => {
             className: "liquid-glass border-ivc-primary/20 bg-ivc-primary/5"
         }
     ];
-
-    const nextCard = () => setActiveIndex((prev) => (prev + 1) % cards.length);
-    const prevCard = () => setActiveIndex((prev) => (prev - 1 + cards.length) % cards.length);
 
     return (
         <section className="relative w-full py-24 md:py-40 overflow-hidden">
@@ -69,42 +63,25 @@ const About = () => {
                     </motion.p>
                 </div>
 
-                {/* Swipeable Mission & Vision - Right Aligned */}
-                <div className="relative max-w-3xl ml-auto mb-32">
-                    <div className="overflow-hidden px-4 py-8">
+                {/* Mission & Vision Side by Side */}
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-32">
+                    {cards.map((card, index) => (
                         <motion.div
-                            drag="x"
-                            dragConstraints={{ left: 0, right: 0 }}
-                            onDragEnd={(e, { offset, velocity }) => {
-                                const swipe = offset.x;
-                                if (swipe < -50) nextCard();
-                                else if (swipe > 50) prevCard();
-                            }}
-                            className="relative cursor-grab active:cursor-grabbing"
+                            key={index}
+                            initial={{ opacity: 0, x: index === 0 ? -50 : 50 }}
+                            whileInView={{ opacity: 1, x: 0 }}
+                            viewport={{ once: true }}
+                            transition={{ duration: 0.8, delay: index * 0.2 }}
+                            className={`p-10 md:p-14 rounded-[40px] ${card.className} relative overflow-hidden group flex flex-col justify-center min-h-[350px] shadow-2xl`}
                         >
-                            <AnimatePresence mode="wait">
-                                <motion.div
-                                    key={activeIndex}
-                                    initial={{ opacity: 0, x: 100 }}
-                                    animate={{ opacity: 1, x: 0 }}
-                                    exit={{ opacity: 0, x: -100 }}
-                                    transition={{ type: "spring", stiffness: 300, damping: 30 }}
-                                    className={`p-10 md:p-16 rounded-[40px] ${cards[activeIndex].className} relative overflow-hidden group min-h-[320px] flex flex-col justify-center`}
-                                >
-                                    <h3 className="text-3xl md:text-5xl font-black italic uppercase tracking-tighter mb-8 text-white">
-                                        {cards[activeIndex].title}
-                                    </h3>
-                                    <p className="text-lg md:text-2xl text-white/70 font-black leading-relaxed">
-                                        {cards[activeIndex].content}
-                                    </p>
-                                </motion.div>
-                            </AnimatePresence>
+                            <h3 className="text-3xl md:text-5xl font-black italic uppercase tracking-tighter mb-8 text-white group-hover:text-ivc-primary transition-colors duration-500">
+                                {card.title}
+                            </h3>
+                            <p className="text-lg md:text-xl text-white/70 font-black leading-relaxed">
+                                {card.content}
+                            </p>
                         </motion.div>
-                    </div>
-
-
-
-
+                    ))}
                 </div>
 
                 {/* The Three Pillars */}

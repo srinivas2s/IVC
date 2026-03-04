@@ -185,10 +185,13 @@ const Home = ({ isPastHome }) => {
                             <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap group">
                                 <motion.span
                                     layoutId="word-ideate"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
                                     transition={{
                                         type: "spring",
                                         stiffness: 50,
-                                        damping: 18
+                                        damping: 18,
+                                        delay: 0.5
                                     }}
                                     className="text-[#FEDE00] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10 block"
                                 >
@@ -199,10 +202,13 @@ const Home = ({ isPastHome }) => {
                             <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap">
                                 <motion.span
                                     layoutId="word-visualize"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
                                     transition={{
                                         type: "spring",
                                         stiffness: 50,
-                                        damping: 18
+                                        damping: 18,
+                                        delay: 0.6
                                     }}
                                     className="text-white drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10 block"
                                 >
@@ -213,10 +219,13 @@ const Home = ({ isPastHome }) => {
                             <h1 className="text-xl sm:text-3xl md:text-5xl lg:text-6xl font-black tracking-tighter italic uppercase whitespace-nowrap">
                                 <motion.span
                                     layoutId="word-create"
+                                    initial={{ opacity: 0, y: 20 }}
+                                    animate={{ opacity: 1, y: 0 }}
                                     transition={{
                                         type: "spring",
                                         stiffness: 50,
-                                        damping: 18
+                                        damping: 18,
+                                        delay: 0.7
                                     }}
                                     className="text-[#FF3B30] drop-shadow-[0_20px_40px_rgba(0,0,0,0.6)] relative z-10 block"
                                 >

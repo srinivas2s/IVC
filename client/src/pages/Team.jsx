@@ -38,11 +38,6 @@ const Team = () => (
             ))}
         </div>
 
-        <div className="flex justify-center">
-            <LiquidButton variant="glass" onClick={() => document.getElementById('join')?.scrollIntoView({ behavior: 'smooth' })}>
-                Join the Team
-            </LiquidButton>
-        </div>
     </div>
 );
 export default Team;
