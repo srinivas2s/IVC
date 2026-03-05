@@ -51,9 +51,6 @@ const Home = ({ isPastHome }) => {
                 {/* Texture layer */}
                 <div className="absolute inset-0 bg-dot-matrix opacity-[0.03] mix-blend-overlay" />
             </motion.div>
-
-            {/* Removed cursor-following tornado/vortex effect as requested */}
-
             {/* ===== CENTRAL CONTENT ===== */}
             <motion.div
                 style={{ y: logoY, scale: logoScale }}
@@ -64,9 +61,6 @@ const Home = ({ isPastHome }) => {
                     className="relative mb-8 md:mb-12"
                     style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
                 >
-                    {/* Logo ambient glow */}
-                    <div className="absolute inset-[-40%] bg-[radial-gradient(circle,rgba(34,211,238,0.12)_0%,transparent_70%)] rounded-full pointer-events-none" />
-
                     {/* The logo */}
                     <AnimatePresence mode="wait">
                         {!isPastHome && (
@@ -87,8 +81,6 @@ const Home = ({ isPastHome }) => {
 
                 {/* Club name - massive Orbitron typography */}
                 <motion.div style={{ opacity: textOpacity }} className="text-center">
-                    {/* Removed IVC text */}
-
                     <motion.div
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -101,8 +93,6 @@ const Home = ({ isPastHome }) => {
                         </span>
                         <div className="h-[1px] w-4 sm:w-12 md:w-24 bg-gradient-to-l from-transparent to-cyan-400/40 shrink-0" />
                     </motion.div>
-
-                    {/* Removed college name as requested */}
                 </motion.div>
             </motion.div>
 

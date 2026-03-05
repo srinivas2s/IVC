@@ -73,9 +73,6 @@ function App() {
       <Navbar />
       <InteractiveBackground />
 
-      {/* Viewport edge glow overlay - TechSolstice style */}
-      <div className="fixed inset-0 pointer-events-none z-[80] viewport-glow" />
-
       <AnimatePresence>
         {loading ? (
           <LoadingScreen key="loader" />
@@ -114,7 +111,7 @@ function App() {
                     className="absolute left-1/2 -translate-x-1/2 group"
                     style={{ top: `${(i / (sections.length - 1)) * 100}%` }}
                   >
-                    <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${activeIdx === i ? 'opacity-0 scale-0' : 'bg-white/15 hover:bg-white/30 scale-100 opacity-100'
+                    <div className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${activeIdx === i ? 'opacity-0 scale-0' : 'bg-white/50 hover:bg-white/90 scale-100 opacity-100'
                       }`} />
                     {/* Label on hover */}
                     <div className="absolute right-5 top-1/2 -translate-y-1/2 opacity-0 group-hover:opacity-100 transition-opacity">
@@ -148,7 +145,7 @@ function App() {
                       transition={{ duration: 1.5 }}
                       className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-8 text-white"
                     >
-                      ARE YOU READY TO <span className="text-cyan-400 text-glow-cyan">INNOVATE</span>
+                      ARE YOU READY TO <span className="text-cyan-400 text-glow-cyan">INNOVATE ?</span>
                     </motion.h2>
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -158,9 +155,10 @@ function App() {
                     >
                       <button
                         onClick={() => setShowJoinModal(true)}
-                        className="font-display text-[11px] md:text-[13px] tracking-[0.4em] uppercase px-10 md:px-14 py-4 md:py-5 rounded-full border border-cyan-400/20 bg-cyan-400/5 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400/40 hover:shadow-[0_0_40px_rgba(34,211,238,0.12)] transition-all duration-500"
+                        className="relative group font-display text-[13px] md:text-[15px] font-bold tracking-[0.4em] uppercase px-12 md:px-16 py-5 md:py-6 rounded-full border-2 border-cyan-400 text-cyan-400 overflow-hidden transition-all duration-500 hover:border-cyan-300 shadow-[0_0_20px_rgba(34,211,238,0.2)] hover:shadow-[0_0_50px_rgba(34,211,238,0.8)] hover:-translate-y-1 hover:scale-105"
                       >
-                        JOIN IVC
+                        <div className="absolute inset-0 bg-transparent transition-colors duration-500" />
+                        <span className="relative z-10 transition-colors duration-500">JOIN IVC</span>
                       </button>
                     </motion.div>
                   </div>
@@ -172,7 +170,7 @@ function App() {
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                     className="relative flex-shrink-0 self-end translate-y-1"
                   >
-                    <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(34,211,238,0.1)_0%,transparent_70%)] pointer-events-none will-change-transform" />
+
                     <img
                       src={robotImg}
                       alt="Robot"
@@ -188,14 +186,14 @@ function App() {
             </main>
 
             {/* Footer */}
-            <footer className="relative z-20 border-t border-white/[0.04] overflow-hidden">
-              <div className="absolute inset-0 dot-matrix opacity-25" />
+            <footer className="relative z-20 border-t border-white/[0.08] overflow-hidden">
+              <div className="absolute inset-0 dot-matrix opacity-1000" />
               <div className="max-w-7xl mx-auto px-6 py-16 md:py-20 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 mb-16">
                   <div>
                     <div className="flex items-center gap-6 mb-8">
                       <img src={logo} alt="IVC" className="h-20 md:h-24 w-auto opacity-90 drop-shadow-[0_0_30px_rgba(34,211,238,0.2)]" />
-                      <div className="w-[1px] h-12 bg-white/[0.1]" />
+                      <div className="w-[3px] h-12 bg-white/[0.1]" />
                       <img src={vvceLogo} alt="VVCE" className="h-16 md:h-20 w-auto opacity-80" />
                     </div>
                     <p className="text-white/40 text-sm leading-relaxed font-medium max-w-md mb-6">
@@ -235,16 +233,16 @@ function App() {
                     </div>
                   </div>
                 </div>
-                <div className="pt-8 border-t border-white/[0.03] flex flex-col md:flex-row justify-between items-center gap-4">
-                  <span className="font-display text-[8px] tracking-[0.3em] text-white/30 uppercase">© 2026 Innovators & Visionaries Club</span>
-                  <span className="font-display text-[8px] tracking-[0.3em] text-white/30 uppercase">VVCE, Mysuru</span>
-                </div>
+
+                <span className="font-display text-[8px] tracking-[0.3em] text-white/30 uppercase">© 2026 Innovators & Visionaries Club</span>
+                <span className="font-display text-[8px] tracking-[0.3em] text-white/30 uppercase">VVCE, Mysuru</span>
               </div>
+
               <div className="relative h-20 md:h-28 overflow-hidden">
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <span className="font-display text-7xl md:text-9xl lg:text-[12rem] font-black text-white/[0.08] tracking-[0.3em] uppercase select-none text-glow-white/10">IVC'26</span>
                 </div>
-                <div className="absolute inset-0 dot-matrix opacity-30" />
+                <div className="absolute inset-0 dot-matrix opacity-1000" />
               </div>
             </footer>
 

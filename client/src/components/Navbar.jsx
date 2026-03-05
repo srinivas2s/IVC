@@ -10,7 +10,7 @@ const links = [
     { name: 'Events', id: 'events' },
     { name: 'Domains', id: 'domains' },
     { name: 'Projects', id: 'projects' },
-    { name: 'Stats', id: 'achievements' },
+    { name: 'Achievements', id: 'achievements' },
 ];
 
 const Navbar = () => {
@@ -47,7 +47,7 @@ const Navbar = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -60, opacity: 0 }}
                         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                        className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] pointer-events-auto hidden md:block"
+                        className="fixed top-6 left-1/4 -translate-x-1/2 z-[100] pointer-events-auto hidden md:block"
                     >
                         <div className="flex items-center gap-0.5 bg-[#080d1c]/80 backdrop-blur-2xl border border-white/[0.06] rounded-full px-1.5 py-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
                             {links.map((link) => (
@@ -60,7 +60,7 @@ const Navbar = () => {
                                         <motion.div
                                             layoutId="pill-bg"
                                             className="absolute inset-x-0.5 inset-y-1 bg-white/5 rounded-full"
-                                            transition={{ type: "spring", stiffness: 400, damping: 30 }}
+                                            transition={{ type: "spring", stiffness: 400, damping: 30}}
                                         />
                                     )}
                                     {activeSection === link.id && (
