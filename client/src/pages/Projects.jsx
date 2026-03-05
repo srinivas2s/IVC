@@ -39,7 +39,7 @@ const Projects = () => {
                     </div>
                 ) : projects.length === 0 ? (
                     <motion.div {...fadeUp(0.2)} className="glow-card rounded-2xl p-16 text-center">
-                        <div className="font-display text-6xl md:text-8xl font-black text-white/5 mb-6">00</div>
+                        <div className="font-display text-6xl md:text-8xl font-black text-white/5 mb-6"> </div>
                         <h3 className="font-display text-xl md:text-2xl font-black tracking-wider text-white/60 uppercase mb-4">Coming Soon</h3>
                         <p className="text-white/40 text-sm font-medium max-w-md mx-auto">
                             Projects are currently being developed. Check back soon for updates.
