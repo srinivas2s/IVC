@@ -27,10 +27,9 @@ const Team = () => {
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 {/* Header - massive TechSolstice style */}
                 <motion.div {...fadeUp()} className="text-center mb-20">
-                    <h2 className="font-display text-4xl md:text-7xl lg:text-8xl font-black tracking-wider uppercase mb-4">
+                    <h2 className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-4">
                         THE <span className="text-cyan-400 text-glow-cyan">TEAM</span>
                     </h2>
-                    <div className="h-[2px] w-16 bg-cyan-400/50 mx-auto mb-6" />
                     <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
                         The passionate innovators driving IVC forward
                     </p>
@@ -44,11 +43,6 @@ const Team = () => {
                             {...fadeUp(0.1 + i * 0.08)}
                             className="glow-card rounded-2xl p-8 text-center group cursor-pointer relative overflow-hidden"
                         >
-                            {/* Number */}
-                            <div className="absolute top-4 right-4 w-8 h-8 rounded-lg border border-white/5 flex items-center justify-center">
-                                <span className="font-display text-[10px] text-white/30">{String(i + 1).padStart(2, '0')}</span>
-                            </div>
-
                             {/* Avatar */}
                             <div className="relative mx-auto mb-6 w-24 h-24">
                                 <div className="w-24 h-24 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:border-cyan-400/30 transition-all duration-500">
@@ -72,15 +66,15 @@ const Team = () => {
                             </div>
 
                             {/* Social links on hover */}
-                            <div className="flex justify-center gap-3 mt-6 opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                                <a href="#" className="w-8 h-8 rounded-lg border border-white/5 flex items-center justify-center text-white/40 hover:text-cyan-400 hover:border-cyan-400/20 transition-all">
-                                    <Linkedin size={13} />
+                            <div className="flex justify-center gap-3 mt-6 opacity-0 group-hover:opacity-100 transition-all duration-500">
+                                <a href="#" className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/40 hover:text-blue-500 hover:border-blue-500/20 hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all duration-500">
+                                    <Linkedin size={14} />
                                 </a>
-                                <a href="#" className="w-8 h-8 rounded-lg border border-white/5 flex items-center justify-center text-white/40 hover:text-cyan-400 hover:border-cyan-400/20 transition-all">
-                                    <Github size={13} />
+                                <a href="#" className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/40 hover:text-white hover:border-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-all duration-500">
+                                    <Github size={14} />
                                 </a>
-                                <a href="#" className="w-8 h-8 rounded-lg border border-white/5 flex items-center justify-center text-white/40 hover:text-cyan-400 hover:border-cyan-400/20 transition-all">
-                                    <Mail size={13} />
+                                <a href="#" className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/40 hover:text-red-500 hover:border-red-500/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all duration-500">
+                                    <Mail size={14} />
                                 </a>
                             </div>
 

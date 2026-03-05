@@ -9,11 +9,11 @@ const SmoothScroll = () => {
             orientation: 'vertical',
             gestureOrientation: 'vertical',
             smoothWheel: true,
-            wheelMultiplier: 0.8, // Slightly reduced multiplier for more control
+            wheelMultiplier: 0.3, // Slightly reduced multiplier for more control
             smoothTouch: true,
-            touchMultiplier: 1.2,
+            touchMultiplier: 0.2,
             infinite: false,
-            lerp: 0.05, // Lower lerp value makes the scroll more "delayed" and smooth
+            lerp: 0.002, // Lower lerp value makes the scroll more "delayed" and smooth
         });
 
         function raf(time) {

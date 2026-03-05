@@ -39,7 +39,7 @@ const About = () => {
     ];
 
     const stats = [
-        { value: "30+", label: "ACTIVE MEMBERS" },
+        { value: "30", label: "ACTIVE MEMBERS" },
         { value: "6", label: "DOMAINS" },
         { value: "2", label: "HACKATHONS WON" },
     ];
@@ -54,7 +54,7 @@ const About = () => {
                     {/* Left - About the Institute */}
                     <motion.div {...fadeUp(0.1)}>
                         <h2 className="font-display text-2xl md:text-3xl font-black tracking-wider uppercase text-white mb-6">
-                            About <span className="text-cyan-400 text-glow-cyan">the Institute</span>
+                            About <span className="text-cyan-400 text-glow-cyan">Institute</span>
                         </h2>
                         <p className="text-white/60 text-[13px] md:text-sm leading-relaxed font-medium">
                             Vidyavardhaka College of Engineering, Mysuru — an autonomous institute affiliated to VTU, Belagavi.
@@ -91,9 +91,12 @@ const About = () => {
                         <div key={i} className="flex-1 flex items-center">
                             <motion.div
                                 {...fadeUp(0.1 + i * 0.1)}
-                                className="text-center w-full"
+                                className="text-center w-full relative"
                             >
-                                <div className={`font-display text-4xl md:text-6xl lg:text-7xl font-black ${i === 1 ? 'text-cyan-400 text-glow-cyan' : 'text-white'} mb-2`}>
+                                {i === 1 && (
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-cyan-400/10 blur-[40px] rounded-full pointer-events-none" />
+                                )}
+                                <div className={`relative font-display text-4xl md:text-6xl lg:text-7xl font-black bg-gradient-to-br from-cyan-400 to-blue-500 bg-clip-text text-transparent text-glow-cyan mb-2`}>
                                     {stat.value}
                                 </div>
                                 <div className="font-display text-[9px] md:text-[11px] tracking-[0.3em] text-white/50 uppercase">
@@ -121,117 +124,79 @@ const About = () => {
                         <motion.div
                             key={i}
                             {...fadeUp(0.1 + i * 0.1)}
-                            className="glow-card rounded-2xl p-8 md:p-12 group cursor-pointer"
+                            whileHover={{ y: -8, scale: 1.02, rotateX: 2, rotateY: 2 }}
+                            whileTap={{ scale: 0.98 }}
+                            className="glow-card rounded-2xl p-8 md:p-12 group cursor-pointer perspective-1000"
                         >
                             {/* Shimmer */}
                             <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
-                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                             </div>
                             <h3 className="font-display text-xl md:text-2xl font-black tracking-wider text-white mb-6 group-hover:text-cyan-400 transition-colors">
                                 {card.title}
                             </h3>
-                            <p className="text-white/60 text-sm md:text-base leading-relaxed font-medium group-hover:text-white/60 transition-colors">
+                            <p className="text-white/80 text-sm md:text-base leading-relaxed font-medium group-hover:text-white transition-colors">
                                 {card.text}
                             </p>
                         </motion.div>
                     ))}
                 </div>
 
-                {/* The Three Pillars - Sticky Sequential Transition Section */}
-                <div ref={pillarsRef} className="relative h-[400vh]">
-                    <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
-                        <motion.div
-                            initial={{ opacity: 0, y: 20 }}
-                            whileInView={{ opacity: 1, y: 0 }}
-                            viewport={{ once: true }}
-                            className="text-center mb-12 md:mb-16"
-                        >
-                            <h2 className="font-display text-4xl md:text-7xl lg:text-8xl font-black tracking-wider uppercase mb-4">
-                                THE <span className="text-cyan-400 text-glow-cyan">PILLARS</span>
-                            </h2>
-                            <div className="h-[2px] w-16 bg-cyan-400/50 mx-auto" />
-                        </motion.div>
+                {/* The Three Pillars Grid */}
+                <motion.div {...fadeUp()} className="text-center mb-16 mt-24">
+                    <h2 className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-4">
+                        THE <span className="text-cyan-400 text-glow-cyan">PILLARS</span>
+                    </h2>
+                </motion.div>
 
-                        <div className="relative h-[500px] md:h-[600px] w-full flex items-center justify-center">
-                            {pillars.map((pillar, i) => {
-                                const Icon = pillar.icon;
+                {/* Mobile One-Line Header for Pillars */}
+                <div className="flex md:hidden items-center justify-center gap-4 mb-8 font-display text-[10px] tracking-[0.2em] text-cyan-400/60 uppercase">
+                    <span>IDEATE</span>
+                    <span className="w-1 h-1 rounded-full bg-cyan-400/20" />
+                    <span>VISUALIZE</span>
+                    <span className="w-1 h-1 rounded-full bg-cyan-400/20" />
+                    <span>CREATE</span>
+                </div>
 
-                                // Define ranges for each card's center 'lock' and 'move'
-                                // Phase 1: Card 1 center (0-20), moves left (20-35)
-                                // Phase 2: Card 2 center (35-55), moves left (55-70)
-                                // Phase 3: Card 3 center (70-90)
+                <div ref={pillarsRef} className="flex flex-row md:grid md:grid-cols-3 gap-6 md:gap-8 pb-32 overflow-x-auto no-scrollbar snap-x snap-mandatory px-2 md:px-0">
+                    {pillars.map((pillar, i) => {
+                        const Icon = pillar.icon;
+                        return (
+                            <motion.div
+                                key={i}
+                                {...fadeUp(0.1 + i * 0.1)}
+                                whileHover={{ y: -8, scale: 1.02, rotateX: 2, rotateY: 2 }}
+                                whileTap={{ scale: 0.98 }}
+                                className="glow-card rounded-2xl p-8 md:p-10 group cursor-pointer relative overflow-hidden perspective-1000 min-w-[85vw] md:min-w-0 snap-center"
+                            >
+                                {/* Shimmer */}
+                                <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+                                    <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                                </div>
 
-                                const startPos = i * 0.33;
-                                const endPos = (i + 1) * 0.33;
 
-                                // Precise movement logic to ensure center lock
-                                // Card 1 is at 0, Card 2 at 100%, Card 3 at 200% initially relative to the 'stage'
-                                // We shift the whole container or individual cards. 
-                                // Let's shift individual cards for cleaner 'locking'.
 
-                                const xOffset = useTransform(
-                                    scrollYProgress,
-                                    [startPos, startPos + 0.1, endPos - 0.1, endPos],
-                                    [i === 0 ? "0%" : "150%", "0%", "0%", "-150%"]
-                                );
+                                <div className="w-16 h-16 rounded-2xl bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center mb-8 group-hover:bg-cyan-400/10 group-hover:border-cyan-400/30 transition-all duration-500 relative z-10">
+                                    <Icon className="text-cyan-400" size={32} />
+                                </div>
 
-                                const opacity = useTransform(
-                                    scrollYProgress,
-                                    [startPos, startPos + 0.1, endPos - 0.1, endPos],
-                                    [0, 1, 1, 0]
-                                );
+                                <h3 className="font-display text-2xl md:text-3xl font-black tracking-wider text-white mb-4 group-hover:text-cyan-400 transition-colors relative z-10">
+                                    {pillar.title}
+                                </h3>
+                                <p className="text-white/80 text-sm md:text-base leading-relaxed font-medium group-hover:text-white transition-colors relative z-10">
+                                    {pillar.desc}
+                                </p>
 
-                                const scale = useTransform(
-                                    scrollYProgress,
-                                    [startPos, startPos + 0.05, endPos - 0.05, endPos],
-                                    [0.8, 1, 1, 0.8]
-                                );
+                                {/* Explore link */}
+                                <div className="mt-8 font-display text-[10px] tracking-[0.3em] text-cyan-400/50 uppercase group-hover:text-cyan-400 transition-colors flex items-center gap-2 relative z-10">
+                                    EXPLORE <span className="group-hover:translate-x-2 transition-transform text-lg"></span>
+                                </div>
 
-                                return (
-                                    <motion.div
-                                        key={i}
-                                        style={{
-                                            x: xOffset,
-                                            opacity: opacity,
-                                            scale: scale,
-                                            position: 'absolute'
-                                        }}
-                                        className="glow-card rounded-3xl p-10 md:p-14 group cursor-pointer overflow-hidden w-[90vw] md:w-[600px] lg:w-[800px] max-w-4xl"
-                                    >
-                                        <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
-                                            <div className="shrink-0">
-                                                <div className="w-20 h-20 rounded-2xl bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center group-hover:bg-cyan-400/10 group-hover:border-cyan-400/30 transition-all duration-500">
-                                                    <Icon className="text-cyan-400" size={40} />
-                                                </div>
-                                            </div>
-
-                                            <div className="flex-1">
-                                                <div className="flex items-center justify-between mb-4">
-                                                    <span className="font-display text-sm tracking-[0.4em] text-cyan-400/40 uppercase">Pillar {String(i + 1).padStart(2, '0')}</span>
-                                                    <div className="h-[1px] flex-1 mx-4 bg-white/5" />
-                                                </div>
-
-                                                <h3 className="font-display text-4xl md:text-6xl font-black tracking-wider text-white mb-6 group-hover:text-cyan-400 transition-colors">
-                                                    {pillar.title}
-                                                </h3>
-                                                <p className="text-white/50 text-base md:text-xl leading-relaxed font-medium group-hover:text-white/60 transition-colors">
-                                                    {pillar.desc}
-                                                </p>
-
-                                                {/* Action link */}
-                                                <div className="mt-10 font-display text-[12px] tracking-[0.4em] text-cyan-400/50 uppercase group-hover:text-cyan-400 transition-colors flex items-center gap-3">
-                                                    EXPLORE THE DOMAIN <span className="group-hover:translate-x-3 transition-transform text-lg">→</span>
-                                                </div>
-                                            </div>
-                                        </div>
-
-                                        {/* Bottom interactive glow */}
-                                        <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                                    </motion.div>
-                                );
-                            })}
-                        </div>
-                    </div>
+                                {/* Bottom glow */}
+                                <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-gradient-to-r from-transparent via-cyan-400/30 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 z-10" />
+                            </motion.div>
+                        );
+                    })}
                 </div>
             </div>
         </section>

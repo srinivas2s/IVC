@@ -37,7 +37,7 @@ const Join = ({ isModal = false }) => {
                     <h2 className="font-display text-3xl md:text-5xl font-black tracking-wider uppercase text-white mb-3">
                         JOIN <span className="text-cyan-400 text-glow-cyan">IVC</span>
                     </h2>
-                    <div className="h-[2px] w-12 bg-cyan-400/50 mx-auto mb-4" />
+
                     <p className="font-display text-[9px] md:text-[10px] tracking-[0.4em] text-white/50 uppercase">
                         Empowering the next generation of visionaries
                     </p>

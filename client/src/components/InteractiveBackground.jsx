@@ -45,7 +45,7 @@ const InteractiveBackground = () => {
                 transition={{ duration: 40, repeat: Infinity, ease: "easeInOut" }}
                 className="absolute top-[40%] right-[-5%] w-[50vw] h-[50vw] rounded-full pointer-events-none opacity-20"
                 style={{
-                    background: 'radial-gradient(circle, rgba(153, 27, 27, 0.08) 0%, transparent 65%)',
+                    background: 'radial-gradient(circle, rgba(76, 8, 8, 0.08) 0%, transparent 65%)',
                     filter: 'blur(100px)',
                 }}
             />

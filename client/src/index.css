@@ -75,6 +75,16 @@
   text-shadow: 0 0 20px rgba(34, 211, 238, 0.4), 0 0 60px rgba(34, 211, 238, 0.15);
 }
 
+/* Blue glow text */
+.text-glow-blue {
+  text-shadow: 0 0 20px rgba(59, 130, 246, 0.4), 0 0 60px rgba(59, 130, 246, 0.15);
+}
+
+/* White glow text */
+.text-glow-white {
+  text-shadow: 0 0 20px rgba(255, 255, 255, 0.4), 0 0 60px rgba(255, 255, 255, 0.15);
+}
+
 /* Dot matrix */
 .dot-matrix {
   background-image: radial-gradient(circle, rgba(34, 211, 238, 0.1) 1px, transparent 1px);

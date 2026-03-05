@@ -19,8 +19,7 @@ const events = [
         location: "Vidya Vardhaka College Of Engineering",
         description: "Master version control with GitHub and learn to deploy web applications using Vercel. A hands-on session for all skill levels.",
         image: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2088&auto=format&fit=crop",
-        type: "Workshop",
-        number: "01"
+        type: "Workshop"
     },
     {
         id: 2,
@@ -31,8 +30,7 @@ const events = [
         location: "Vidya Vardhaka College Of Engineering",
         description: "Dive into Computer Vision with OpenCV. Learn image processing, object detection, and the fundamentals of AI-driven vision.",
         image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=2070&auto=format&fit=crop",
-        type: "Workshop",
-        number: "02"
+        type: "Workshop"
     }
 ];
 
@@ -47,10 +45,9 @@ const Events = () => {
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 {/* Header - TechSolstice massive style */}
                 <motion.div {...fadeUp()} className="text-center mb-20">
-                    <h2 className="font-display text-4xl md:text-7xl lg:text-8xl font-black tracking-wider uppercase mb-4">
+                    <h2 className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-4">
                         THE <span className="text-cyan-400 text-glow-cyan">EVENTS</span>
                     </h2>
-                    <div className="h-[2px] w-16 bg-cyan-400/50 mx-auto mb-6" />
                     <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
                         Workshops, hackathons, and experiences that transform ideas into reality
                     </p>
@@ -74,10 +71,7 @@ const Events = () => {
                                     className="w-full h-full object-cover brightness-[0.3] group-hover:brightness-[0.45] group-hover:scale-105 transition-all duration-1000"
                                 />
                                 <div className="absolute inset-0 bg-gradient-to-r from-[#060b18] via-transparent to-transparent" />
-                                {/* Number badge */}
-                                <div className="absolute top-6 left-6 w-12 h-12 rounded-lg border border-white/10 bg-[#060b18]/60 backdrop-blur-md flex items-center justify-center">
-                                    <span className="font-display text-sm text-cyan-400/60">{event.number}</span>
-                                </div>
+                                
                             </div>
 
                             {/* Content */}
@@ -96,7 +90,7 @@ const Events = () => {
                                     <span className="font-display text-[10px] tracking-[0.3em] uppercase">Coming Soon</span>
                                 </div>
                                 <div className="mt-6 font-display text-[10px] tracking-[0.3em] text-cyan-400/50 uppercase group-hover:text-cyan-400 transition-colors flex items-center gap-2">
-                                    EXPLORE <span className="group-hover:translate-x-1 transition-transform">→</span>
+                                    EXPLORE <span className="group-hover:translate-x-1 transition-transform"></span>
                                 </div>
                             </div>
                         </motion.div>
@@ -155,7 +149,7 @@ const Events = () => {
                                     </p>
                                     <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
                                         <button className="font-display text-[10px] tracking-[0.3em] text-cyan-400 uppercase hover:text-white transition-colors">
-                                            REGISTER NOW →
+                                            REGISTER NOW
                                         </button>
                                         <div className="flex gap-2">
                                             {events.find(e => e.id === selectedId).title.includes("GitHub") && (
