@@ -146,9 +146,9 @@ function App() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 1.5 }}
-                      className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-8 text-white text-glow-white"
+                      className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-8 text-white"
                     >
-                      <span className="text-white text-glow-white">ARE YOU READY TO </span> <span className="text-cyan-400 text-glow-cyan">INNOVATE </span>
+                      ARE YOU READY TO <span className="text-cyan-400 text-glow-cyan">INNOVATE</span>
                     </motion.h2>
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -203,8 +203,8 @@ function App() {
                       Autonomous institute affiliated to VTU, Belagavi
                     </p>
                     <div className="flex flex-col gap-2 mb-8">
-                      <a href="/IVC_Code_of_Conduct_One_Page.pdf" download="IVC_Code_of_Conduct.pdf" className="font-display text-[9px] tracking-[0.3em] text-white/40 uppercase hover:text-cyan-400 transition-colors">↓ Code of Conduct</a>
-                      <a href="/I&V CLUB.pdf" download="IVC_Program_Structure.pdf" className="font-display text-[9px] tracking-[0.3em] text-white/40 uppercase hover:text-cyan-400 transition-colors">↓ Structure of Programs</a>
+                      <a href="/IVC_Code_of_Conduct_One_Page.pdf" download="IVC_Code_of_Conduct.pdf" className="font-display text-[9px] tracking-[0.3em] text-white/40 uppercase hover:text-cyan-400 transition-colors">Code of Conduct</a>
+                      <a href="/I&V CLUB.pdf" download="IVC_Program_Structure.pdf" className="font-display text-[9px] tracking-[0.3em] text-white/40 uppercase hover:text-cyan-400 transition-colors">Structure of Programs</a>
                     </div>
                     <div className="flex gap-3">
                       {[

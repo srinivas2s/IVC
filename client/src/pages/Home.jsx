@@ -93,13 +93,13 @@ const Home = ({ isPastHome }) => {
                         initial={{ opacity: 0, y: 20 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.6, duration: 1 }}
-                        className="flex items-center justify-center gap-4 md:gap-6 mb-6"
+                        className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 mb-6 w-full px-2"
                     >
-                        <div className="h-[1px] w-12 md:w-24 bg-gradient-to-r from-transparent to-cyan-400/40" />
-                        <span className="font-display text-[16px] md:text-[22px] font-bold tracking-[0.6em] text-cyan-400 uppercase text-glow-cyan">
+                        <div className="h-[1px] w-4 sm:w-12 md:w-24 bg-gradient-to-r from-transparent to-cyan-400/40 shrink-0" />
+                        <span className="font-display text-[10px] min-[360px]:text-[11px] min-[400px]:text-[13px] sm:text-[16px] md:text-[22px] font-bold tracking-[0.15em] sm:tracking-[0.4em] md:tracking-[0.6em] text-cyan-400 uppercase text-glow-cyan whitespace-nowrap">
                             Innovators & Visionaries Club
                         </span>
-                        <div className="h-[1px] w-12 md:w-24 bg-gradient-to-l from-transparent to-cyan-400/40" />
+                        <div className="h-[1px] w-4 sm:w-12 md:w-24 bg-gradient-to-l from-transparent to-cyan-400/40 shrink-0" />
                     </motion.div>
 
                     {/* Removed college name as requested */}
@@ -112,15 +112,19 @@ const Home = ({ isPastHome }) => {
                 transition={{ delay: 1.2, duration: 1.5, ease: [0.16, 1, 0.3, 1] }}
                 className="absolute bottom-20 md:bottom-28 left-0 right-0 border-y border-white/[0.04] py-6 z-10"
             >
-                <div className="flex items-center justify-center gap-12 md:gap-24">
-                    {["IDEATE", "VISUALIZE", "CREATE"].map((word, i) => (
-                        <div key={i} className="flex items-center gap-12 md:gap-24">
-                            <span className="font-display text-base md:text-xl tracking-[0.5em] text-cyan-400/40 font-bold">
-                                {word}
-                            </span>
-                            {i < 2 && <span className="w-1.5 h-1.5 rounded-full bg-cyan-400/20" />}
-                        </div>
-                    ))}
+                <div className="flex items-center justify-center w-full px-4">
+                    <div className="flex items-center justify-between w-full max-w-[300px] sm:max-w-[400px] md:max-w-none md:justify-center md:gap-24">
+                        {["IDEATE", "VISUALIZE", "CREATE"].map((word, i) => (
+                            <div key={i} className="flex items-center md:gap-24">
+                                <span className="font-display text-[8px] sm:text-[10px] md:text-xl tracking-widest md:tracking-[0.5em] text-cyan-400/40 font-bold whitespace-nowrap">
+                                    {word}
+                                </span>
+                                {i < 2 && (
+                                    <span className="ml-[0.6rem] sm:ml-4 md:ml-0 w-[3px] md:w-1.5 h-[3px] md:h-1.5 rounded-full bg-cyan-400/20" />
+                                )}
+                            </div>
+                        ))}
+                    </div>
                 </div>
             </motion.div>
 
