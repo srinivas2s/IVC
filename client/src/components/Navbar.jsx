@@ -47,7 +47,7 @@ const Navbar = () => {
                         animate={{ y: 0, opacity: 1 }}
                         exit={{ y: -60, opacity: 0 }}
                         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                        className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] pointer-events-auto"
+                        className="fixed top-4 left-1/2 -translate-x-1/2 z-[100] pointer-events-auto hidden md:block"
                     >
                         <div className="flex items-center gap-0.5 bg-[#080d1c]/80 backdrop-blur-2xl border border-white/[0.06] rounded-full px-1.5 py-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)]">
                             {links.map((link) => (
@@ -81,7 +81,7 @@ const Navbar = () => {
                 )}
             </AnimatePresence>
 
-            
+
         </>
     );
 };

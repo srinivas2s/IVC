@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { AnimatePresence, motion, useScroll, useSpring } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useSpring, useMotionValue, useTransform } from 'framer-motion';
 import Home from './pages/Home';
 import About from './pages/About';
 import Domains from './pages/Domains';
@@ -34,6 +34,23 @@ function App() {
 
   const { scrollYProgress } = useScroll();
   const smoothProgress = useSpring(scrollYProgress, { stiffness: 100, damping: 30 });
+
+  const mouseX = useMotionValue(0);
+  const mouseY = useMotionValue(0);
+
+  const rotateX = useTransform(mouseY, [-300, 300], [10, -10]);
+  const rotateY = useTransform(mouseX, [-300, 300], [-15, 15]);
+
+  const springRotateX = useSpring(rotateX, { stiffness: 100, damping: 30 });
+  const springRotateY = useSpring(rotateY, { stiffness: 100, damping: 30 });
+
+  const handleMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - (rect.left + rect.width / 2);
+    const y = e.clientY - (rect.top + rect.height / 2);
+    mouseX.set(x);
+    mouseY.set(y);
+  };
 
   useEffect(() => {
     const handleScroll = () => {
@@ -120,10 +137,10 @@ function App() {
               <section id="achievements"><Achievements /></section>
 
               {/* CTA Section with Robot */}
-              <section className="relative py-32 md:py-40 overflow-hidden">
+              <section className="relative pt-32 md:pt-40 pb-0 overflow-hidden">
                 <div className="max-w-7xl mx-auto px-6 relative z-10 flex flex-col lg:flex-row items-center gap-12 lg:gap-0">
                   {/* Text + Button - left side */}
-                  <div className="flex-1 text-center lg:text-left">
+                  <div className="flex-1 text-center lg:text-left py-20 pb-40">
                     <motion.h2
                       initial={{ opacity: 0, y: 100 }}
                       whileInView={{ opacity: 1, y: 0 }}
@@ -131,7 +148,7 @@ function App() {
                       transition={{ duration: 1.5 }}
                       className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-8 text-white text-glow-white"
                     >
-                      <span className="text-white text-glow-white">READY TO</span> <span className="text-cyan-400 text-glow-cyan">INNOVATE ?</span>
+                      <span className="text-white text-glow-white">ARE YOU READY TO </span> <span className="text-cyan-400 text-glow-cyan">INNOVATE </span>
                     </motion.h2>
                     <motion.div
                       initial={{ opacity: 0, y: 20 }}
@@ -149,18 +166,21 @@ function App() {
                   </div>
                   {/* Robot - right side */}
                   <motion.div
-                    initial={{ opacity: 0, x: 60 }}
-                    whileInView={{ opacity: 1, x: 0 }}
+                    initial={{ opacity: 0, x: 60, y: 100 }}
+                    whileInView={{ opacity: 1, x: 0, y: 0 }}
                     viewport={{ once: true }}
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className="relative flex-shrink-0"
+                    className="relative flex-shrink-0 self-end translate-y-1"
                   >
-                    <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(34,211,238,0.08)_0%,transparent_60%)] blur-[50px] pointer-events-none" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(34,211,238,0.1)_0%,transparent_70%)] blur-[50px] pointer-events-none" />
                     <img
                       src={robotImg}
                       alt="Robot"
-                      className="relative w-56 md:w-72 lg:w-80 h-auto mix-blend-screen z-10"
-                      style={{ maskImage: 'radial-gradient(circle, black 60%, transparent 100%)', WebkitMaskImage: 'radial-gradient(circle, black 60%, transparent 100%)' }}
+                      className="relative w-full max-w-[320px] md:max-w-[600px] lg:max-w-[750px] h-auto mix-blend-screen z-10"
+                      style={{
+                        maskImage: 'linear-gradient(to top, black 85%, transparent 100%)',
+                        WebkitMaskImage: 'linear-gradient(to top, black 85%, transparent 100%)'
+                      }}
                     />
                   </motion.div>
                 </div>
