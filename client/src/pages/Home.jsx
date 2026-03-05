@@ -116,11 +116,11 @@ const Home = ({ isPastHome }) => {
                     <div className="flex items-center justify-between w-full max-w-[300px] sm:max-w-[400px] md:max-w-none md:justify-center md:gap-24">
                         {["IDEATE", "VISUALIZE", "CREATE"].map((word, i) => (
                             <div key={i} className="flex items-center md:gap-24">
-                                <span className="font-display text-[8px] sm:text-[10px] md:text-xl tracking-widest md:tracking-[0.5em] text-cyan-400/40 font-bold whitespace-nowrap">
+                                <span className="font-display text-[8px] sm:text-[10px] md:text-xl tracking-widest md:tracking-[0.5em] text-cyan-400 font-bold whitespace-nowrap text-glow-cyan drop-shadow-[0_0_15px_rgba(34,211,238,0.6)]">
                                     {word}
                                 </span>
                                 {i < 2 && (
-                                    <span className="ml-[0.6rem] sm:ml-4 md:ml-0 w-[3px] md:w-1.5 h-[3px] md:h-1.5 rounded-full bg-cyan-400/20" />
+                                    <span className="ml-[0.6rem] sm:ml-4 md:ml-0 w-[3px] md:w-1.5 h-[3px] md:h-1.5 rounded-full bg-cyan-400 shadow-[0_0_10px_rgba(34,211,238,0.8)]" />
                                 )}
                             </div>
                         ))}

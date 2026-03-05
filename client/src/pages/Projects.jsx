@@ -42,7 +42,7 @@ const Projects = () => {
                         <div className="font-display text-6xl md:text-8xl font-black text-white/5 mb-6"> </div>
                         <h3 className="font-display text-xl md:text-2xl font-black tracking-wider text-white/60 uppercase mb-4">Coming Soon</h3>
                         <p className="text-white/40 text-sm font-medium max-w-md mx-auto">
-                            Projects are currently being developed. Check back soon for updates.
+                        
                         </p>
                     </motion.div>
                 ) : (
