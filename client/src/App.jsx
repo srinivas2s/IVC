@@ -143,7 +143,7 @@ function App() {
                       whileInView={{ opacity: 1, y: 0 }}
                       viewport={{ once: true }}
                       transition={{ duration: 1.5 }}
-                      className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-8 text-white"
+                      className="font-display text-4xl md:text-6xl lg:text-7xl font-black tracking-wider uppercase mb-8 text-white"
                     >
                       ARE YOU READY TO <span className="text-cyan-400 text-glow-cyan">INNOVATE ?</span>
                     </motion.h2>
