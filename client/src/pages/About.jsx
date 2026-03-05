@@ -144,7 +144,7 @@ const About = () => {
 
                 {/* The Three Pillars Grid */}
                 <motion.div {...fadeUp()} className="text-center mb-16 mt-24">
-                    <h2 className="font-display text-5xl md:text-8xl lg:text-[rem] font-black tracking-wider uppercase mb-4">
+                    <h2 className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-4">
                         THE <span className="text-cyan-400 text-glow-cyan">PILLARS</span>
                     </h2>
                     
