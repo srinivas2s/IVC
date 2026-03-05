@@ -25,10 +25,9 @@ const Projects = () => {
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 <motion.div {...fadeUp()} className="text-center mb-20">
-                    <h2 className="font-display text-4xl md:text-7xl lg:text-8xl font-black tracking-wider uppercase mb-4">
+                    <h2 className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-4">
                         OUR <span className="text-cyan-400 text-glow-cyan">PROJECTS</span>
                     </h2>
-                    <div className="h-[2px] w-16 bg-cyan-400/50 mx-auto mb-6" />
                     <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
                         Real-world solutions built by our community
                     </p>
@@ -65,7 +64,7 @@ const Projects = () => {
                                     <h3 className="font-display text-lg font-black tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase mb-3">{project.title}</h3>
                                     <p className="text-white/25 text-sm leading-relaxed font-medium line-clamp-2 mb-6">{project.description}</p>
                                     <div className="font-display text-[10px] tracking-[0.3em] text-cyan-400/40 uppercase group-hover:text-cyan-400 transition-colors flex items-center gap-2">
-                                        VIEW DETAILS <span className="group-hover:translate-x-1 transition-transform">→</span>
+                                        VIEW DETAILS <span className="group-hover:translate-x-1 transition-transform"></span>
                                     </div>
                                 </div>
                             </motion.div>

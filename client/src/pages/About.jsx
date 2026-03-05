@@ -39,7 +39,7 @@ const About = () => {
     ];
 
     const stats = [
-        { value: "30+", label: "ACTIVE MEMBERS" },
+        { value: "30", label: "ACTIVE MEMBERS" },
         { value: "6", label: "DOMAINS" },
         { value: "2", label: "HACKATHONS WON" },
     ];
@@ -54,7 +54,7 @@ const About = () => {
                     {/* Left - About the Institute */}
                     <motion.div {...fadeUp(0.1)}>
                         <h2 className="font-display text-2xl md:text-3xl font-black tracking-wider uppercase text-white mb-6">
-                            About <span className="text-cyan-400 text-glow-cyan">the Institute</span>
+                            About <span className="text-cyan-400 text-glow-cyan">Institute</span>
                         </h2>
                         <p className="text-white/60 text-[13px] md:text-sm leading-relaxed font-medium">
                             Vidyavardhaka College of Engineering, Mysuru — an autonomous institute affiliated to VTU, Belagavi.
@@ -91,9 +91,12 @@ const About = () => {
                         <div key={i} className="flex-1 flex items-center">
                             <motion.div
                                 {...fadeUp(0.1 + i * 0.1)}
-                                className="text-center w-full"
+                                className="text-center w-full relative"
                             >
-                                <div className={`font-display text-4xl md:text-6xl lg:text-7xl font-black ${i === 1 ? 'text-cyan-400 text-glow-cyan' : 'text-white'} mb-2`}>
+                                {i === 1 && (
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-cyan-400/10 blur-[40px] rounded-full pointer-events-none" />
+                                )}
+                                <div className={`relative font-display text-4xl md:text-6xl lg:text-7xl font-black bg-gradient-to-br from-cyan-400 to-blue-500 bg-clip-text text-transparent text-glow-cyan mb-2`}>
                                     {stat.value}
                                 </div>
                                 <div className="font-display text-[9px] md:text-[11px] tracking-[0.3em] text-white/50 uppercase">
@@ -141,13 +144,21 @@ const About = () => {
 
                 {/* The Three Pillars Grid */}
                 <motion.div {...fadeUp()} className="text-center mb-16 mt-24">
-                    <h2 className="font-display text-4xl md:text-7xl font-black tracking-wider uppercase mb-4">
+                    <h2 className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-4">
                         THE <span className="text-cyan-400 text-glow-cyan">PILLARS</span>
                     </h2>
-                    <div className="h-[2px] w-16 bg-cyan-400/50 mx-auto" />
                 </motion.div>
 
-                <div ref={pillarsRef} className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 pb-32">
+                {/* Mobile One-Line Header for Pillars */}
+                <div className="flex md:hidden items-center justify-center gap-4 mb-8 font-display text-[10px] tracking-[0.2em] text-cyan-400/60 uppercase">
+                    <span>IDEATE</span>
+                    <span className="w-1 h-1 rounded-full bg-cyan-400/20" />
+                    <span>VISUALIZE</span>
+                    <span className="w-1 h-1 rounded-full bg-cyan-400/20" />
+                    <span>CREATE</span>
+                </div>
+
+                <div ref={pillarsRef} className="flex flex-row md:grid md:grid-cols-3 gap-6 md:gap-8 pb-32 overflow-x-auto no-scrollbar snap-x snap-mandatory px-2 md:px-0">
                     {pillars.map((pillar, i) => {
                         const Icon = pillar.icon;
                         return (
@@ -156,17 +167,14 @@ const About = () => {
                                 {...fadeUp(0.1 + i * 0.1)}
                                 whileHover={{ y: -8, scale: 1.02, rotateX: 2, rotateY: 2 }}
                                 whileTap={{ scale: 0.98 }}
-                                className="glow-card rounded-2xl p-8 md:p-10 group cursor-pointer relative overflow-hidden perspective-1000"
+                                className="glow-card rounded-2xl p-8 md:p-10 group cursor-pointer relative overflow-hidden perspective-1000 min-w-[85vw] md:min-w-0 snap-center"
                             >
                                 {/* Shimmer */}
                                 <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
                                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                                 </div>
 
-                                {/* Number badge */}
-                                <div className="absolute top-6 right-6 w-10 h-10 rounded-lg border border-white/5 flex items-center justify-center z-10">
-                                    <span className="font-display text-xs text-white/40">{String(i + 1).padStart(2, '0')}</span>
-                                </div>
+
 
                                 <div className="w-16 h-16 rounded-2xl bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center mb-8 group-hover:bg-cyan-400/10 group-hover:border-cyan-400/30 transition-all duration-500 relative z-10">
                                     <Icon className="text-cyan-400" size={32} />
@@ -181,7 +189,7 @@ const About = () => {
 
                                 {/* Explore link */}
                                 <div className="mt-8 font-display text-[10px] tracking-[0.3em] text-cyan-400/50 uppercase group-hover:text-cyan-400 transition-colors flex items-center gap-2 relative z-10">
-                                    EXPLORE <span className="group-hover:translate-x-2 transition-transform text-lg">→</span>
+                                    EXPLORE <span className="group-hover:translate-x-2 transition-transform text-lg"></span>
                                 </div>
 
                                 {/* Bottom glow */}

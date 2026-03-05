@@ -40,8 +40,8 @@ const Counter = ({ target, suffix = '' }) => {
 const Achievements = () => {
     const stats = [
         { value: '2', label: 'HACKATHONS WON', icon: Trophy, highlight: true },
-        { value: '30', suffix: '+', label: 'ACTIVE MEMBERS', icon: Users },
-        { value: '0', suffix: '+', label: 'WORKSHOPS', icon: BookOpen },
+        { value: '30', label: 'ACTIVE MEMBERS', icon: Users },
+        { value: '0', label: 'WORKSHOPS', icon: BookOpen },
         { value: '6', label: 'ACTIVE DOMAINS', icon: Layers },
     ];
 
@@ -56,10 +56,9 @@ const Achievements = () => {
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 {/* Header */}
                 <motion.div {...fadeUp()} className="text-center mb-20">
-                    <h2 className="font-display text-4xl md:text-7xl lg:text-8xl font-black tracking-wider uppercase mb-4">
+                    <h2 className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-4">
                         OUR <span className="text-cyan-400 text-glow-cyan">ACHIEVEMENTS</span>
                     </h2>
-                    <div className="h-[2px] w-16 bg-cyan-400/50 mx-auto mb-6" />
                     <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
                         Numbers that reflect our dedication to innovation
                     </p>
@@ -75,13 +74,16 @@ const Achievements = () => {
                                 {...fadeUp(0.1 + i * 0.08)}
                                 className="glow-card rounded-2xl p-8 md:p-10 text-center group cursor-pointer relative overflow-hidden"
                             >
+                                {i === 3 && (
+                                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-cyan-400/10 blur-[40px] rounded-full pointer-events-none" />
+                                )}
                                 {/* Icon */}
-                                <div className="w-12 h-12 rounded-xl bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center mx-auto mb-6 group-hover:bg-cyan-400/10 group-hover:border-cyan-400/25 transition-all duration-500">
+                                <div className="relative z-10 w-12 h-12 rounded-xl bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center mx-auto mb-6 group-hover:bg-cyan-400/10 group-hover:border-cyan-400/25 transition-all duration-500">
                                     <Icon className="text-cyan-400/70" size={20} />
                                 </div>
 
                                 {/* Number */}
-                                <div className={`font-display text-4xl md:text-6xl font-black mb-3 ${stat.highlight ? 'text-cyan-400 text-glow-cyan' : 'text-white'}`}>
+                                <div className={`relative z-10 font-display text-4xl md:text-6xl font-black mb-3 bg-gradient-to-br from-cyan-400 to-blue-500 bg-clip-text text-transparent text-glow-cyan`}>
                                     <Counter target={stat.value} suffix={stat.suffix || ''} />
                                 </div>
 
