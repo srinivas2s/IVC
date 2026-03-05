@@ -42,7 +42,7 @@ const LoadingScreen = () => {
                         transition={{ delay: 0.4 }}
                         className="flex items-center gap-3"
                     >
-                        <span className="font-display text-[10px] tracking-[0.6em] text-cyan-400 text-glow-cyan uppercase">Initializing</span>
+                        <span className="font-display text-[8px] md:text-[10px] tracking-[0.3em] md:tracking-[0.6em] text-cyan-400 text-glow-cyan uppercase whitespace-nowrap">Initializing</span>
                         <div className="flex gap-1">
                             {[0, 1, 2].map(i => (
                                 <motion.div
@@ -69,7 +69,7 @@ const LoadingScreen = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ delay: 0.6 }}
-                        className="font-display text-[14px] font-black tracking-[0.4em] text-white/50 uppercase"
+                        className="font-display text-[10px] md:text-[14px] font-black tracking-[0.15em] md:tracking-[0.4em] text-white/50 uppercase whitespace-nowrap"
                     >
                         Innovators & Visionaries Club
                     </motion.p>
