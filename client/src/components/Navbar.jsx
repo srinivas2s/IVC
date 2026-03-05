@@ -105,7 +105,7 @@ const Navbar = () => {
                         animate={{ opacity: 1, y: 0 }}
                         exit={{ opacity: 0, y: -40, transition: { duration: 0.4, ease: "easeInOut" } }}
                         transition={{ duration: 0.5, ease: "easeOut", delay: 0.1 }}
-                        className="fixed top-4 md:top-6 left-1/4 -translate-x-1/2 z-[100] pointer-events-auto w-[95vw] md:w-auto max-w-min"
+                        className="fixed top-4 md:top-6 left-1/4 -translate-x-1/2 z-[90] pointer-events-auto w-[95vw] md:w-auto max-w-min hidden md:block"
                     >
                         <div className="flex items-center gap-0 md:gap-0.5 bg-[#080d1c]/80 backdrop-blur-2xl border border-white/[0.06] rounded-full px-1 py-1 md:px-1.5 md:py-1.5 shadow-[0_8px_32px_rgba(0,0,0,0.5)] overflow-x-auto hide-scrollbar">
                             {links.map((link) => (
