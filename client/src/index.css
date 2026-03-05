@@ -91,6 +91,12 @@
   background-size: 8px 8px;
 }
 
+.dot-matrix-glow {
+  background-image: radial-gradient(circle, rgba(34, 211, 238, 0.8) 1.5px, transparent 1.5px);
+  background-size: 8px 8px;
+  box-shadow: 0 0 10px rgba(34, 211, 238, 0.5) inset;
+}
+
 /* Marquee speed adjustment */
 .animate-marquee {
   display: flex;

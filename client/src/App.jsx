@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { AnimatePresence, motion, useScroll, useSpring, useMotionValue, useTransform } from 'framer-motion';
+import { AnimatePresence, motion, useScroll, useSpring, useMotionValue, useTransform, useMotionTemplate } from 'framer-motion';
 import Home from './pages/Home';
 import About from './pages/About';
 import Domains from './pages/Domains';
@@ -44,12 +44,16 @@ function App() {
   const springRotateX = useSpring(rotateX, { stiffness: 100, damping: 30 });
   const springRotateY = useSpring(rotateY, { stiffness: 100, damping: 30 });
 
-  const handleMouseMove = (e) => {
+  const footerMouseX = useMotionValue(0);
+  const footerMouseY = useMotionValue(0);
+
+  const footerMaskImage = useMotionTemplate`radial-gradient(200px circle at ${footerMouseX}px ${footerMouseY}px, black, transparent)`;
+  const signatureMaskImage = useMotionTemplate`radial-gradient(150px circle at ${footerMouseX}px ${footerMouseY}px, black, transparent)`;
+
+  const handleFooterMouseMove = (e) => {
     const rect = e.currentTarget.getBoundingClientRect();
-    const x = e.clientX - (rect.left + rect.width / 2);
-    const y = e.clientY - (rect.top + rect.height / 2);
-    mouseX.set(x);
-    mouseY.set(y);
+    footerMouseX.set(e.clientX - rect.left);
+    footerMouseY.set(e.clientY - rect.top);
   };
 
   useEffect(() => {
@@ -186,8 +190,12 @@ function App() {
             </main>
 
             {/* Footer */}
-            <footer className="relative z-20 border-t border-white/[0.08] overflow-hidden">
-              <div className="absolute inset-0 dot-matrix opacity-1000" />
+            <footer
+              className="relative z-20 border-t border-white/[0.08]"
+            >
+              {/* Static background dots */}
+              <div className="absolute inset-0 dot-matrix opacity-20" />
+
               <div className="max-w-7xl mx-auto px-6 py-16 md:py-20 relative z-10">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-12 md:gap-16 mb-16">
                   <div>
@@ -233,16 +241,28 @@ function App() {
                     </div>
                   </div>
                 </div>
-
-                <span className="font-display text-[8px] tracking-[0.3em] text-white/30 uppercase">© 2026 Innovators & Visionaries Club</span>
-                <span className="font-display text-[8px] tracking-[0.3em] text-white/30 uppercase">VVCE, Mysuru</span>
+                <div className="pt-8 border-t border-white/[0.03] flex flex-col md:flex-row justify-between items-center gap-4">
+                  <span className="font-display text-[8px] tracking-[0.3em] text-white/30 uppercase">© 2026 Innovators & Visionaries Club</span>
+                  <span className="font-display text-[8px] tracking-[0.3em] text-white/30 uppercase">VVCE, Mysuru</span>
+                </div>
               </div>
 
-              <div className="relative h-20 md:h-28 overflow-hidden">
+              <div
+                className="relative h-20 md:h-28 overflow-hidden"
+                onMouseMove={handleFooterMouseMove}
+              >
                 <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
                   <span className="font-display text-7xl md:text-9xl lg:text-[12rem] font-black text-white/[0.08] tracking-[0.3em] uppercase select-none text-glow-white/10">IVC'26</span>
                 </div>
-                <div className="absolute inset-0 dot-matrix opacity-1000" />
+                {/* Glow layer for the signature line as well */}
+                <motion.div
+                  className="absolute inset-0 dot-matrix-glow"
+                  style={{
+                    maskImage: signatureMaskImage,
+                    WebkitMaskImage: signatureMaskImage
+                  }}
+                />
+                <div className="absolute inset-0 dot-matrix opacity-30" />
               </div>
             </footer>
 
