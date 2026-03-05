@@ -2,102 +2,81 @@ import { motion } from 'framer-motion';
 import logo from '../assets/logo.png';
 
 const LoadingScreen = () => {
-    const words = [
-        { text: "Ideate", id: "word-ideate", color: "text-[#FEDE00]" },
-        { text: "Visualize", id: "word-visualize", color: "text-white" },
-        { text: "Create", id: "word-create", color: "text-[#FF3B30]" }
-    ];
-
     return (
         <motion.div
-            initial={{ opacity: 1, scale: 1 }}
-            exit={{
-                opacity: 0,
-                pointerEvents: 'none',
-                transition: { duration: 0.3, ease: "easeOut" }
-            }}
-            className="fixed inset-0 z-[100] bg-[#020408]"
+            initial={{ opacity: 1 }}
+            exit={{ opacity: 0, transition: { duration: 0.6, ease: "easeInOut" } }}
+            className="fixed inset-0 z-[200] bg-[#02040a] flex items-center justify-center overflow-hidden"
         >
-            <div className="relative isolate min-h-screen flex items-center justify-center px-4 py-20">
-                <div className="mx-auto max-w-7xl relative z-10 w-full h-full flex flex-col justify-center">
-                    {/* Glass Container Wrapper */}
-                    <div className="relative max-w-5xl mx-auto w-full p-8 md:p-16 lg:p-24 group min-h-[70vh] flex flex-col justify-center">
-                        <div className="relative z-10 text-center">
-                            <div className="flex justify-center mb-12">
-                                <div className="relative">
-                                    {/* Shared Logo Bloom */}
-                                    <motion.div
-                                        layoutId="logo-glow"
-                                        initial={{ opacity: 0, scale: 0.8 }}
-                                        animate={{
-                                            opacity: [0.4, 0.7, 0.4],
-                                            scale: [0.9, 1.1, 0.9]
-                                        }}
-                                        exit={{ opacity: 0, scale: 2, filter: "blur(60px)" }}
-                                        transition={{
-                                            opacity: { duration: 3, repeat: Infinity, ease: "easeInOut" },
-                                            scale: { duration: 4, repeat: Infinity, ease: "easeInOut" },
-                                            layout: { type: "spring", stiffness: 45, damping: 20, mass: 1.2 }
-                                        }}
-                                        className="absolute inset-[-40%] bg-gradient-to-tr from-cyan-500/30 to-purple-500/30 blur-3xl rounded-full z-0"
-                                    />
-                                    <motion.img
-                                        layoutId="main-logo"
-                                        src={logo}
-                                        alt="IVC Logo"
-                                        initial={{ opacity: 0, scale: 0.8 }}
-                                        animate={{ opacity: 1, scale: 1 }}
-                                        transition={{
-                                            type: "spring",
-                                            stiffness: 45,
-                                            damping: 20,
-                                            mass: 1.2
-                                        }}
-                                        className="relative w-32 h-32 md:w-44 md:h-44 drop-shadow-liquid z-10"
-                                    />
-                                </div>
-                            </div>
+            {/* TechSolstice-style dot/cross grid */}
+            <div className="absolute inset-0 bg-cross-grid opacity-60" />
 
-                            {/* Loading content - Fades Out */}
-                            <div className="space-y-8">
-                                {/* Tagline with smooth reveal */}
-                                <div className="relative flex flex-row items-center justify-center gap-6 md:gap-12 px-4 max-w-[95vw] mx-auto">
-                                    {words.map((word, index) => (
-                                        <motion.span
-                                            key={word.id}
-                                            layoutId={word.id}
-                                            initial={{ opacity: 0, y: 20 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            transition={{
-                                                type: "spring",
-                                                stiffness: 50,
-                                                damping: 18,
-                                                delay: 0.5 + (index * 0.2)
-                                            }}
-                                            className={`text-2xl sm:text-4xl md:text-6xl font-black italic uppercase tracking-tighter whitespace-nowrap ${word.color} drop-shadow-[0_10px_30px_rgba(0,0,0,0.8)]`}
-                                        >
-                                            {word.text}
-                                        </motion.span>
-                                    ))}
-                                </div>
+            {/* Ambient glows */}
+            <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-cyan-500/[0.03] blur-[120px] rounded-full" />
+            <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-indigo-500/[0.03] blur-[120px] rounded-full" />
 
-                                {/* Subtitle */}
-                                <motion.p
-                                    initial={{ opacity: 0, y: 10 }}
-                                    animate={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: 1.5, duration: 1 }}
-                                    className="text-[10px] md:text-xs tracking-[0.4em] text-gray-400 font-bold uppercase"
-                                >
-                                    Innovating the Future
-                                </motion.p>
+            <div className="relative z-10 flex flex-col items-center">
+                {/* Logo Section - Removed rings */}
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.8 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                    className="relative mb-12"
+                >
+                    {/* Logo glow bloom */}
+                    <div className="absolute inset-[-40%] bg-cyan-400/10 blur-[50px] rounded-full animate-pulse-glow" />
 
-                            </div>
+                    <motion.img
+                        layoutId="main-logo"
+                        src={logo}
+                        alt="IVC Logo"
+                        className="relative w-32 h-32 md:w-44 md:h-44 drop-shadow-[0_0_50px_rgba(34,211,238,0.2)] z-10"
+                    />
+                </motion.div>
+
+                {/* Status Bar - TechSolstice style */}
+                <div className="flex flex-col items-center gap-6">
+                    <motion.div
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.4 }}
+                        className="flex items-center gap-3"
+                    >
+                        <span className="font-display text-[10px] tracking-[0.6em] text-cyan-400 text-glow-cyan uppercase">Initializing</span>
+                        <div className="flex gap-1">
+                            {[0, 1, 2].map(i => (
+                                <motion.div
+                                    key={i}
+                                    animate={{ opacity: [0, 1, 0] }}
+                                    transition={{ duration: 1, repeat: Infinity, delay: i * 0.2 }}
+                                    className="w-1 h-1 bg-cyan-400 rounded-full"
+                                />
+                            ))}
                         </div>
+                    </motion.div>
+
+                    {/* Progress slider bar */}
+                    <div className="w-48 h-[1px] bg-white/5 relative overflow-hidden">
+                        <motion.div
+                            initial={{ x: '-100%' }}
+                            animate={{ x: '100%' }}
+                            transition={{ duration: 2, repeat: Infinity, ease: "linear" }}
+                            className="absolute inset-0 bg-gradient-to-r from-transparent via-cyan-400/50 to-transparent"
+                        />
                     </div>
+
+                    <motion.p
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ delay: 0.6 }}
+                        className="font-display text-[14px] font-black tracking-[0.4em] text-white/50 uppercase"
+                    >
+                        Innovators & Visionaries Club
+                    </motion.p>
                 </div>
             </div>
         </motion.div>
     );
 };
 
-export default LoadingScreen; 
+export default LoadingScreen;

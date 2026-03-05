@@ -1,7 +1,13 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { Github, Triangle, Calendar, Clock, MapPin, Sparkles, X, ChevronRight } from 'lucide-react';
-import LiquidButton from '../components/LiquidButton';
+import { Github, Triangle, Calendar, Clock, MapPin, X } from 'lucide-react';
+
+const fadeUp = (delay = 0) => ({
+    initial: { opacity: 0, y: 40 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-50px" },
+    transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }
+});
 
 const events = [
     {
@@ -14,7 +20,7 @@ const events = [
         description: "Master version control with GitHub and learn to deploy web applications using Vercel. A hands-on session for all skill levels.",
         image: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2088&auto=format&fit=crop",
         type: "Workshop",
-        gradient: "from-cyan-500/20 to-purple-500/20",
+        number: "01"
     },
     {
         id: 2,
@@ -26,7 +32,7 @@ const events = [
         description: "Dive into Computer Vision with OpenCV. Learn image processing, object detection, and the fundamentals of AI-driven vision.",
         image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=2070&auto=format&fit=crop",
         type: "Workshop",
-        gradient: "from-blue-500/20 to-emerald-500/20",
+        number: "02"
     }
 ];
 
@@ -34,57 +40,68 @@ const Events = () => {
     const [selectedId, setSelectedId] = useState(null);
 
     return (
-        <div className="pt-32 pb-24 px-6 max-w-7xl mx-auto overflow-hidden">
-            {/* Header Section Section - Centered */}
-            <div className="flex flex-col items-center mb-16 space-y-4">
-                <motion.h2
-                    initial={{ opacity: 0, y: 20 }}
-                    whileInView={{ opacity: 1, y: 0 }}
-                    viewport={{ once: true }}
-                    transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                    className="text-4xl md:text-6xl font-black text-center text-gradient tracking-normal uppercase italic py-2 px-8 overflow-visible"
-                >
-                    EVENTS
-                </motion.h2>
-                <div className="w-24 h-[1px] bg-gradient-to-r from-transparent via-white/20 to-transparent"></div>
-            </div>
+        <section className="relative py-32 md:py-48 overflow-hidden ">
+            {/* Watermark */}
+            <div className="watermark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">EVENTS</div>
 
-            {/* Horizontal Workshop Grid */}
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-8 w-full">
-                {events.map((event, index) => (
-                    <motion.div
-                        key={event.id}
-                        layoutId={`card-${event.id}`}
-                        onClick={() => setSelectedId(event.id)}
-                        initial={{ opacity: 0, scale: 0.9 }}
-                        whileInView={{ opacity: 1, scale: 1 }}
-                        viewport={{ once: true }}
-                        transition={{ delay: index * 0.1 }}
-                        className="group relative h-64 glass-card border-white/5 rounded-[32px] overflow-hidden cursor-pointer hover:border-white/20 transition-all duration-500"
-                    >
-                        <motion.img
-                            src={event.image}
-                            alt={event.title}
-                            className="w-full h-full object-cover brightness-50 group-hover:scale-110 transition-transform duration-1000"
-                        />
-                        <div className="absolute inset-0 bg-gradient-to-t from-black via-black/20 to-transparent" />
+            <div className="max-w-7xl mx-auto px-6 relative z-10">
+                {/* Header - TechSolstice massive style */}
+                <motion.div {...fadeUp()} className="text-center mb-20">
+                    <h2 className="font-display text-4xl md:text-7xl lg:text-8xl font-black tracking-wider uppercase mb-4">
+                        THE <span className="text-cyan-400 text-glow-cyan">EVENTS</span>
+                    </h2>
+                    <div className="h-[2px] w-16 bg-cyan-400/50 mx-auto mb-6" />
+                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
+                        Workshops, hackathons, and experiences that transform ideas into reality
+                    </p>
+                </motion.div>
 
-                        <div className="absolute inset-0 p-8 flex flex-col justify-end">
-                            <span className="text-[9px] font-black text-ivc-primary uppercase tracking-[0.4em] mb-2 opacity-80 italic">
-                                {event.type}
-                            </span>
-                            <h3 className="text-xl font-black text-white group-hover:text-ivc-secondary transition-colors uppercase italic tracking-tighter">
-                                {event.title}
-                            </h3>
-                            <div className="mt-4 flex items-center gap-2 text-[10px] font-black text-white/40 uppercase tracking-widest group-hover:text-white transition-colors">
-                                Coming Soon
+                {/* Event Cards - Staggered layout like TechSolstice */}
+                <div className="space-y-8">
+                    {events.map((event, index) => (
+                        <motion.div
+                            key={event.id}
+                            layoutId={`card-${event.id}`}
+                            {...fadeUp(0.1 + index * 0.1)}
+                            onClick={() => setSelectedId(event.id)}
+                            className={`glow-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col md:flex-row ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}
+                        >
+                            {/* Image */}
+                            <div className="md:w-1/2 h-56 md:h-80 relative overflow-hidden">
+                                <img
+                                    src={event.image}
+                                    alt={event.title}
+                                    className="w-full h-full object-cover brightness-[0.3] group-hover:brightness-[0.45] group-hover:scale-105 transition-all duration-1000"
+                                />
+                                <div className="absolute inset-0 bg-gradient-to-r from-[#060b18] via-transparent to-transparent" />
+                                {/* Number badge */}
+                                <div className="absolute top-6 left-6 w-12 h-12 rounded-lg border border-white/10 bg-[#060b18]/60 backdrop-blur-md flex items-center justify-center">
+                                    <span className="font-display text-sm text-cyan-400/60">{event.number}</span>
+                                </div>
                             </div>
-                        </div>
 
-                        {/* Hover Glow */}
-                        <div className={`absolute top-0 right-0 w-24 h-24 bg-gradient-to-br ${event.gradient} blur-[50px] rounded-full opacity-0 group-hover:opacity-60 transition-opacity duration-700`}></div>
-                    </motion.div>
-                ))}
+                            {/* Content */}
+                            <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
+                                <span className="font-display text-[9px] tracking-[0.4em] text-cyan-400/60 uppercase mb-4">
+                                    {event.type}
+                                </span>
+                                <h3 className="font-display text-2xl md:text-4xl font-black tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase mb-4">
+                                    {event.title}
+                                </h3>
+                                <p className="text-white/50 text-sm leading-relaxed font-medium mb-6 max-w-md">
+                                    {event.description}
+                                </p>
+                                <div className="flex items-center gap-4 text-white/40">
+                                    <Calendar size={14} />
+                                    <span className="font-display text-[10px] tracking-[0.3em] uppercase">Coming Soon</span>
+                                </div>
+                                <div className="mt-6 font-display text-[10px] tracking-[0.3em] text-cyan-400/50 uppercase group-hover:text-cyan-400 transition-colors flex items-center gap-2">
+                                    EXPLORE <span className="group-hover:translate-x-1 transition-transform">→</span>
+                                </div>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
             </div>
 
             {/* Modal for Details */}
@@ -96,70 +113,55 @@ const Events = () => {
                             animate={{ opacity: 1 }}
                             exit={{ opacity: 0 }}
                             onClick={() => setSelectedId(null)}
-                            className="absolute inset-0 bg-[#020408]/90 backdrop-blur-xl"
+                            className="absolute inset-0 bg-[#060b18]/90 backdrop-blur-xl"
                         />
-
                         <motion.div
                             layoutId={`card-${selectedId}`}
-                            className="relative w-full max-w-2xl bg-[#080a0f] border border-white/10 rounded-[48px] overflow-hidden shadow-2xl"
+                            className="relative w-full max-w-2xl bg-[#0a1020] border border-cyan-400/10 rounded-2xl overflow-hidden shadow-[0_0_80px_rgba(0,0,0,0.8)]"
                         >
                             <button
                                 onClick={() => setSelectedId(null)}
-                                className="absolute top-8 right-8 z-50 w-12 h-12 flex items-center justify-center rounded-2xl bg-white/5 border border-white/10 text-white hover:bg-white/10 transition-colors"
+                                className="absolute top-6 right-6 z-50 w-10 h-10 flex items-center justify-center rounded-lg border border-white/10 text-white/50 hover:text-white hover:border-cyan-400/30 transition-all"
                             >
-                                <X size={20} />
+                                <X size={18} />
                             </button>
-
-                            <div className="flex flex-col md:flex-row h-full">
-                                <div className="md:w-1/2 h-64 md:h-auto">
-                                    <img
-                                        src={events.find(e => e.id === selectedId).image}
-                                        alt="Event"
-                                        className="w-full h-full object-cover brightness-75"
-                                    />
-                                    <div className="absolute inset-0 bg-gradient-to-r from-[#020408] via-transparent to-transparent hidden md:block" />
+                            <div className="flex flex-col md:flex-row">
+                                <div className="md:w-1/2 h-56 md:h-auto relative">
+                                    <img src={events.find(e => e.id === selectedId).image} alt="Event" className="w-full h-full object-cover brightness-[0.5]" />
+                                    <div className="absolute inset-0 bg-gradient-to-r from-[#0a1020] via-transparent to-transparent hidden md:block" />
+                                    <div className="absolute inset-0 bg-gradient-to-t from-[#0a1020] to-transparent md:hidden" />
                                 </div>
-
-                                <div className="p-8 md:p-12 md:w-1/2 flex flex-col">
-                                    <span className="text-[10px] font-black text-ivc-primary uppercase tracking-[0.5em] mb-4 italic">
+                                <div className="p-8 md:p-10 md:w-1/2 flex flex-col">
+                                    <span className="font-display text-[9px] tracking-[0.4em] text-cyan-400/60 uppercase mb-4">
                                         {events.find(e => e.id === selectedId).type}
                                     </span>
-                                    <h3 className="text-3xl md:text-4xl font-black text-white mb-6 uppercase italic tracking-tighter">
+                                    <h3 className="font-display text-2xl md:text-3xl font-black tracking-wider text-white mb-6 uppercase">
                                         {events.find(e => e.id === selectedId).fullTitle}
                                     </h3>
-
-                                    <div className="space-y-4 mb-8">
-                                        <div className="flex items-center gap-4 text-white/50">
-                                            <Calendar className="w-4 h-4 text-ivc-primary" />
-                                            <span className="text-[11px] font-black uppercase tracking-widest">{events.find(e => e.id === selectedId).date}</span>
-                                        </div>
-                                        <div className="flex items-center gap-4 text-white/50">
-                                            <Clock className="w-4 h-4 text-ivc-primary" />
-                                            <span className="text-[11px] font-black uppercase tracking-widest">{events.find(e => e.id === selectedId).time}</span>
-                                        </div>
-                                        <div className="flex items-center gap-4 text-white/50">
-                                            <MapPin className="w-4 h-4 text-ivc-primary" />
-                                            <span className="text-[11px] font-black uppercase tracking-widest">{events.find(e => e.id === selectedId).location}</span>
-                                        </div>
+                                    <div className="space-y-3 mb-8">
+                                        {[
+                                            { icon: Calendar, text: events.find(e => e.id === selectedId).date },
+                                            { icon: Clock, text: events.find(e => e.id === selectedId).time },
+                                            { icon: MapPin, text: events.find(e => e.id === selectedId).location },
+                                        ].map((item, i) => (
+                                            <div key={i} className="flex items-center gap-3 text-white/50">
+                                                <item.icon size={14} className="text-cyan-400/50" />
+                                                <span className="font-display text-[10px] tracking-[0.2em] uppercase">{item.text}</span>
+                                            </div>
+                                        ))}
                                     </div>
-
-                                    <p className="text-gray-400 text-sm leading-relaxed mb-auto opacity-80 font-medium">
+                                    <p className="text-white/60 text-sm leading-relaxed font-medium mb-auto">
                                         {events.find(e => e.id === selectedId).description}
                                     </p>
-
-                                    <div className="mt-10 pt-8 border-t border-white/5 flex items-center justify-between">
-                                        <motion.button
-                                            whileHover={{ x: 10, color: '#fff' }}
-                                            className="text-[11px] font-black text-ivc-primary uppercase tracking-[0.4em] italic flex items-center gap-3 transition-colors group"
-                                        >
-                                            REGISTER NOW
-                                        </motion.button>
-
-                                        <div className="flex gap-3">
+                                    <div className="mt-8 pt-6 border-t border-white/5 flex items-center justify-between">
+                                        <button className="font-display text-[10px] tracking-[0.3em] text-cyan-400 uppercase hover:text-white transition-colors">
+                                            REGISTER NOW →
+                                        </button>
+                                        <div className="flex gap-2">
                                             {events.find(e => e.id === selectedId).title.includes("GitHub") && (
                                                 <>
-                                                    <Github className="text-white/40 w-5 h-5" />
-                                                    <Triangle className="text-white/40 w-5 h-5 fill-white/40" />
+                                                    <Github className="text-white/40 w-4 h-4" />
+                                                    <Triangle className="text-white/40 w-4 h-4 fill-white/20" />
                                                 </>
                                             )}
                                         </div>
@@ -170,8 +172,10 @@ const Events = () => {
                     </div>
                 )}
             </AnimatePresence>
-        </div>
+        </section>
     );
 };
 
 export default Events;
+
+

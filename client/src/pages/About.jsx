@@ -1,129 +1,237 @@
-import { motion } from 'framer-motion';
+import { useRef } from 'react';
+import { motion, useScroll, useTransform } from 'framer-motion';
 import { Lightbulb, Zap, Rocket } from 'lucide-react';
 
-const PillarCard = ({ icon: Icon, title, description, delay }) => (
-    <motion.div
-        initial={{ opacity: 0, y: 30 }}
-        whileInView={{ opacity: 1, y: 0 }}
-        whileHover={{ scale: 1.02, y: -5 }}
-        viewport={{ once: true }}
-        transition={{ delay, duration: 0.8 }}
-        className="group relative p-8 rounded-[32px] liquid-glass flex flex-col items-start text-left overflow-hidden h-full cursor-pointer"
-    >
-        <div className="absolute inset-0 bg-gradient-to-br from-ivc-primary/10 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-        <div className="relative z-10 w-12 h-12 rounded-2xl bg-white/5 flex items-center justify-center mb-6 group-hover:scale-110 group-hover:-rotate-6 transition-transform duration-500">
-            <Icon className="text-ivc-primary" size={24} />
-        </div>
-        <h3 className="relative z-10 text-xl font-black italic uppercase tracking-tighter mb-4 text-white group-hover:text-ivc-primary transition-colors">
-            {title}
-        </h3>
-        <p className="relative z-10 text-sm md:text-base text-white/60 leading-relaxed font-black">
-            {description}
-        </p>
-    </motion.div>
-);
+const fadeUp = (delay = 0) => ({
+    initial: { opacity: 0, y: 40 },
+    whileInView: { opacity: 1, y: 0 },
+    viewport: { once: true, margin: "-50px" },
+    transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }
+});
 
 const About = () => {
-    const cards = [
-        {
-            title: "Our Mission",
-            content: "To promote hands-on innovation, multidisciplinary collaboration, industry connection, and community-driven impact while building future-ready leaders.",
-            className: "liquid-glass"
-        },
-        {
-            title: "Our Vision",
-            content: "To nurture a generation of creators who apply science, technology, and design thinking to build solutions that positively impact people, planet, and prosperity.",
-            className: "liquid-glass border-ivc-primary/20 bg-ivc-primary/5"
-        }
+    const pillarsRef = useRef(null);
+    const { scrollYProgress } = useScroll({
+        target: pillarsRef,
+        offset: ["start end", "end start"]
+    });
+
+    // Sequential animations for pillars based on scroll
+    const pillar1Scale = useTransform(scrollYProgress, [0.1, 0.25], [0.8, 1]);
+    const pillar1Opacity = useTransform(scrollYProgress, [0.1, 0.25], [0, 1]);
+
+    const pillar2Scale = useTransform(scrollYProgress, [0.4, 0.55], [0.8, 1]);
+    const pillar2Opacity = useTransform(scrollYProgress, [0.4, 0.55], [0, 1]);
+
+    const pillar3Scale = useTransform(scrollYProgress, [0.7, 0.85], [0.8, 1]);
+    const pillar3Opacity = useTransform(scrollYProgress, [0.7, 0.85], [0, 1]);
+
+    const scales = [pillar1Scale, pillar2Scale, pillar3Scale];
+    const opacities = [pillar1Opacity, pillar2Opacity, pillar3Opacity];
+
+    // Horizontal movement for the sticky section
+    const horizontalX = useTransform(scrollYProgress, [0.3, 0.9], ["0%", "-100%"]);
+
+    const pillars = [
+        { icon: Lightbulb, title: "IDEATE", desc: "Capturing the wildest ideas and refining them into feasible solutions for technical and social challenges.", color: "cyan" },
+        { icon: Zap, title: "VISUALIZE", desc: "Prototyping and designing user experiences that bring concepts to life through digital and physical mediums.", color: "indigo" },
+        { icon: Rocket, title: "CREATE", desc: "Shipping real products, hosting events, and executing projects that leave a lasting impact.", color: "purple" },
+    ];
+
+    const stats = [
+        { value: "30+", label: "ACTIVE MEMBERS" },
+        { value: "6", label: "DOMAINS" },
+        { value: "2", label: "HACKATHONS WON" },
     ];
 
     return (
-        <section className="relative w-full py-24 md:py-40 overflow-hidden">
-            {/* Background Decorative Elements */}
-            <div className="absolute top-0 right-0 w-[500px] h-[500px] bg-cyan-500/5 blur-[150px] rounded-full -z-10 animate-nebula" />
-            <div className="absolute bottom-0 left-0 w-[600px] h-[600px] bg-purple-600/5 blur-[180px] rounded-full -z-10 animate-nebula-reverse" />
+        <section className="relative py-32 md:py-48 overflow-hidden">
+            {/* Removed grid and watermark for 'full dark' effect */}
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
-                {/* Hero Header */}
-                <div className="max-w-4xl mx-auto text-center mb-16 md:mb-24">
-                    <motion.h2
-                        initial={{ opacity: 0, y: 30 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        className="text-5xl md:text-8xl font-black mb-10 text-center text-gradient tracking-tight italic uppercase"
-                    >
-                        Beyond <br className="md:hidden" /> Innovation
-                    </motion.h2>
+                {/* Three column about - Unified technical vision */}
+                <div className="grid grid-cols-1 lg:grid-cols-3 gap-12 md:gap-16 mb-32">
+                    {/* Left - About the Institute */}
+                    <motion.div {...fadeUp(0.1)}>
+                        <h2 className="font-display text-2xl md:text-3xl font-black tracking-wider uppercase text-white mb-6">
+                            About <span className="text-cyan-400 text-glow-cyan">the Institute</span>
+                        </h2>
+                        <p className="text-white/60 text-[13px] md:text-sm leading-relaxed font-medium">
+                            Vidyavardhaka College of Engineering, Mysuru — an autonomous institute affiliated to VTU, Belagavi.
+                            We foster innovation, leadership, and teamwork, empowering students to become future-ready engineering professionals.
+                        </p>
+                    </motion.div>
 
-                    <motion.p
-                        initial={{ opacity: 0, y: 20 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ delay: 0.2 }}
-                        className="text-base md:text-xl text-white/60 leading-relaxed font-black max-w-2xl mx-auto"
-                    >
-                        The Innovation & Value Creation Club isn't just a community; it's an accelerator for your imagination. We bridge the gap between academic theory and real-world impact.
-                    </motion.p>
+                    {/* Middle - About IVC */}
+                    <motion.div {...fadeUp(0.2)}>
+                        <h2 className="font-display text-2xl md:text-3xl font-black tracking-wider uppercase text-white mb-6">
+                            About <span className="text-cyan-400 text-glow-cyan">IVC</span>
+                        </h2>
+                        <p className="text-white/60 text-[13px] md:text-sm leading-relaxed font-medium">
+                            The Innovators & Visionaries Club is a community dedicated to fostering innovation, creativity, and technical
+                            excellence among students. We bridge the gap between academic theory and real-world impact through hands-on projects.
+                        </p>
+                    </motion.div>
+
+                    {/* Right - About Unity */}
+                    <motion.div {...fadeUp(0.3)}>
+                        <h2 className="font-display text-2xl md:text-3xl font-black tracking-wider uppercase text-white mb-6">
+                            About <span className="text-cyan-400 text-glow-cyan">InUnity</span>
+                        </h2>
+                        <p className="text-white/60 text-[13px] md:text-sm leading-relaxed font-medium">
+                            InUnity is a platform that bridges the gap between academics and skills where talents—engineers, designers, and visionaries—to build
+                            seamless integrated ecosystems. We believe that true value is created when individual brilliance converges into a unified force.
+                        </p>
+                    </motion.div>
                 </div>
 
-                {/* Mission & Vision Side by Side */}
+                {/* Stats Row - TechSolstice style with vertical separators */}
+                <div className="flex flex-row justify-between items-center mb-32 border-y border-white/5 py-12 md:py-16">
+                    {stats.map((stat, i) => (
+                        <div key={i} className="flex-1 flex items-center">
+                            <motion.div
+                                {...fadeUp(0.1 + i * 0.1)}
+                                className="text-center w-full"
+                            >
+                                <div className={`font-display text-4xl md:text-6xl lg:text-7xl font-black ${i === 1 ? 'text-cyan-400 text-glow-cyan' : 'text-white'} mb-2`}>
+                                    {stat.value}
+                                </div>
+                                <div className="font-display text-[9px] md:text-[11px] tracking-[0.3em] text-white/50 uppercase">
+                                    {stat.label}
+                                </div>
+                            </motion.div>
+                            {i < stats.length - 1 && (
+                                <div className="h-16 w-[1px] bg-white/[0.08]" />
+                            )}
+                        </div>
+                    ))}
+                </div>
+                {/* Mission & Vision */}
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-32">
-                    {cards.map((card, index) => (
+                    {[
+                        {
+                            title: "OUR MISSION",
+                            text: "To promote hands-on innovation, multidisciplinary collaboration, industry connection, and community-driven impact while building future-ready leaders."
+                        },
+                        {
+                            title: "OUR VISION",
+                            text: "To nurture a generation of creators who apply science, technology, and design thinking to build solutions that positively impact people, planet, and prosperity."
+                        }
+                    ].map((card, i) => (
                         <motion.div
-                            key={index}
-                            initial={{
-                                opacity: 0,
-                                x: index === 0 ? -150 : 150,
-                                filter: 'blur(10px)'
-                            }}
-                            whileInView={{
-                                opacity: 1,
-                                x: 0,
-                                filter: 'blur(0px)'
-                            }}
-                            whileHover={{ scale: 1.02, y: -5 }}
-                            viewport={{ once: true, margin: "-100px" }}
-                            transition={{
-                                duration: 1.2,
-                                delay: index * 0.1,
-                                ease: [0.16, 1, 0.3, 1]
-                            }}
-                            className={`p-10 md:p-14 rounded-[40px] ${card.className} relative overflow-hidden group flex flex-col justify-center min-h-[350px] shadow-2xl cursor-pointer`}
+                            key={i}
+                            {...fadeUp(0.1 + i * 0.1)}
+                            className="glow-card rounded-2xl p-8 md:p-12 group cursor-pointer"
                         >
-                            <h3 className="text-3xl md:text-5xl font-black italic uppercase tracking-tighter mb-8 text-white group-hover:text-ivc-primary transition-colors duration-500">
+                            {/* Shimmer */}
+                            <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
+                                <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.03] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
+                            </div>
+                            <h3 className="font-display text-xl md:text-2xl font-black tracking-wider text-white mb-6 group-hover:text-cyan-400 transition-colors">
                                 {card.title}
                             </h3>
-                            <p className="text-lg md:text-xl text-white/70 font-black leading-relaxed">
-                                {card.content}
+                            <p className="text-white/60 text-sm md:text-base leading-relaxed font-medium group-hover:text-white/60 transition-colors">
+                                {card.text}
                             </p>
                         </motion.div>
                     ))}
                 </div>
 
-                {/* The Three Pillars */}
-                <div className="text-center mb-16">
-                    <h3 className="text-2xl md:text-3xl font-black italic uppercase tracking-tighter text-white">
-                        Our Core Pillars
-                    </h3>
-                </div>
+                {/* The Three Pillars - Sticky Sequential Transition Section */}
+                <div ref={pillarsRef} className="relative h-[400vh]">
+                    <div className="sticky top-0 h-screen flex flex-col justify-center overflow-hidden">
+                        <motion.div
+                            initial={{ opacity: 0, y: 20 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            viewport={{ once: true }}
+                            className="text-center mb-12 md:mb-16"
+                        >
+                            <h2 className="font-display text-4xl md:text-7xl lg:text-8xl font-black tracking-wider uppercase mb-4">
+                                THE <span className="text-cyan-400 text-glow-cyan">PILLARS</span>
+                            </h2>
+                            <div className="h-[2px] w-16 bg-cyan-400/50 mx-auto" />
+                        </motion.div>
 
-                <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-                    <PillarCard
-                        icon={Lightbulb}
-                        title="Ideate"
-                        description="Capturing the wildest ideas and refining them into feasible solutions for technical and social challenges."
-                        delay={0.1}
-                    />
-                    <PillarCard
-                        icon={Zap}
-                        title="Visualize"
-                        description="Prototyping and designing user experiences that bring concepts to life through digital and physical mediums."
-                        delay={0.2}
-                    />
-                    <PillarCard
-                        icon={Rocket}
-                        title="Create"
-                        description="Shipping real products, hosting events, and executing projects that leave a lasting impact on our campus."
-                        delay={0.3}
-                    />
+                        <div className="relative h-[500px] md:h-[600px] w-full flex items-center justify-center">
+                            {pillars.map((pillar, i) => {
+                                const Icon = pillar.icon;
+
+                                // Define ranges for each card's center 'lock' and 'move'
+                                // Phase 1: Card 1 center (0-20), moves left (20-35)
+                                // Phase 2: Card 2 center (35-55), moves left (55-70)
+                                // Phase 3: Card 3 center (70-90)
+
+                                const startPos = i * 0.33;
+                                const endPos = (i + 1) * 0.33;
+
+                                // Precise movement logic to ensure center lock
+                                // Card 1 is at 0, Card 2 at 100%, Card 3 at 200% initially relative to the 'stage'
+                                // We shift the whole container or individual cards. 
+                                // Let's shift individual cards for cleaner 'locking'.
+
+                                const xOffset = useTransform(
+                                    scrollYProgress,
+                                    [startPos, startPos + 0.1, endPos - 0.1, endPos],
+                                    [i === 0 ? "0%" : "150%", "0%", "0%", "-150%"]
+                                );
+
+                                const opacity = useTransform(
+                                    scrollYProgress,
+                                    [startPos, startPos + 0.1, endPos - 0.1, endPos],
+                                    [0, 1, 1, 0]
+                                );
+
+                                const scale = useTransform(
+                                    scrollYProgress,
+                                    [startPos, startPos + 0.05, endPos - 0.05, endPos],
+                                    [0.8, 1, 1, 0.8]
+                                );
+
+                                return (
+                                    <motion.div
+                                        key={i}
+                                        style={{
+                                            x: xOffset,
+                                            opacity: opacity,
+                                            scale: scale,
+                                            position: 'absolute'
+                                        }}
+                                        className="glow-card rounded-3xl p-10 md:p-14 group cursor-pointer overflow-hidden w-[90vw] md:w-[600px] lg:w-[800px] max-w-4xl"
+                                    >
+                                        <div className="flex flex-col md:flex-row gap-8 md:gap-12 items-start">
+                                            <div className="shrink-0">
+                                                <div className="w-20 h-20 rounded-2xl bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center group-hover:bg-cyan-400/10 group-hover:border-cyan-400/30 transition-all duration-500">
+                                                    <Icon className="text-cyan-400" size={40} />
+                                                </div>
+                                            </div>
+
+                                            <div className="flex-1">
+                                                <div className="flex items-center justify-between mb-4">
+                                                    <span className="font-display text-sm tracking-[0.4em] text-cyan-400/40 uppercase">Pillar {String(i + 1).padStart(2, '0')}</span>
+                                                    <div className="h-[1px] flex-1 mx-4 bg-white/5" />
+                                                </div>
+
+                                                <h3 className="font-display text-4xl md:text-6xl font-black tracking-wider text-white mb-6 group-hover:text-cyan-400 transition-colors">
+                                                    {pillar.title}
+                                                </h3>
+                                                <p className="text-white/50 text-base md:text-xl leading-relaxed font-medium group-hover:text-white/60 transition-colors">
+                                                    {pillar.desc}
+                                                </p>
+
+                                                {/* Action link */}
+                                                <div className="mt-10 font-display text-[12px] tracking-[0.4em] text-cyan-400/50 uppercase group-hover:text-cyan-400 transition-colors flex items-center gap-3">
+                                                    EXPLORE THE DOMAIN <span className="group-hover:translate-x-3 transition-transform text-lg">→</span>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        {/* Bottom interactive glow */}
+                                        <div className="absolute bottom-0 left-0 right-0 h-[3px] bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                                    </motion.div>
+                                );
+                            })}
+                        </div>
+                    </div>
                 </div>
             </div>
         </section>
@@ -131,3 +239,5 @@ const About = () => {
 };
 
 export default About;
+
+
