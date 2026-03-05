@@ -50,8 +50,9 @@ const Achievements = () => {
             {/* Watermark */}
             <div className="watermark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">STATS</div>
 
-            {/* Ambient glow */}
-            <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-cyan-500/[0.03] blur-[150px] rounded-full pointer-events-none" />
+            {/* Heavy glowing background elements */}
+            <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-[radial-gradient(circle,rgba(34,211,238,0.03)_0%,transparent_70%)] rounded-full pointer-events-none will-change-transform" />
+            <div className="absolute bottom-[-20%] left-[-10%] w-[50vw] h-[50vw] bg-[radial-gradient(circle,rgba(99,102,241,0.03)_0%,transparent_70%)] rounded-full pointer-events-none will-change-transform" />
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 {/* Header */}

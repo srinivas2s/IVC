@@ -12,8 +12,8 @@ const LoadingScreen = () => {
             <div className="absolute inset-0 bg-cross-grid opacity-60" />
 
             {/* Ambient glows */}
-            <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-cyan-500/[0.03] blur-[120px] rounded-full" />
-            <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-indigo-500/[0.03] blur-[120px] rounded-full" />
+            <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-[radial-gradient(circle,rgba(34,211,238,0.03)_0%,transparent_70%)] rounded-full will-change-transform pointer-events-none" />
+            <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-[radial-gradient(circle,rgba(99,102,241,0.03)_0%,transparent_70%)] rounded-full will-change-transform pointer-events-none" />
 
             <div className="relative z-10 flex flex-col items-center">
                 {/* Logo Section - Removed rings */}
@@ -24,7 +24,7 @@ const LoadingScreen = () => {
                     className="relative mb-12"
                 >
                     {/* Logo glow bloom */}
-                    <div className="absolute inset-[-40%] bg-cyan-400/10 blur-[50px] rounded-full animate-pulse-glow" />
+                    <div className="absolute inset-[-40%] bg-[radial-gradient(circle,rgba(34,211,238,0.1)_0%,transparent_70%)] rounded-full animate-pulse-glow pointer-events-none will-change-transform" />
 
                     <motion.img
                         layoutId="main-logo"

@@ -172,7 +172,7 @@ function App() {
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                     className="relative flex-shrink-0 self-end translate-y-1"
                   >
-                    <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(34,211,238,0.1)_0%,transparent_70%)] blur-[50px] pointer-events-none" />
+                    <div className="absolute inset-0 bg-[radial-gradient(circle,rgba(34,211,238,0.1)_0%,transparent_70%)] pointer-events-none will-change-transform" />
                     <img
                       src={robotImg}
                       alt="Robot"

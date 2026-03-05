@@ -10,25 +10,25 @@ const fadeUp = (delay = 0) => ({
 
 const Team = () => {
     const members = [
-        { name: 'Member Name', role: 'President', initials: 'MN' },
-        { name: 'Member Name', role: 'Vice President', initials: 'MN' },
-        { name: 'Member Name', role: 'Technical Lead', initials: 'MN' },
-        { name: 'Member Name', role: 'Design Lead', initials: 'MN' },
+        { name: 'Member Name', role: 'MENTOR', initials: 'MN' },
+        { name: 'Member Name', role: 'MENTOR', initials: 'MN' }
+
     ];
 
     return (
         <section className="relative py-32 md:py-48 overflow-hidden ">
             {/* Watermark */}
-            <div className="watermark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">TEAM</div>
+            <div className="watermark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2">MENTORS</div>
 
-            {/* Ambient glow */}
-            <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-indigo-500/[0.03] blur-[150px] rounded-full pointer-events-none" />
+            {/* Ambient background glows */}
+            <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-[radial-gradient(circle,rgba(34,211,238,0.03)_0%,transparent_70%)] rounded-full pointer-events-none will-change-transform" />
+            <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-[radial-gradient(circle,rgba(99,102,241,0.03)_0%,transparent_70%)] rounded-full pointer-events-none will-change-transform" />
 
             <div className="max-w-7xl mx-auto px-6 relative z-10">
                 {/* Header - massive TechSolstice style */}
                 <motion.div {...fadeUp()} className="text-center mb-20">
                     <h2 className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-4">
-                        THE <span className="text-cyan-400 text-glow-cyan">TEAM</span>
+                        MEET OUR <span className="text-cyan-400 text-glow-cyan">MENTORS</span>
                     </h2>
                     <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
                         The passionate innovators driving IVC forward

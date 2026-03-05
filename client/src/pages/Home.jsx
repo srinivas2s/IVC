@@ -35,15 +35,15 @@ const Home = ({ isPastHome }) => {
                 <motion.div
                     animate={{ x: [0, 50, -30, 0], y: [0, -40, 30, 0] }}
                     transition={{ duration: 18, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute top-[-15%] left-[-15%] w-[100vw] h-[100vw] bg-[radial-gradient(circle,rgba(220,38,38,0.12)_0%,transparent_70%)] blur-[80px]"
+                    className="absolute top-[-15%] left-[-15%] w-[100vw] h-[100vw] bg-[radial-gradient(circle,rgba(34,211,238,0.12)_0%,transparent_70%)] will-change-transform"
                 />
                 <motion.div
                     animate={{ x: [0, -30, 50, 0], y: [0, 30, -40, 0] }}
                     transition={{ duration: 22, repeat: Infinity, ease: "easeInOut" }}
-                    className="absolute bottom-[-15%] right-[-15%] w-[90vw] h-[90vw] bg-[radial-gradient(circle,rgba(153,27,27,0.1)_0%,transparent_70%)] blur-[60px]"
+                    className="absolute bottom-[-15%] right-[-15%] w-[90vw] h-[90vw] bg-[radial-gradient(circle,rgba(99,102,241,0.1)_0%,transparent_70%)] will-change-transform"
                 />
-                {/* Center red spotlight */}
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110vw] h-[110vw] bg-[radial-gradient(circle,rgba(220,38,38,0.06)_0%,transparent_60%)]" />
+                {/* Center blue spotlight */}
+                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[110vw] h-[110vw] bg-[radial-gradient(circle,rgba(34,211,238,0.06)_0%,transparent_60%)]" />
 
                 {/* Heavy Cinematic Vignette */}
                 <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,transparent_0%,rgba(2,4,10,0.85)_100%)]" />
@@ -65,7 +65,7 @@ const Home = ({ isPastHome }) => {
                     style={{ perspective: '1200px', transformStyle: 'preserve-3d' }}
                 >
                     {/* Logo ambient glow */}
-                    <div className="absolute inset-[-40%] bg-[radial-gradient(circle,rgba(34,211,238,0.12)_0%,transparent_70%)] blur-[60px] rounded-full pointer-events-none" />
+                    <div className="absolute inset-[-40%] bg-[radial-gradient(circle,rgba(34,211,238,0.12)_0%,transparent_70%)] rounded-full pointer-events-none" />
 
                     {/* The logo */}
                     <AnimatePresence mode="wait">
