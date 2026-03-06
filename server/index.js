@@ -398,19 +398,24 @@ app.delete('/api/admin/mentors/:id', requireAdmin, async (req, res) => {
 });
 
 app.get('/api/mentors', async (req, res) => {
-    if (!supabase) return res.json({ mentors: [] });
+    if (!supabase) return res.json([]);
     const { data, error } = await supabase.from('mentors').select('*').order('name', { ascending: true });
     if (error) return res.status(500).json({ error: error.message });
+
+    // Map to the structure Team.jsx expects
     const mentors = data.map(m => ({
         id: m.id,
         name: m.name,
         email: m.email,
         linkedin: m.linkedin,
         quote: m.quote,
-        otherInfo: m.other_info,
+        bio: m.quote, // Team.jsx InfoCard uses .bio or .description
+        other_info: m.other_info,
+        role: 'MENTOR',
         photoUrl: m.photo_url
     }));
-    res.json({ mentors });
+
+    res.json(mentors);
 });
 
 

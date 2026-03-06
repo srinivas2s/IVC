@@ -66,45 +66,51 @@ const MentorModal = ({ member, onClose }) => (
 /* ─── Photo Card (landscape shape) ─── */
 const PhotoCard = ({ member, isFinal = false }) => (
     <div className={`relative w-[320px] md:w-[420px] h-[300px] md:h-[380px] flex-shrink-0 group overflow-visible`}>
-        <div className="absolute inset-[-1px] rounded-xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-transparent group-hover:from-cyan-400/20 transition-all duration-700" />
-        <div className="relative w-full h-full rounded-xl bg-[#0c0f18]/90 backdrop-blur-xl border border-white/[0.05] flex flex-col items-center justify-center overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
-            <div className="absolute top-0 left-0 w-48 h-48 bg-[radial-gradient(circle,rgba(255,255,255,0.015)_0%,transparent_70%)] pointer-events-none" />
+        <div className="absolute inset-[-1px] rounded-xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-transparent group-hover:from-cyan-400/30 transition-all duration-700" />
+        <div className="relative w-full h-full rounded-xl bg-[#0c0f18] border border-white/[0.05] flex flex-col items-center justify-end overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
 
-            <div className="relative w-24 h-24 md:w-28 md:h-28 mb-4">
-                <div className="w-full h-full rounded-full border border-white/[0.08] flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-700">
-                    {member.photoUrl ? (
-                        <img src={member.photoUrl} alt={member.name} className="w-full h-full object-cover" />
-                    ) : (
-                        <svg className="w-16 h-16 md:w-20 md:h-20 text-white/[0.1] group-hover:text-cyan-400/20 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+            {/* Background Image */}
+            <div className="absolute inset-0 w-full h-full overflow-hidden">
+                {member.photoUrl ? (
+                    <img
+                        src={member.photoUrl}
+                        alt={member.name}
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out opacity-60 group-hover:opacity-80"
+                    />
+                ) : (
+                    <div className="w-full h-full bg-white/[0.02] flex items-center justify-center">
+                        <svg className="w-24 h-24 text-white/[0.05]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
                             <circle cx="12" cy="8" r="3.5" />
                             <path d="M5.5 20.5c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5" strokeLinecap="round" />
                         </svg>
-                    )}
-                </div>
+                    </div>
+                )}
+                {/* Gradient Overlay for Text Readability */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0f18] via-[#0c0f18]/40 to-transparent" />
             </div>
 
-            <div className="text-center px-6">
+            <div className="relative z-10 text-center px-6 pb-10 w-full">
                 <span className="font-display text-[9px] md:text-[11px] tracking-[0.4em] text-cyan-400 text-glow-cyan uppercase">
-                    {member.role}
+                    {member.role || 'MENTOR'}
                 </span>
                 {isFinal && (
                     <motion.h3
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="mt-3 text-white font-black italic text-lg tracking-wider uppercase opacity-80 group-hover:opacity-100 transition-opacity"
+                        className="mt-3 text-white font-black italic text-xl md:text-2xl tracking-wider uppercase opacity-90 group-hover:opacity-100 transition-opacity"
                     >
                         {member.name}
                     </motion.h3>
                 )}
-            </div>
 
-            {isFinal && (
-                <div className="absolute bottom-6 flex gap-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
-                    <span className="flex items-center gap-2 text-[10px] text-cyan-400/60 font-black tracking-widest uppercase">
-                        <Info size={12} /> Click for details
-                    </span>
-                </div>
-            )}
+                {isFinal && (
+                    <div className="mt-4 flex justify-center gap-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                        <span className="flex items-center gap-2 text-[10px] text-cyan-400/80 font-black tracking-widest uppercase bg-cyan-400/10 px-3 py-1.5 rounded-full border border-cyan-400/20">
+                            <Info size={12} /> Click for details
+                        </span>
+                    </div>
+                )}
+            </div>
         </div>
     </div>
 );
@@ -128,9 +134,9 @@ const InfoCard = ({ member, position = "right" }) => (
                 <p className="text-white/40 text-[13px] md:text-sm leading-relaxed mb-3 line-clamp-4">
                     {member.bio || member.description}
                 </p>
-                {(member.department || member.year) && (
+                {(member.department || member.other_info || member.year) && (
                     <p className="text-white/25 text-xs leading-relaxed">
-                        {member.department} {member.year && `· ${member.year}`}
+                        {member.department || member.other_info} {member.year && `· ${member.year}`}
                     </p>
                 )}
             </div>
@@ -296,35 +302,65 @@ const Team = () => {
     }, [isLocked, handleWheel]);
 
     const renderGrid = (people) => (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
             {people.map((member, i) => (
                 <motion.div
                     key={member.id || i}
                     {...fadeUp(0.1 + i * 0.08)}
-                    className="glow-card rounded-2xl p-8 text-center group cursor-pointer relative overflow-hidden"
+                    className="relative h-[380px] rounded-2xl overflow-hidden group cursor-pointer border border-white/5 hover:border-cyan-400/30 transition-all duration-500 shadow-2xl"
                 >
-                    <div className="relative mx-auto mb-6 w-24 h-24">
-                        <div className="w-24 h-24 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:border-cyan-400/30 transition-all duration-500 overflow-hidden">
-                            {member.photoUrl ? (
-                                <img src={member.photoUrl} alt={member.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
-                            ) : (
-                                <span className="font-display text-2xl font-black text-white/30 group-hover:text-cyan-400/40 transition-colors duration-500">
+                    {/* Background Image / Full Card Style */}
+                    <div className="absolute inset-0 z-0">
+                        {member.photoUrl ? (
+                            <img
+                                src={member.photoUrl}
+                                alt={member.name}
+                                className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-110 transition-transform duration-1000 ease-out"
+                            />
+                        ) : (
+                            <div className="w-full h-full bg-[#0c0f18] flex items-center justify-center">
+                                <span className="font-display text-4xl font-black text-white/5 group-hover:text-cyan-400/10 transition-colors">
                                     {member.initials || member.name.split(' ').map(n => n[0]).join('')}
                                 </span>
+                            </div>
+                        )}
+                        {/* Gradient Overlay */}
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/40 to-transparent" />
+                    </div>
+
+                    {/* Content */}
+                    <div className="relative z-10 h-full flex flex-col justify-end p-6 text-center">
+                        <div className="mb-4">
+                            <span className="font-display text-[9px] tracking-[0.3em] text-cyan-400 text-glow-cyan uppercase">
+                                {member.role}
+                            </span>
+                            <h3 className="font-display text-base md:text-lg font-black tracking-wider text-white uppercase italic mt-1 group-hover:text-glow-white transition-all">
+                                {member.name}
+                            </h3>
+                        </div>
+
+                        {/* Social Links on Hover */}
+                        <div className="flex justify-center gap-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                            {member.linkedin && (
+                                <a href={member.linkedin} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-cyan-400 hover:border-cyan-400/30 transition-all">
+                                    <Linkedin size={16} />
+                                </a>
+                            )}
+                            {member.github && (
+                                <a href={member.github} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white transition-all">
+                                    <Github size={16} />
+                                </a>
+                            )}
+                            {member.email && (
+                                <a href={`mailto:${member.email}`} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-red-500 transition-all">
+                                    <Mail size={16} />
+                                </a>
                             )}
                         </div>
-                        <div className="absolute inset-[-4px] rounded-full border border-cyan-400/0 group-hover:border-cyan-400/20 transition-all duration-500" />
+
+                        {/* Bottom line accent */}
+                        <div className="absolute bottom-0 left-0 w-full h-[2px] bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
                     </div>
-                    <h3 className="font-display text-sm md:text-base font-black tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase mb-2">{member.name}</h3>
-                    <div className="inline-block px-4 py-1.5 rounded-full border border-cyan-400/10 bg-cyan-400/5 mt-2">
-                        <span className="font-display text-[9px] tracking-[0.2em] text-cyan-400/60 uppercase whitespace-nowrap">{member.role}</span>
-                    </div>
-                    <div className="flex justify-center gap-3 mt-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
-                        {member.linkedin && <a href={member.linkedin} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/40 hover:text-blue-500 hover:border-blue-500/20 transition-all duration-500"><Linkedin size={14} /></a>}
-                        {member.github && <a href={member.github} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/40 hover:text-white transition-all duration-500"><Github size={14} /></a>}
-                        {member.email && <a href={`mailto:${member.email}`} className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/40 hover:text-red-500 transition-all duration-500"><Mail size={14} /></a>}
-                    </div>
-                    <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[60%] h-[1px] bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </motion.div>
             ))}
         </div>
