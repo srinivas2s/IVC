@@ -72,7 +72,7 @@ const Home = ({ isPastHome }) => {
                                 animate={{ opacity: 1, scale: 1, filter: 'blur(0px)' }}
                                 exit={{ opacity: 0 }}
                                 transition={{ duration: 1.2, ease: [0.16, 1, 0.3, 1] }}
-                                className="relative w-36 h-36 md:w-52 md:h-52 lg:w-60 lg:h-60 drop-shadow-[0_0_80px_rgba(34,211,238,0.25)] z-10"
+                                className="relative w-44 h-44 md:w-64 md:h-64 lg:w-80 lg:h-80 drop-shadow-[0_0_120px_rgba(34,211,238,0.35)] z-10"
                                 style={{ transform: 'translateZ(60px)' }}
                             />
                         )}
@@ -87,11 +87,11 @@ const Home = ({ isPastHome }) => {
                         transition={{ delay: 0.6, duration: 1 }}
                         className="flex items-center justify-center gap-2 sm:gap-4 md:gap-6 mb-6 w-full px-2"
                     >
-                        <div className="h-[1px] w-4 sm:w-12 md:w-24 bg-gradient-to-r from-transparent to-cyan-400/40 shrink-0" />
-                        <span className="font-display text-[10px] min-[360px]:text-[11px] min-[400px]:text-[13px] sm:text-[16px] md:text-[22px] font-bold tracking-[0.15em] sm:tracking-[0.4em] md:tracking-[0.6em] text-cyan-400 uppercase text-glow-cyan whitespace-nowrap">
+                        <div className="h-[1px] w-4 sm:w-16 md:w-32 bg-gradient-to-r from-transparent to-cyan-400/40 shrink-0" />
+                        <span className="font-display text-[11px] min-[360px]:text-[12px] min-[400px]:text-[15px] sm:text-[20px] md:text-[28px] lg:text-[2.5rem] font-bold tracking-[0.1em] sm:tracking-[0.3em] md:tracking-[0.4em] text-cyan-400 uppercase text-glow-cyan whitespace-nowrap">
                             Innovators & Visionaries Club
                         </span>
-                        <div className="h-[1px] w-4 sm:w-12 md:w-24 bg-gradient-to-l from-transparent to-cyan-400/40 shrink-0" />
+                        <div className="h-[1px] w-4 sm:w-16 md:w-32 bg-gradient-to-l from-transparent to-cyan-400/40 shrink-0" />
                     </motion.div>
                 </motion.div>
             </motion.div>

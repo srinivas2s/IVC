@@ -257,14 +257,36 @@ const MentorManager = ({ token }) => {
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                 {mentors.map(m => (
-                    <div key={m.id} className="glow-card p-6 rounded-2xl border border-white/[0.06] relative group text-center">
-                        <button onClick={() => handleDelete(m.id)} className="absolute top-4 right-4 text-white/10 hover:text-red-400 p-2"><Trash2 size={16} /></button>
-                        <div className="w-20 h-20 rounded-full border border-white/10 overflow-hidden mx-auto mb-4 group-hover:border-cyan-400/30 transition-all">
-                            {m.photo_url ? <img src={m.photo_url} className="w-full h-full object-cover" /> : <User size={32} className="w-full h-full p-5 opacity-10" />}
+                    <div key={m.id} className="relative h-[250px] rounded-2xl overflow-hidden group border border-white/5 hover:border-cyan-400/30 transition-all duration-500 shadow-xl">
+                        {/* Background Image */}
+                        <div className="absolute inset-0 z-0">
+                            {m.photo_url ? (
+                                <img
+                                    src={m.photo_url}
+                                    className="w-full h-full object-cover opacity-40 group-hover:opacity-60 group-hover:scale-105 transition-transform duration-700"
+                                />
+                            ) : (
+                                <div className="w-full h-full bg-white/[0.02] flex items-center justify-center">
+                                    <User size={32} className="text-white/10" />
+                                </div>
+                            )}
+                            <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/60 to-transparent" />
                         </div>
-                        <h4 className="font-display text-sm font-bold uppercase text-white">{m.name}</h4>
-                        <p className="text-cyan-400/40 text-[9px] uppercase tracking-widest mt-1">{m.other_info}</p>
-                        <p className="text-white/20 text-xs mt-3 px-2 line-clamp-2">"{m.quote}"</p>
+
+                        {/* Actions */}
+                        <button
+                            onClick={() => handleDelete(m.id)}
+                            className="absolute top-3 right-3 z-20 w-8 h-8 rounded-lg bg-black/40 border border-white/10 flex items-center justify-center text-white/20 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                        >
+                            <Trash2 size={14} />
+                        </button>
+
+                        {/* Content */}
+                        <div className="relative z-10 h-full flex flex-col justify-end p-5 text-center">
+                            <h4 className="font-display text-sm font-black uppercase text-white tracking-wider truncate">{m.name}</h4>
+                            <p className="text-cyan-400/60 text-[8px] uppercase tracking-[0.2em] mt-1 truncate">{m.other_info}</p>
+                            <p className="text-white/40 text-[10px] mt-3 line-clamp-2 italic px-2">"{m.quote}"</p>
+                        </div>
                     </div>
                 ))}
             </div>
@@ -347,9 +369,9 @@ const AdminDashboard = ({ token, onLogout }) => {
                     <>
                         <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-8">
                             <StatCard icon={Users} label="Total" value={requests.length} color="cyan" />
-                            <StatCard icon={Clock} label="Pending" value={requests.filter(r=>r.status==='pending').length} color="amber" />
-                            <StatCard icon={CheckCircle} label="Approved" value={requests.filter(r=>r.status==='approved').length} color="emerald" />
-                            <StatCard icon={XCircle} label="Rejected" value={requests.filter(r=>r.status==='rejected').length} color="red" />
+                            <StatCard icon={Clock} label="Pending" value={requests.filter(r => r.status === 'pending').length} color="amber" />
+                            <StatCard icon={CheckCircle} label="Approved" value={requests.filter(r => r.status === 'approved').length} color="emerald" />
+                            <StatCard icon={XCircle} label="Rejected" value={requests.filter(r => r.status === 'rejected').length} color="red" />
                         </div>
 
                         <div className="flex flex-col md:flex-row gap-4 mb-8 justify-between">
