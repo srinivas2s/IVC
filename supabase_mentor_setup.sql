@@ -9,3 +9,4 @@ CREATE TABLE IF NOT EXISTS mentors (
     photo_url TEXT,     -- URL from Supabase Storage
     created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
 );
+ 

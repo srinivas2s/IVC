@@ -1,4 +1,4 @@
-const express = require('express');
+const express = require('express'); // test
 const cors = require('cors');
 const helmet = require('helmet');
 const rateLimit = require('express-rate-limit');
@@ -9,7 +9,9 @@ const multer = require('multer');
 const { z } = require('zod');
 
 const path = require('path');
-dotenv.config({ path: path.resolve(__dirname, '../.env') });
+if (process.env.NODE_ENV !== 'production') {
+    dotenv.config();
+}
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -308,7 +310,7 @@ app.delete('/api/admin/requests/:id', requireAdmin, async (req, res) => {
     res.json({ message: 'Request deleted' });
 });
 
-// For public Team page
+// Fetch approved members for Team page
 app.get('/api/approved-members', async (req, res) => {
     if (!supabase) {
         return res.json({ members: [] });
