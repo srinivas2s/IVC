@@ -2,16 +2,17 @@
 
 ![IVC Platform](client/public/logo.png)
 
-A premium, full-stack digital platform for the **Innovators & Visionaries Club (IVC)**. This project serves as a hub to showcase cutting-edge projects, upcoming events, and provide a seamless onboarding experience for new members.
+A professional, full-stack digital platform for the Innovators & Visionaries Club (IVC). This project serves as a centralized hub to showcase innovatives projects, manage upcoming events, and provide a secure onboarding experience for club members.
 
 ---
 
 ## Project Highlights
 
-- **State-of-the-Art UI**: Built with a "Liquid Glass" design system, featuring advanced translucency and blurs.
-- **Dynamic UX**: Interactive 3D parallax effects and micro-animations throughout the site.
-- **Full-Stack Security**: Production-ready backend with rate limiting, input sanitization, and security headers.
-- **Responsive**: Fully optimized for everything from ultra-wide monitors to mobile devices.
+- **Premium UI/UX**: Built with a "Liquid Glass" design system, featuring advanced translucency, blurs, and interactive 3D parallax effects.
+- **Full-Stack Security**: Production-ready backend featuring JWT-based authentication, rate limiting, and strict input validation.
+- **Database Persistence**: Integrated with Supabase for reliable data storage and member management.
+- **Image Storage**: Automated photo uploads to Supabase Storage with memory-optimized processing.
+- **Responsive Design**: Fully optimized for a seamless experience across all devices, from desktop monitors to mobile phones.
 
 ---
 
@@ -19,23 +20,49 @@ A premium, full-stack digital platform for the **Innovators & Visionaries Club (
 
 ```bash
 IVC-main/
-├── client/         # React + Vite frontend
-│   └── src/        # UI Components & Pages
-├── server/         # Node.js + Express backend
-│   └── index.js    # API Routes & Logic
-├── vercel.json     # Deployment configuration
-└── README.md       # Project overview
+├── client/             # React + Vite frontend
+│   └── src/            # UI Components, Pages & Logic
+├── server/             # Node.js + Express backend
+│   ├── index.js        # API Routes, Middleware & Supabase Logic
+│   └── vercel.json     # Deployment configuration for Vercel
+├── supabase_setup.sql  # Database schema and initial setup
+└── README.md           # Project overview
 ```
+
+---
+
+## Tech Stack
+
+### Frontend
+- **Framework**: React 19 + Vite
+- **Styling**: Tailwind CSS
+- **Animations**: Framer Motion & Lenis Smooth Scroll
+- **Icons**: Lucide React
+
+### Backend
+- **Framework**: Node.js + Express
+- **Database**: Supabase (PostgreSQL)
+- **Validation**: Zod
+- **Security**: Helmet, CORS, Express Rate Limit
+- **Storage**: Multer + Supabase Storage
 
 ---
 
 ## Quick Start
 
-### 1. Prerequisite
-Ensure you have **Node.js (v18+)** installed on your system.
+### 1. Prerequisites
+Ensure you have **Node.js (v18+)** installed.
 
-### 2. Installation & Setup
-Run the following commands in order:
+### 2. Environment Variables
+Create a `.env` file in the `server` directory with the following:
+- `ADMIN_PASSWORD`: Access key for the admin dashboard.
+- `PROFILE_PASSWORD`: Access key for member profile submissions.
+- `SUPABASE_URL`: Your Supabase project URL.
+- `SUPABASE_ANON_KEY`: Your Supabase anonymous key.
+- `ADMIN_SECRET`: A secret string for signing session tokens.
+
+### 3. Installation & Setup
+Run the following commands:
 
 ```bash
 # Clone the repository
@@ -51,14 +78,15 @@ cd ../server
 npm install
 ```
 
-### 3. Running the App
-Open two terminal windows:
+### 4. Running the App
+Start both the backend and frontend:
 
-- **Terminal 1 (Backend)**: `cd server && npm run dev`
-- **Terminal 2 (Frontend)**: `cd client && npm run dev`
+- **Backend**: `cd server && npm run dev` (Runs on port 5000)
+- **Frontend**: `cd client && npm run dev` (Runs on port 5173)
 
 ---
 
 ## License
-This project is developed for the **Innovators & Visionaries Club**. All rights reserved.
+This project is developed for the Innovators & Visionaries Club. All rights reserved.
 ---
+

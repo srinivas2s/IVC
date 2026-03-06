@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { BrowserRouter as Router } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { AnimatePresence, motion, useScroll, useSpring, useMotionValue, useTransform, useMotionTemplate } from 'framer-motion';
 import Home from './pages/Home';
 import About from './pages/About';
@@ -9,6 +9,8 @@ import Events from './pages/Events';
 import Team from './pages/Team';
 import Join from './pages/Join';
 import Achievements from './pages/Achievements';
+import AdminPage from './pages/AdminPage';
+import ProfilePage from './pages/ProfilePage';
 import Navbar from './components/Navbar';
 import LoadingScreen from './components/LoadingScreen';
 import InteractiveBackground from './components/InteractiveBackground';
@@ -26,7 +28,10 @@ const sections = [
   { id: 'achievements', label: '07' },
 ];
 
-function App() {
+/* ═══════════════════════════════════════
+   MAIN SITE — the original landing page
+   ═══════════════════════════════════════ */
+function MainSite() {
   const [loading, setLoading] = useState(true);
   const [showJoinModal, setShowJoinModal] = useState(false);
   const [isPastHome, setIsPastHome] = useState(false);
@@ -73,7 +78,7 @@ function App() {
   }, []);
 
   return (
-    <Router>
+    <>
       <Navbar />
       <InteractiveBackground />
 
@@ -88,8 +93,6 @@ function App() {
             transition={{ duration: 0.8 }}
             className="min-h-screen text-white font-body relative w-full overflow-x-hidden"
           >
-            {/* Removed floating logo as requested */}
-
             {/* Scroll Timeline - right side - TechSolstice style */}
             <motion.div
               initial={{ opacity: 0, x: 20 }}
@@ -125,8 +128,6 @@ function App() {
                 ))}
               </div>
             </motion.div>
-
-            {/* Removed Navbar for cleaner UI */}
 
             <main className="relative z-10 w-full">
               <section id="home"><Home isPastHome={isPastHome} /></section>
@@ -284,6 +285,21 @@ function App() {
           </motion.div>
         )}
       </AnimatePresence>
+    </>
+  );
+}
+
+/* ═══════════════════════════════════════
+   APP — Router with all routes
+   ═══════════════════════════════════════ */
+function App() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/admin" element={<AdminPage />} />
+        <Route path="/profile" element={<ProfilePage />} />
+        <Route path="*" element={<MainSite />} />
+      </Routes>
     </Router>
   );
 }

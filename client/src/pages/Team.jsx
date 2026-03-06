@@ -1,6 +1,6 @@
-import { useRef, useState, useEffect } from 'react';
-import { motion, useScroll, useTransform } from 'framer-motion';
-import { Linkedin, Github, Mail } from 'lucide-react';
+import { useRef, useState, useEffect, useCallback } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
+import { Linkedin, Github, Mail, X, Info } from 'lucide-react';
 
 const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: 40 },
@@ -9,221 +9,456 @@ const fadeUp = (delay = 0) => ({
     transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }
 });
 
-/* ─── Mentor Card (large glassmorphism style inspired by reference) ─── */
-const MentorCard = ({ member }) => (
-    <div className="relative w-[300px] md:w-[380px] flex-shrink-0">
-        {/* Outer glow border */}
-        <div className="absolute inset-[-1px] rounded-2xl bg-gradient-to-br from-white/[0.08] via-white/[0.03] to-transparent" />
-        <div className="relative rounded-2xl bg-[#0a0e1a]/80 backdrop-blur-xl border border-white/[0.06] p-8 md:p-10 flex flex-col items-center text-center overflow-hidden shadow-[0_20px_80px_rgba(0,0,0,0.6)]">
-            {/* Subtle top-left ambient glow */}
-            <div className="absolute top-0 left-0 w-40 h-40 bg-[radial-gradient(circle,rgba(34,211,238,0.04)_0%,transparent_70%)] pointer-events-none" />
+/* ─── Details Modal ─── */
+const MentorModal = ({ member, onClose }) => (
+    <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        className="fixed inset-0 z-[100] flex items-center justify-center p-4 backdrop-blur-sm bg-black/60"
+        onClick={onClose}
+    >
+        <motion.div
+            initial={{ scale: 0.9, y: 20, opacity: 0 }}
+            animate={{ scale: 1, y: 0, opacity: 1 }}
+            exit={{ scale: 0.9, y: 20, opacity: 0 }}
+            className="relative w-full max-w-2xl bg-[#0c0f18] border border-white/10 rounded-3xl p-8 md:p-12 shadow-[0_50px_100px_rgba(0,0,0,0.8)]"
+            onClick={e => e.stopPropagation()}
+        >
+            <button onClick={onClose} className="absolute top-6 right-6 text-white/40 hover:text-white transition-colors">
+                <X size={24} />
+            </button>
 
-            {/* Avatar circle */}
-            <div className="relative mb-8 w-28 h-28 md:w-32 md:h-32">
-                <div className="w-full h-full rounded-full bg-white/[0.02] border border-white/[0.08] flex items-center justify-center">
-                    {/* Person silhouette icon */}
-                    <svg className="w-16 h-16 md:w-20 md:h-20 text-white/[0.12]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.2">
-                        <circle cx="12" cy="8" r="3.5" />
-                        <path d="M5.5 20.5c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5" strokeLinecap="round" />
-                    </svg>
+            <div className="flex flex-col md:flex-row gap-10 items-center">
+                <div className="w-32 h-32 md:w-48 md:h-48 rounded-full border border-cyan-400/20 p-1 flex-shrink-0">
+                    <div className="w-full h-full rounded-full bg-white/[0.03] flex items-center justify-center overflow-hidden">
+                        {member.photoUrl ? (
+                            <img src={member.photoUrl} alt={member.name} className="w-full h-full object-cover" />
+                        ) : (
+                            <svg className="w-16 h-16 text-white/[0.1]" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <circle cx="12" cy="8" r="3.5" />
+                                <path d="M5.5 20.5c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5" strokeLinecap="round" />
+                            </svg>
+                        )}
+                    </div>
+                </div>
+
+                <div className="flex-1">
+                    <div className="flex items-center gap-2 mb-3">
+                        <span className="px-3 py-1 rounded-full bg-cyan-400/10 text-cyan-400 text-[10px] font-black tracking-widest uppercase">
+                            MENTOR
+                        </span>
+                    </div>
+                    <h2 className="text-3xl md:text-5xl font-black text-white italic tracking-tight mb-4">{member.name}</h2>
+                    <p className="text-white/60 leading-relaxed mb-6 italic">"{member.quote || member.description}"</p>
+                    <p className="text-white/40 text-sm mb-8">{member.other_info || member.department}</p>
+
+                    <div className="flex gap-4">
+                        {member.linkedin && <a href={member.linkedin} target="_blank" rel="noreferrer" className="w-12 h-12 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center text-white/40 hover:text-cyan-400 hover:border-cyan-400/30 transition-all"><Linkedin size={18} /></a>}
+                        {member.email && <a href={`mailto:${member.email}`} className="w-12 h-12 rounded-xl bg-white/[0.03] border border-white/10 flex items-center justify-center text-white/40 hover:text-red-500 transition-all"><Mail size={18} /></a>}
+                    </div>
+                </div>
+            </div>
+        </motion.div>
+    </motion.div>
+);
+
+/* ─── Photo Card (landscape shape) ─── */
+const PhotoCard = ({ member, isFinal = false }) => (
+    <div className={`relative w-[320px] md:w-[420px] h-[300px] md:h-[380px] flex-shrink-0 group overflow-visible`}>
+        <div className="absolute inset-[-1px] rounded-xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-transparent group-hover:from-cyan-400/20 transition-all duration-700" />
+        <div className="relative w-full h-full rounded-xl bg-[#0c0f18]/90 backdrop-blur-xl border border-white/[0.05] flex flex-col items-center justify-center overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
+            <div className="absolute top-0 left-0 w-48 h-48 bg-[radial-gradient(circle,rgba(255,255,255,0.015)_0%,transparent_70%)] pointer-events-none" />
+
+            <div className="relative w-24 h-24 md:w-28 md:h-28 mb-4">
+                <div className="w-full h-full rounded-full border border-white/[0.08] flex items-center justify-center overflow-hidden group-hover:scale-105 transition-transform duration-700">
+                    {member.photoUrl ? (
+                        <img src={member.photoUrl} alt={member.name} className="w-full h-full object-cover" />
+                    ) : (
+                        <svg className="w-16 h-16 md:w-20 md:h-20 text-white/[0.1] group-hover:text-cyan-400/20 transition-colors" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                            <circle cx="12" cy="8" r="3.5" />
+                            <path d="M5.5 20.5c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5" strokeLinecap="round" />
+                        </svg>
+                    )}
                 </div>
             </div>
 
-            {/* Name */}
-            <h3 className="font-display text-base md:text-lg font-black tracking-wider text-white uppercase mb-2">
-                {member.name}
-            </h3>
-
-            {/* Role badge */}
-            <div className="inline-block px-5 py-2 rounded-full border border-cyan-400/10 bg-cyan-400/5 mb-6">
-                <span className="font-display text-[9px] md:text-[10px] tracking-[0.25em] text-cyan-400/50 uppercase">
+            <div className="text-center px-6">
+                <span className="font-display text-[9px] md:text-[11px] tracking-[0.4em] text-cyan-400 text-glow-cyan uppercase">
                     {member.role}
                 </span>
+                {isFinal && (
+                    <motion.h3
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        className="mt-3 text-white font-black italic text-lg tracking-wider uppercase opacity-80 group-hover:opacity-100 transition-opacity"
+                    >
+                        {member.name}
+                    </motion.h3>
+                )}
             </div>
 
-            {/* Social links */}
-            <div className="flex justify-center gap-3">
-                <a href="#" className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/30 hover:text-blue-500 hover:border-blue-500/20 hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all duration-500">
-                    <Linkedin size={14} />
-                </a>
-                <a href="#" className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/30 hover:text-white hover:border-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-all duration-500">
-                    <Github size={14} />
-                </a>
-                <a href="#" className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/30 hover:text-red-500 hover:border-red-500/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all duration-500">
-                    <Mail size={14} />
-                </a>
+            {isFinal && (
+                <div className="absolute bottom-6 flex gap-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                    <span className="flex items-center gap-2 text-[10px] text-cyan-400/60 font-black tracking-widest uppercase">
+                        <Info size={12} /> Click for details
+                    </span>
+                </div>
+            )}
+        </div>
+    </div>
+);
+
+/* ─── Info Card (Used during reveal) ─── */
+const InfoCard = ({ member, position = "right" }) => (
+    <div className="relative w-[320px] md:w-[420px] h-[300px] md:h-[380px] flex-shrink-0">
+        <div className="absolute inset-[-1px] rounded-xl bg-gradient-to-b from-white/[0.06] via-white/[0.02] to-transparent" />
+        <div className="relative w-full h-full rounded-xl bg-[#0c0f18]/90 backdrop-blur-xl border border-white/[0.05] p-8 md:p-10 flex flex-col justify-between overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
+            <div className={`absolute top-0 ${position === 'right' ? 'right-0' : 'left-0'} w-40 h-40 bg-[radial-gradient(circle,rgba(34,211,238,0.02)_0%,transparent_70%)] pointer-events-none`} />
+            <div>
+                <div className="flex items-center gap-2 mb-5">
+                    <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
+                    <span className="font-display text-[9px] md:text-[10px] tracking-[0.3em] text-cyan-400/50 uppercase">
+                        IVC · {member.role}
+                    </span>
+                </div>
+                <h3 className="text-2xl md:text-3xl font-bold text-white/90 mb-5 leading-tight italic">
+                    {member.name}
+                </h3>
+                <p className="text-white/40 text-[13px] md:text-sm leading-relaxed mb-3 line-clamp-4">
+                    {member.bio || member.description}
+                </p>
+                {(member.department || member.year) && (
+                    <p className="text-white/25 text-xs leading-relaxed">
+                        {member.department} {member.year && `· ${member.year}`}
+                    </p>
+                )}
+            </div>
+            <div className="flex items-center gap-3 pt-4 border-t border-white/[0.04]">
+                <div className="flex gap-3">
+                    {member.linkedin && <Linkedin size={15} className="text-white/20" />}
+                    {member.github && <Github size={15} className="text-white/20" />}
+                    {member.email && <Mail size={15} className="text-white/20" />}
+                </div>
             </div>
         </div>
     </div>
 );
 
 const Team = () => {
-    const mentors = [
-        { name: 'Dr. John Doe', role: 'MENTOR', initials: 'JD' },
-        { name: 'Prof. Jane Smith', role: 'MENTOR', initials: 'JS' }
+    const [dynamicMembers, setDynamicMembers] = useState([]);
+    const [fetchedMentors, setFetchedMentors] = useState([]);
+    const [loading, setLoading] = useState(true);
+    const [selectedMentor, setSelectedMentor] = useState(null);
+
+    const fallbackMentors = [
+        {
+            name: 'Dr. John Doe',
+            role: 'MENTOR',
+            quote: 'A visionary mentor shaping the future of technology and innovation at IVC.',
+            other_info: 'Dept. of CSE, VVCE',
+            linkedin: '#', email: 'johndoe@vvce.ac.in'
+        },
+        {
+            name: 'Prof. Jane Smith',
+            role: 'MENTOR',
+            quote: 'Guiding students to bridge the gap between academic theory and real-world impact.',
+            other_info: 'Dept. of ISE, VVCE',
+            linkedin: '#', email: 'janesmith@vvce.ac.in'
+        }
     ];
 
-    const teamMembers = [
+    const staticTeam = [
         { name: 'Alice Cooper', role: 'PRESIDENT', initials: 'AC' },
         { name: 'Bob Singer', role: 'VICE PRESIDENT', initials: 'BS' },
         { name: 'Charlie Day', role: 'TECH LEAD', initials: 'CD' },
         { name: 'Diana Prince', role: 'DESIGN LEAD', initials: 'DP' }
     ];
 
-    const [isMobile, setIsMobile] = useState(false);
     useEffect(() => {
-        const check = () => setIsMobile(window.innerWidth < 768);
-        check();
-        window.addEventListener('resize', check);
-        return () => window.removeEventListener('resize', check);
+        const fetchData = async () => {
+            try {
+                const [memRes, mentRes] = await Promise.all([
+                    fetch('/api/approved-members'),
+                    fetch('/api/mentors')
+                ]);
+                const memData = await memRes.json();
+                const mentData = await mentRes.json();
+
+                if (memData.members) setDynamicMembers(memData.members);
+                if (Array.isArray(mentData)) setFetchedMentors(mentData);
+            } catch (e) {
+                console.error('Fetch error:', e);
+            }
+            setLoading(false);
+        };
+        fetchData();
     }, []);
 
-    /* ─── Sticky scroll ref & transforms ─── */
-    const stickyRef = useRef(null);
-    const { scrollYProgress } = useScroll({
-        target: stickyRef,
-        offset: ["start start", "end end"]
-    });
+    const mentors = fetchedMentors.length > 0 ? fetchedMentors : fallbackMentors;
+    const allTeamMembers = dynamicMembers.length > 0 ? dynamicMembers : staticTeam;
 
-    // Title fades in during 0-15%
-    const titleOpacity = useTransform(scrollYProgress, [0, 0.12], [0, 1]);
-    const titleY = useTransform(scrollYProgress, [0, 0.12], [60, 0]);
+    /* ─── Scroll-lock state machine ─── */
+    const [step, setStep] = useState(0);
+    const [isLocked, setIsLocked] = useState(false);
+    const sectionRef = useRef(null);
+    const scrollAccumulator = useRef(0);
+    const isAnimating = useRef(false);
+    const hasTriggered = useRef(false);
+    const SCROLL_THRESHOLD = 150;
 
-    // Card 1: appears centered (12-22%), then slides left (30-55%)
-    const card1Opacity = useTransform(scrollYProgress, [0.12, 0.22], [0, 1]);
-    const card1Scale = useTransform(scrollYProgress, [0.12, 0.22], [0.85, 1]);
-    const slideOffset = isMobile ? 170 : 210;
-    const card1X = useTransform(scrollYProgress, [0.30, 0.55], [0, -slideOffset]);
+    useEffect(() => {
+        if (isLocked) {
+            document.body.style.overflow = 'hidden';
+            document.body.style.touchAction = 'none';
+        } else {
+            document.body.style.overflow = '';
+            document.body.style.touchAction = '';
+        }
+        return () => { document.body.style.overflow = ''; document.body.style.touchAction = ''; };
+    }, [isLocked]);
 
-    // Card 2: slides in from right (35-55%)
-    const card2Opacity = useTransform(scrollYProgress, [0.35, 0.55], [0, 1]);
-    const card2Scale = useTransform(scrollYProgress, [0.35, 0.55], [0.85, 1]);
-    const card2X = useTransform(scrollYProgress, [0.35, 0.55], [300, 0]);
+    useEffect(() => {
+        const handleGlobalScroll = () => {
+            if (!sectionRef.current) return;
+            const rect = sectionRef.current.getBoundingClientRect();
+            if (rect.bottom < 0 || rect.top > window.innerHeight) {
+                if (hasTriggered.current) {
+                    setStep(0);
+                    hasTriggered.current = false;
+                    setIsLocked(false);
+                }
+            }
+        };
+        window.addEventListener('scroll', handleGlobalScroll, { passive: true });
+        return () => window.removeEventListener('scroll', handleGlobalScroll);
+    }, []);
+
+    useEffect(() => {
+        const section = sectionRef.current;
+        if (!section) return;
+        const observer = new IntersectionObserver(
+            ([entry]) => {
+                if (entry.isIntersecting && !hasTriggered.current && step === 0 && entry.boundingClientRect.top > 0) {
+                    hasTriggered.current = true;
+                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    setTimeout(() => { setStep(1); setIsLocked(true); }, 500);
+                }
+            },
+            { threshold: 0.4 }
+        );
+        observer.observe(section);
+        return () => observer.disconnect();
+    }, [step]);
+
+    const handleWheel = useCallback((e) => {
+        if (!isLocked || isAnimating.current) return;
+        const maxStep = 5;
+        e.preventDefault?.();
+
+        if (e.deltaY > 0) {
+            scrollAccumulator.current += e.deltaY;
+            if (scrollAccumulator.current >= SCROLL_THRESHOLD) {
+                scrollAccumulator.current = 0;
+                isAnimating.current = true;
+                if (step < maxStep) {
+                    setStep(prev => prev + 1);
+                    setTimeout(() => { isAnimating.current = false; }, 900);
+                } else {
+                    setIsLocked(false);
+                    setStep(6);
+                    setTimeout(() => { isAnimating.current = false; }, 400);
+                }
+            }
+        }
+
+        if (e.deltaY < 0) {
+            scrollAccumulator.current -= Math.abs(e.deltaY);
+            if (scrollAccumulator.current <= -SCROLL_THRESHOLD) {
+                scrollAccumulator.current = 0;
+                isAnimating.current = true;
+                if (step > 1) {
+                    setStep(prev => prev - 1);
+                    setTimeout(() => { isAnimating.current = false; }, 900);
+                } else {
+                    setStep(0); setIsLocked(false); hasTriggered.current = false;
+                    setTimeout(() => { isAnimating.current = false; }, 400);
+                }
+            }
+        }
+    }, [isLocked, step]);
+
+    useEffect(() => {
+        if (isLocked) {
+            window.addEventListener('wheel', handleWheel, { passive: false });
+            return () => window.removeEventListener('wheel', handleWheel);
+        }
+    }, [isLocked, handleWheel]);
 
     const renderGrid = (people) => (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
             {people.map((member, i) => (
                 <motion.div
-                    key={i}
+                    key={member.id || i}
                     {...fadeUp(0.1 + i * 0.08)}
                     className="glow-card rounded-2xl p-8 text-center group cursor-pointer relative overflow-hidden"
                 >
-                    {/* Avatar */}
                     <div className="relative mx-auto mb-6 w-24 h-24">
-                        <div className="w-24 h-24 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:border-cyan-400/30 transition-all duration-500">
-                            <span className="font-display text-2xl font-black text-white/30 group-hover:text-cyan-400/40 transition-colors duration-500">
-                                {member.initials}
-                            </span>
+                        <div className="w-24 h-24 rounded-full bg-white/[0.03] border border-white/10 flex items-center justify-center group-hover:border-cyan-400/30 transition-all duration-500 overflow-hidden">
+                            {member.photoUrl ? (
+                                <img src={member.photoUrl} alt={member.name} className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700" />
+                            ) : (
+                                <span className="font-display text-2xl font-black text-white/30 group-hover:text-cyan-400/40 transition-colors duration-500">
+                                    {member.initials || member.name.split(' ').map(n => n[0]).join('')}
+                                </span>
+                            )}
                         </div>
                         <div className="absolute inset-[-4px] rounded-full border border-cyan-400/0 group-hover:border-cyan-400/20 transition-all duration-500" />
                     </div>
-
-                    <h3 className="font-display text-sm md:text-base font-black tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase mb-2">
-                        {member.name}
-                    </h3>
-
+                    <h3 className="font-display text-sm md:text-base font-black tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase mb-2">{member.name}</h3>
                     <div className="inline-block px-4 py-1.5 rounded-full border border-cyan-400/10 bg-cyan-400/5 mt-2">
-                        <span className="font-display text-[9px] tracking-[0.2em] text-cyan-400/60 uppercase whitespace-nowrap">
-                            {member.role}
-                        </span>
+                        <span className="font-display text-[9px] tracking-[0.2em] text-cyan-400/60 uppercase whitespace-nowrap">{member.role}</span>
                     </div>
-
-                    <div className="flex justify-center gap-3 mt-6 opacity-0 group-hover:opacity-100 transition-all duration-500">
-                        <a href="#" className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/40 hover:text-blue-500 hover:border-blue-500/20 hover:shadow-[0_0_15px_rgba(59,130,246,0.3)] transition-all duration-500">
-                            <Linkedin size={14} />
-                        </a>
-                        <a href="#" className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/40 hover:text-white hover:border-white/20 hover:shadow-[0_0_15px_rgba(255,255,255,0.3)] transition-all duration-500">
-                            <Github size={14} />
-                        </a>
-                        <a href="#" className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/40 hover:text-red-500 hover:border-red-500/20 hover:shadow-[0_0_15px_rgba(239,68,68,0.3)] transition-all duration-500">
-                            <Mail size={14} />
-                        </a>
+                    <div className="flex justify-center gap-3 mt-6 opacity-0 group-hover:opacity-100 transition-all duration-500 translate-y-2 group-hover:translate-y-0">
+                        {member.linkedin && <a href={member.linkedin} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/40 hover:text-blue-500 hover:border-blue-500/20 transition-all duration-500"><Linkedin size={14} /></a>}
+                        {member.github && <a href={member.github} target="_blank" rel="noreferrer" className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/40 hover:text-white transition-all duration-500"><Github size={14} /></a>}
+                        {member.email && <a href={`mailto:${member.email}`} className="w-9 h-9 rounded-full border border-white/5 flex items-center justify-center text-white/40 hover:text-red-500 transition-all duration-500"><Mail size={14} /></a>}
                     </div>
-
                     <div className="absolute bottom-0 left-1/2 -translate-x-1/2 w-[60%] h-[1px] bg-gradient-to-r from-transparent via-cyan-400/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                 </motion.div>
             ))}
         </div>
     );
 
+    const mentorIdx = Math.min(step <= 3 ? 0 : 1, Math.max(0, mentors.length - 1));
+    const photoX = step === 1 ? 0 : (step <= 3 ? -220 : 220);
+
     return (
         <>
-            {/* ═══════════ MENTORS – Sticky Scroll-Locked Section ═══════════ */}
-            <div ref={stickyRef} className="relative" style={{ height: '300vh' }}>
-                <div className="sticky top-0 h-screen w-full overflow-hidden flex items-center justify-center">
-                    {/* Background – transparent to blend seamlessly with body */}
+            <AnimatePresence>
+                {selectedMentor && (
+                    <MentorModal
+                        member={selectedMentor}
+                        onClose={() => setSelectedMentor(null)}
+                    />
+                )}
+            </AnimatePresence>
 
-                    {/* Ambient glows */}
-                    <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-[radial-gradient(circle,rgba(34,211,238,0.025)_0%,transparent_70%)] rounded-full pointer-events-none" />
-                    <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-[radial-gradient(circle,rgba(99,102,241,0.025)_0%,transparent_70%)] rounded-full pointer-events-none" />
+            {/* ═══════ MENTORS — Scroll-locked reveal ═══════ */}
+            <div ref={sectionRef} className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden">
+                <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-[radial-gradient(circle,rgba(34,211,238,0.025)_0%,transparent_70%)] rounded-full pointer-events-none" />
+                <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-[radial-gradient(circle,rgba(99,102,241,0.025)_0%,transparent_70%)] rounded-full pointer-events-none" />
+                <div className="watermark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style={{ opacity: 0.015 }}>MENTORS</div>
 
-                    {/* Watermark */}
-                    <div className="watermark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style={{ opacity: 0.015 }}>MENTORS</div>
+                <div className="relative z-10 text-center px-4 pt-[12vh] md:pt-[14vh]">
+                    <h2 className="font-display text-4xl md:text-7xl lg:text-[6rem] font-black tracking-wider uppercase mb-4">
+                        MEET OUR <span className="text-cyan-400 text-glow-cyan">MENTORS</span>
+                    </h2>
+                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
+                        The visionaries guiding IVC
+                    </p>
+                </div>
 
-                    {/* Title */}
-                    <motion.div
-                        style={{ opacity: titleOpacity, y: titleY }}
-                        className="absolute top-[10vh] md:top-[12vh] left-0 right-0 text-center z-10 px-4"
-                    >
-                        <h2 className="font-display text-4xl md:text-7xl lg:text-[6rem] font-black tracking-wider uppercase mb-4">
-                            MEET OUR <span className="text-cyan-400 text-glow-cyan">MENTORS</span>
-                        </h2>
-                        <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
-                            The visionaries guiding IVC
-                        </p>
-                    </motion.div>
+                <div className="relative z-10 flex items-center justify-center mt-10 md:mt-14 min-h-[320px] md:min-h-[420px] px-4 w-full">
+                    {step > 0 && (
+                        <div className="max-w-7xl mx-auto flex items-center justify-center relative w-full h-full">
 
-                    {/* Cards Container – centered horizontally */}
-                    <div className="relative z-10 flex items-center justify-center gap-6 md:gap-10 mt-12">
-                        {/* Card 1 */}
-                        <motion.div
-                            style={{
-                                opacity: card1Opacity,
-                                scale: card1Scale,
-                                x: card1X,
-                            }}
-                        >
-                            <MentorCard member={mentors[0]} />
-                        </motion.div>
+                            {step < 6 ? (
+                                <>
+                                    {/* Reveal Phase: Transitioning Photo Card */}
+                                    <motion.div
+                                        layout
+                                        animate={{ x: photoX }}
+                                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
+                                        className="z-20"
+                                    >
+                                        <AnimatePresence mode="wait">
+                                            <motion.div
+                                                key={mentorIdx}
+                                                initial={{ opacity: 0, scale: 0.95 }}
+                                                animate={{ opacity: 1, scale: 1 }}
+                                                exit={{ opacity: 0, scale: 0.95 }}
+                                                transition={{ duration: 0.6 }}
+                                            >
+                                                <PhotoCard member={mentors[mentorIdx]} />
+                                            </motion.div>
+                                        </AnimatePresence>
+                                    </motion.div>
 
-                        {/* Card 2 */}
-                        <motion.div
-                            className="absolute"
-                            style={{
-                                opacity: card2Opacity,
-                                scale: card2Scale,
-                                x: card2X,
-                                left: isMobile ? '10px' : '200px',
-                            }}
-                        >
-                            <MentorCard member={mentors[1]} />
-                        </motion.div>
-                    </div>
+                                    {/* Info Card 1 (Right) */}
+                                    <AnimatePresence>
+                                        {(step === 2 || step === 3) && mentors[0] && (
+                                            <motion.div
+                                                initial={{ opacity: 0, x: 100, scale: 0.9 }}
+                                                animate={{ opacity: step === 2 ? 1 : 0, x: 220, scale: step === 2 ? 1 : 0.9 }}
+                                                exit={{ opacity: 0, x: 100, scale: 0.9 }}
+                                                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                                                className="absolute z-10"
+                                            >
+                                                <InfoCard member={mentors[0]} position="right" />
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+
+                                    {/* Info Card 2 (Left) */}
+                                    <AnimatePresence>
+                                        {step >= 5 && mentors[1] && (
+                                            <motion.div
+                                                initial={{ opacity: 0, x: -100, scale: 0.9 }}
+                                                animate={{ opacity: 1, x: -220, scale: 1 }}
+                                                exit={{ opacity: 0, x: -100, scale: 0.9 }}
+                                                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
+                                                className="absolute z-10"
+                                            >
+                                                <InfoCard member={mentors[1]} position="left" />
+                                            </motion.div>
+                                        )}
+                                    </AnimatePresence>
+                                </>
+                            ) : (
+                                /* FINAL PHASE: Interactive Side-by-Side Cards */
+                                <motion.div
+                                    initial={{ opacity: 0 }}
+                                    animate={{ opacity: 1 }}
+                                    className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 w-full"
+                                >
+                                    {mentors.map((m, i) => (
+                                        <motion.div
+                                            key={i}
+                                            initial={{ opacity: 0, x: i === 0 ? -100 : 100, scale: 0.9 }}
+                                            animate={{ opacity: 1, x: 0, scale: 1 }}
+                                            transition={{ duration: 1, delay: i * 0.2, ease: [0.16, 1, 0.3, 1] }}
+                                            whileHover={{ y: -15 }}
+                                            className="cursor-pointer"
+                                            onClick={() => setSelectedMentor(m)}
+                                        >
+                                            <PhotoCard member={m} isFinal={true} />
+                                        </motion.div>
+                                    ))}
+                                </motion.div>
+                            )}
+                        </div>
+                    )}
                 </div>
             </div>
 
-            {/* ═══════════ TEAM MEMBERS – Normal Scroll Section ═══════════ */}
+            {/* ═══════ TEAM MEMBERS — Normal scroll ═══════ */}
             <section className="relative py-32 md:py-48 overflow-hidden">
-                {/* Ambient background glows */}
                 <div className="absolute top-0 right-0 w-[40vw] h-[40vw] bg-[radial-gradient(circle,rgba(34,211,238,0.03)_0%,transparent_70%)] rounded-full pointer-events-none will-change-transform" />
                 <div className="absolute bottom-0 left-0 w-[40vw] h-[40vw] bg-[radial-gradient(circle,rgba(99,102,241,0.03)_0%,transparent_70%)] rounded-full pointer-events-none will-change-transform" />
 
                 <div className="max-w-7xl mx-auto px-6 relative z-10">
-                    {/* TEAM SECTION */}
                     <div className="relative">
-                        {/* Watermark for Team Section */}
-                        <div className="watermark top-0 left-1/2 -translate-x-1/2 -translate-y-1/20">TEAM</div>
-
+                        <div className="watermark top-0 left-1/2 -translate-x-1/2 -translate-y-1/2">TEAM</div>
                         <motion.div {...fadeUp()} className="relative z-10 text-center mb-16">
                             <h2 className="font-display text-4xl md:text-7xl lg:text-[6rem] font-black tracking-wider uppercase mb-4">
                                 MEET OUR <span className="text-cyan-400 text-glow-cyan">TEAM</span>
                             </h2>
                             <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
-                                The passionate innovators driving IVC forward
+                                {loading ? 'FETCHING INNOVATORS...' : 'The passionate innovators driving IVC forward'}
                             </p>
                         </motion.div>
-
-                        {renderGrid(teamMembers)}
+                        {renderGrid(allTeamMembers)}
                     </div>
                 </div>
             </section>

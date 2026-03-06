@@ -23,9 +23,6 @@ const LoadingScreen = () => {
                     transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
                     className="relative mb-12"
                 >
-                    {/* Logo glow bloom */}
-                    <div className="absolute inset-[-40%] bg-[radial-gradient(circle,rgba(34,211,238,0.1)_0%,transparent_70%)] rounded-full animate-pulse-glow pointer-events-none will-change-transform" />
-
                     <motion.img
                         layoutId="main-logo"
                         src={logo}
