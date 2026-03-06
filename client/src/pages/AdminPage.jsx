@@ -130,11 +130,14 @@ const RequestCard = ({ request, onApprove, onReject, onDelete, viewMode }) => {
                 <AnimatePresence>
                     {expanded && (
                         <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden border-t border-white/[0.04] bg-black/20 p-4 grid grid-cols-2 gap-4">
-                            <div><p className="text-[8px] text-white/30 uppercase">Email</p><p className="text-xs text-white/60">{request.email}</p></div>
+                            <div><p className="text-[8px] text-white/30 uppercase">Email</p><p className="text-xs text-white/60 truncate">{request.email}</p></div>
+                            <div><p className="text-[8px] text-white/30 uppercase">Post / Position</p><p className="text-xs text-cyan-400/80 uppercase font-black tracking-widest">{request.role}</p></div>
+                            <div className="col-span-2"><p className="text-[8px] text-white/30 uppercase">Bio / Info</p><p className="text-xs text-white/60 italic leading-relaxed">"{request.bio || 'No bio provided'}"</p></div>
+                            <div><p className="text-[8px] text-white/30 uppercase">Department</p><p className="text-xs text-white/60">{request.department || 'N/A'}</p></div>
                             <div><p className="text-[8px] text-white/30 uppercase">Submitted</p><p className="text-xs text-white/60">{new Date(request.submittedAt).toLocaleDateString()}</p></div>
-                            <div className="col-span-2 flex gap-3">
-                                {request.linkedin && <a href={request.linkedin} className="text-white/20 hover:text-blue-400"><Linkedin size={14} /></a>}
-                                {request.github && <a href={request.github} className="text-white/20 hover:text-white"><Github size={14} /></a>}
+                            <div className="col-span-2 flex gap-3 pt-2 border-t border-white/5">
+                                {request.linkedin && <a href={request.linkedin} target="_blank" rel="noreferrer" className="text-white/20 hover:text-blue-400"><Linkedin size={14} /></a>}
+                                {request.github && <a href={request.github} target="_blank" rel="noreferrer" className="text-white/20 hover:text-white"><Github size={14} /></a>}
                             </div>
                         </motion.div>
                     )}

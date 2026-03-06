@@ -99,7 +99,7 @@ const LoginScreen = ({ onLogin }) => {
    ═══════════════════════════════════════ */
 const ProfileForm = ({ token }) => {
     const [formData, setFormData] = useState({
-        name: '', email: '', linkedin: '', github: '', role: 'Member', department: '', year: ''
+        name: '', email: '', linkedin: '', github: '', role: 'Member', department: '', year: '', bio: ''
     });
     const [photo, setPhoto] = useState(null);
     const [photoPreview, setPhotoPreview] = useState(null);
@@ -156,7 +156,7 @@ const ProfileForm = ({ token }) => {
                 <h3 className="font-display text-xl md:text-2xl font-black tracking-wider text-white uppercase mb-3">Submission Success!</h3>
                 <p className="text-white/40 text-sm mb-10">Admin will review your profile and it will appear on the site if approved.</p>
                 <div className="flex flex-col sm:flex-row gap-4 justify-center">
-                    <button onClick={() => { setStatus(''); setFormData({ name: '', email: '', linkedin: '', github: '', role: 'Member', department: '', year: '' }); setPhoto(null); setPhotoPreview(null); }} className="font-display text-[10px] tracking-[0.3em] text-cyan-400/60 uppercase hover:text-cyan-400 transition-colors border border-cyan-400/10 px-6 py-3 rounded-lg">SUBMIT ANOTHER</button>
+                    <button onClick={() => { setStatus(''); setFormData({ name: '', email: '', linkedin: '', github: '', role: 'Member', department: '', year: '', bio: '' }); setPhoto(null); setPhotoPreview(null); }} className="font-display text-[10px] tracking-[0.3em] text-cyan-400/60 uppercase hover:text-cyan-400 transition-colors border border-cyan-400/10 px-6 py-3 rounded-lg">SUBMIT ANOTHER</button>
                     <Link to="/" className="font-display text-[10px] tracking-[0.3em] text-white/40 uppercase hover:text-white transition-colors border border-white/10 px-6 py-3 rounded-lg">BACK TO SITE</Link>
                 </div>
             </motion.div>
@@ -212,7 +212,7 @@ const ProfileForm = ({ token }) => {
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                     <div>
-                        <label className="block font-display text-[9px] tracking-[0.3em] text-white/40 uppercase mb-2 ml-1">POSITION / POST</label>
+                        <label className="block font-display text-[9px] tracking-[0.3em] text-white/40 uppercase mb-2 ml-1">YOUR POST / POSITION</label>
                         <input
                             type="text" name="role" placeholder="e.g. Member, Tech Lead..."
                             value={formData.role} onChange={handleChange} required
@@ -227,6 +227,15 @@ const ProfileForm = ({ token }) => {
                             className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl py-4 px-4 text-white text-sm focus:outline-none focus:border-cyan-400/30 transition-all"
                         />
                     </div>
+                </div>
+
+                <div>
+                    <label className="block font-display text-[9px] tracking-[0.3em] text-white/40 uppercase mb-2 ml-1">ABOUT ME / INFO</label>
+                    <textarea
+                        name="bio" placeholder="Tell us a bit about yourself and your role in IVC..."
+                        value={formData.bio} onChange={handleChange} rows={3}
+                        className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl py-4 px-4 text-white text-sm focus:outline-none focus:border-cyan-400/30 transition-all resize-none"
+                    />
                 </div>
 
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
@@ -258,7 +267,7 @@ const ProfileForm = ({ token }) => {
             <button type="submit" disabled={status === 'submitting'} className="w-full py-5 rounded-xl font-display text-[11px] tracking-[0.4em] uppercase border border-cyan-400/20 bg-cyan-400/5 text-cyan-400 hover:bg-cyan-400/10 transition-all flex items-center justify-center gap-3">
                 <Send size={14} /> {status === 'submitting' ? 'SUBMITTING...' : 'SUBMIT PROFILE REQUEST'}
             </button>
-        </motion.form>
+        </motion.form >
     );
 };
 

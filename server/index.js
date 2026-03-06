@@ -108,7 +108,7 @@ app.use(express.json({ limit: '10kb' }));
 // ═══════════════════════════════════════
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
-    max: 10,
+    max: 100, // Increased from 10 to 100 to prevent frequent warnings
     message: { error: 'Too many login attempts, please try again later.' }
 });
 
@@ -170,6 +170,7 @@ const memberRequestSchema = z.object({
     role: z.string().min(2).max(50).default('Member'),
     department: z.string().optional().or(z.literal('')),
     year: z.string().optional().or(z.literal('')),
+    bio: z.string().optional().or(z.literal('')),
 });
 
 app.post('/api/member-request', upload.single('photo'), async (req, res) => {

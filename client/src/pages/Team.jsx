@@ -226,8 +226,35 @@ const Team = () => {
         fetchData();
     }, []);
 
+    const ROLE_HIERARCHY = {
+        'PRESIDENT': 1,
+        'VICE PRESIDENT': 2,
+        'SECRETARY': 3,
+        'TREASURER': 4,
+        'OPERATION LEAD': 5,
+        'PROJECT LEAD': 6,
+        'DESIGN LEAD': 7,
+        'DOCUMENTATION LEAD': 8,
+        'MARKETING LEAD': 9,
+        'SOCIAL MEDIA LEAD': 10,
+        'OUTREACH LEAD': 11,
+        'ASSOCIATE': 12,
+        'ASSOCIATES': 12
+    };
+
     const mentors = fetchedMentors.length > 0 ? fetchedMentors : fallbackMentors;
-    const allTeamMembers = dynamicMembers.length > 0 ? dynamicMembers : staticTeam;
+
+    // Sort members based on hierarchy
+    const allTeamMembers = [...(dynamicMembers.length > 0 ? dynamicMembers : staticTeam)].sort((a, b) => {
+        const roleA = a.role?.toUpperCase().trim() || '';
+        const roleB = b.role?.toUpperCase().trim() || '';
+
+        const rankA = ROLE_HIERARCHY[roleA] || 99;
+        const rankB = ROLE_HIERARCHY[roleB] || 99;
+
+        if (rankA !== rankB) return rankA - rankB;
+        return a.name.localeCompare(b.name); // Alphabetical if same rank
+    });
 
     /* ─── Scroll-lock state machine ─── */
     const [step, setStep] = useState(0);
@@ -284,7 +311,8 @@ const Team = () => {
 
     const handleWheel = useCallback((e) => {
         if (!isLocked || isAnimating.current) return;
-        const maxStep = 5;
+        // 3 steps per mentor: 0:Reveal, 1:Info, 2:Fade
+        const maxStep = mentors.length * 3 - 1;
         e.preventDefault?.();
 
         if (e.deltaY > 0) {
@@ -297,7 +325,7 @@ const Team = () => {
                     setTimeout(() => { isAnimating.current = false; }, 900);
                 } else {
                     setIsLocked(false);
-                    setStep(6);
+                    setStep(maxStep + 1);
                     setTimeout(() => { isAnimating.current = false; }, 400);
                 }
             }
@@ -391,8 +419,11 @@ const Team = () => {
         </div>
     );
 
-    const mentorIdx = Math.min(step <= 3 ? 0 : 1, Math.max(0, mentors.length - 1));
-    const photoX = step === 1 ? 0 : (step <= 3 ? -220 : 220);
+    /* ─── Dynamic Step Calculations ─── */
+    const mentorIdx = Math.min(Math.floor((step - 1) / 3), mentors.length - 1);
+    const subStep = (step - 1) % 3; // 0: Photo Reveal, 1: Info Show, 2: Info Fade
+    const isEven = mentorIdx % 2 === 0;
+    const photoX = subStep === 0 ? 0 : (isEven ? -220 : 220);
 
     return (
         <>
@@ -424,7 +455,7 @@ const Team = () => {
                     {step > 0 && (
                         <div className="max-w-7xl mx-auto flex items-center justify-center relative w-full h-full">
 
-                            {step < 6 ? (
+                            {step <= mentors.length * 3 - 1 ? (
                                 <>
                                     {/* Reveal Phase: Transitioning Photo Card */}
                                     <motion.div
@@ -446,32 +477,18 @@ const Team = () => {
                                         </AnimatePresence>
                                     </motion.div>
 
-                                    {/* Info Card 1 (Right) */}
-                                    <AnimatePresence>
-                                        {(step === 2 || step === 3) && mentors[0] && (
+                                    {/* Dynamic Info Card */}
+                                    <AnimatePresence mode="wait">
+                                        {subStep === 1 && mentors[mentorIdx] && (
                                             <motion.div
-                                                initial={{ opacity: 0, x: 100, scale: 0.9 }}
-                                                animate={{ opacity: step === 2 ? 1 : 0, x: 220, scale: step === 2 ? 1 : 0.9 }}
-                                                exit={{ opacity: 0, x: 100, scale: 0.9 }}
+                                                key={`info-${mentorIdx}`}
+                                                initial={{ opacity: 0, x: isEven ? 100 : -100, scale: 0.9 }}
+                                                animate={{ opacity: 1, x: isEven ? 220 : -220, scale: 1 }}
+                                                exit={{ opacity: 0, x: isEven ? 100 : -100, scale: 0.9 }}
                                                 transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
                                                 className="absolute z-10"
                                             >
-                                                <InfoCard member={mentors[0]} position="right" />
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-
-                                    {/* Info Card 2 (Left) */}
-                                    <AnimatePresence>
-                                        {step >= 5 && mentors[1] && (
-                                            <motion.div
-                                                initial={{ opacity: 0, x: -100, scale: 0.9 }}
-                                                animate={{ opacity: 1, x: -220, scale: 1 }}
-                                                exit={{ opacity: 0, x: -100, scale: 0.9 }}
-                                                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                                                className="absolute z-10"
-                                            >
-                                                <InfoCard member={mentors[1]} position="left" />
+                                                <InfoCard member={mentors[mentorIdx]} position={isEven ? "right" : "left"} />
                                             </motion.div>
                                         )}
                                     </AnimatePresence>
