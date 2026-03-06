@@ -10,7 +10,7 @@ const { z } = require('zod');
 
 const path = require('path');
 if (process.env.NODE_ENV !== 'production') {
-    dotenv.config();
+    dotenv.config({ path: path.resolve(__dirname, '../.env') });
 }
 
 const app = express();
@@ -220,6 +220,7 @@ app.post('/api/member-request', upload.single('photo'), async (req, res) => {
             .from('member_requests')
             .insert([{
                 ...validatedData,
+                role: 'Member',
                 photo_url: photoUrl,
                 status: 'pending',
                 submitted_at: new Date().toISOString()
