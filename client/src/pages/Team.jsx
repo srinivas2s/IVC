@@ -104,7 +104,32 @@ const PhotoCard = ({ member, isFinal = false }) => (
                 )}
 
                 {isFinal && (
-                    <div className="mt-4 flex justify-center gap-3 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                    <div className="mt-4 flex flex-col items-center gap-4 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                        {/* Social Links */}
+                        <div className="flex gap-4">
+                            {member.linkedin && (
+                                <a
+                                    href={member.linkedin}
+                                    target="_blank"
+                                    rel="noreferrer"
+                                    className="w-10 h-10 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-white/50 hover:text-cyan-400 hover:border-cyan-400/30 hover:bg-cyan-400/5 transition-all"
+                                    onClick={e => e.stopPropagation()}
+                                >
+                                    <Linkedin size={18} />
+                                </a>
+                            )}
+                            {member.email && (
+                                <a
+                                    href={`mailto:${member.email}`}
+                                    className="w-10 h-10 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-white/50 hover:text-red-500 hover:border-red-500/20 hover:bg-red-500/5 transition-all"
+                                    onClick={e => e.stopPropagation()}
+                                >
+                                    <Mail size={18} />
+                                </a>
+                            )}
+                        </div>
+
+                        {/* Details Hint */}
                         <span className="flex items-center gap-2 text-[10px] text-cyan-400/80 font-black tracking-widest uppercase bg-cyan-400/10 px-3 py-1.5 rounded-full border border-cyan-400/20">
                             <Info size={12} /> Click for details
                         </span>

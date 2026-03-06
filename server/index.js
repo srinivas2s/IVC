@@ -167,6 +167,9 @@ const memberRequestSchema = z.object({
     email: z.string().email(),
     linkedin: z.string().optional().or(z.literal('')),
     github: z.string().optional().or(z.literal('')),
+    role: z.string().min(2).max(50).default('Member'),
+    department: z.string().optional().or(z.literal('')),
+    year: z.string().optional().or(z.literal('')),
 });
 
 app.post('/api/member-request', upload.single('photo'), async (req, res) => {
@@ -220,7 +223,6 @@ app.post('/api/member-request', upload.single('photo'), async (req, res) => {
             .from('member_requests')
             .insert([{
                 ...validatedData,
-                role: 'Member',
                 photo_url: photoUrl,
                 status: 'pending',
                 submitted_at: new Date().toISOString()
