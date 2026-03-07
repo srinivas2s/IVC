@@ -110,7 +110,7 @@ const About = () => {
                     ))}
                 </div>
                 {/* Mission & Vision */}
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-32">
+                <div className="grid grid-cols-2 md:grid-cols-2 gap-4 md:gap-8 mb-32">
                     {[
                         {
                             title: "OUR MISSION",
@@ -126,16 +126,16 @@ const About = () => {
                             {...fadeUp(0.1 + i * 0.1)}
                             whileHover={{ y: -8, scale: 1.02, rotateX: 2, rotateY: 2 }}
                             whileTap={{ scale: 0.98 }}
-                            className="glow-card rounded-2xl p-8 md:p-12 group cursor-pointer perspective-1000"
+                            className="glow-card rounded-xl md:rounded-2xl p-4 md:p-12 group cursor-pointer perspective-1000"
                         >
                             {/* Shimmer */}
                             <div className="absolute inset-0 overflow-hidden rounded-2xl pointer-events-none">
                                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.05] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                             </div>
-                            <h3 className="font-display text-xl md:text-2xl font-black tracking-wider text-white mb-6 group-hover:text-cyan-400 transition-colors">
+                            <h3 className="font-display text-xs md:text-2xl font-black tracking-wider text-white mb-2 md:mb-6 group-hover:text-cyan-400 transition-colors">
                                 {card.title}
                             </h3>
-                            <p className="text-white/80 text-sm md:text-base leading-relaxed font-medium group-hover:text-white transition-colors">
+                            <p className="text-white/80 text-[10px] md:text-base leading-relaxed font-medium group-hover:text-white transition-colors line-clamp-4 md:line-clamp-none">
                                 {card.text}
                             </p>
                         </motion.div>
@@ -147,7 +147,7 @@ const About = () => {
                     <h2 className="font-display text-5xl md:text-8xl lg:text-[7rem] font-black tracking-wider uppercase mb-4">
                         THE <span className="text-cyan-400 text-glow-cyan">PILLARS</span>
                     </h2>
-                    
+
                 </motion.div>
 
                 {/* Mobile One-Line Header for Pillars */}

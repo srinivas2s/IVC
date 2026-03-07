@@ -39,18 +39,18 @@ const Domains = () => {
                 </motion.div>
 
                 {/* Domain Grid - TechSolstice staggered layout */}
-                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
                     {domains.map((domain, i) => {
                         const Icon = domain.icon;
                         return (
                             <motion.div
                                 key={i}
                                 {...fadeUp(0.05 + i * 0.06)}
-                                className="glow-card rounded-2xl p-8 md:p-10 group cursor-pointer relative overflow-hidden"
+                                className="glow-card rounded-xl md:rounded-2xl p-3 md:p-10 group cursor-pointer relative overflow-hidden"
                             >
                                 {/* Number */}
-                                <div className="absolute top-6 right-6 w-10 h-10 rounded-lg border border-white/5 flex items-center justify-center">
-                                    <span className="font-display text-xs text-white/30">{String(i + 1).padStart(2, '0')}</span>
+                                <div className="absolute top-2 right-2 md:top-6 md:right-6 w-6 h-6 md:w-10 md:h-10 rounded md:rounded-lg border border-white/5 flex items-center justify-center">
+                                    <span className="font-display text-[8px] md:text-xs text-white/30">{String(i + 1).padStart(2, '0')}</span>
                                 </div>
 
                                 {/* Shimmer on hover */}
@@ -58,19 +58,19 @@ const Domains = () => {
                                     <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/[0.02] to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
                                 </div>
 
-                                <div className="w-12 h-12 rounded-xl bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center mb-6 group-hover:bg-cyan-400/10 group-hover:border-cyan-400/25 transition-all duration-500">
-                                    <Icon className="text-cyan-400/70 group-hover:text-cyan-400 transition-colors" size={22} />
+                                <div className="w-8 h-8 md:w-12 md:h-12 rounded-lg md:rounded-xl bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center mb-3 md:mb-6 group-hover:bg-cyan-400/10 group-hover:border-cyan-400/25 transition-all duration-500">
+                                    <Icon className="text-cyan-400/70 group-hover:text-cyan-400 transition-colors w-4 h-4 md:w-5 md:h-5" size={22} />
                                 </div>
 
-                                <h3 className="font-display text-lg md:text-xl font-black tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase mb-4">
+                                <h3 className="font-display text-[8px] md:text-xl font-black tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase mb-1 md:mb-4 truncate">
                                     {domain.title}
                                 </h3>
-                                <p className="text-white/25 text-sm leading-relaxed font-medium group-hover:text-white/45 transition-colors">
+                                <p className="text-white/25 text-[6px] md:text-sm leading-tight md:leading-relaxed font-medium group-hover:text-white/45 transition-colors line-clamp-3 md:line-clamp-none">
                                     {domain.desc}
                                 </p>
 
-                                <div className="mt-8 font-display text-[10px] tracking-[0.3em] text-cyan-400/40 uppercase group-hover:text-cyan-400 transition-colors flex items-center gap-2">
-                                    EXPLORE <span className="group-hover:translate-x-1 transition-transform"></span>
+                                <div className="mt-2 md:mt-8 font-display text-[6px] md:text-[10px] tracking-[0.1em] md:tracking-[0.3em] text-cyan-400/40 uppercase group-hover:text-cyan-400 transition-colors flex items-center gap-1 md:gap-2">
+                                    EXPLORE
                                 </div>
 
                                 {/* Bottom glow line */}

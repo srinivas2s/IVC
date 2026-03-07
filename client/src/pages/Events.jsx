@@ -53,44 +53,44 @@ const Events = () => {
                     </p>
                 </motion.div>
 
-                {/* Event Cards - Staggered layout like TechSolstice */}
-                <div className="space-y-8">
+                {/* Event Cards - Grid layout */}
+                <div className="grid grid-cols-3 md:grid-cols-1 gap-4 md:gap-8">
                     {events.map((event, index) => (
                         <motion.div
                             key={event.id}
                             layoutId={`card-${event.id}`}
                             {...fadeUp(0.1 + index * 0.1)}
                             onClick={() => setSelectedId(event.id)}
-                            className={`glow-card rounded-2xl overflow-hidden cursor-pointer group flex flex-col md:flex-row ${index % 2 !== 0 ? 'md:flex-row-reverse' : ''}`}
+                            className={`glow-card rounded-xl md:rounded-2xl overflow-hidden cursor-pointer group flex flex-col ${index % 2 !== 0 ? 'md:flex-row-reverse' : 'md:flex-row'}`}
                         >
                             {/* Image */}
-                            <div className="md:w-1/2 h-56 md:h-80 relative overflow-hidden">
+                            <div className="w-full md:w-1/2 h-24 md:h-80 relative overflow-hidden">
                                 <img
                                     src={event.image}
                                     alt={event.title}
-                                    className="w-full h-full object-cover brightness-[0.3] group-hover:brightness-[0.45] group-hover:scale-105 transition-all duration-1000"
+                                    className="w-full h-full object-cover brightness-[0.4] group-hover:brightness-[0.6] group-hover:scale-105 transition-all duration-1000"
                                 />
-                                <div className="absolute inset-0 bg-gradient-to-r from-[#060b18] via-transparent to-transparent" />
-                                
+                                <div className="absolute inset-0 bg-gradient-to-b md:bg-gradient-to-r from-[#060b18]/60 md:from-[#060b18] via-transparent to-transparent" />
+
                             </div>
 
                             {/* Content */}
-                            <div className="md:w-1/2 p-8 md:p-12 flex flex-col justify-center">
-                                <span className="font-display text-[9px] tracking-[0.4em] text-cyan-400/60 uppercase mb-4">
+                            <div className="w-full md:w-1/2 p-2 md:p-12 flex flex-col justify-center bg-white/[0.02] border-t md:border-t-0 border-white/5">
+                                <span className="font-display text-[6px] md:text-[9px] tracking-[0.2em] md:tracking-[0.4em] text-cyan-400/60 uppercase mb-1 md:mb-4">
                                     {event.type}
                                 </span>
-                                <h3 className="font-display text-2xl md:text-4xl font-black tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase mb-4">
+                                <h3 className="font-display text-[8px] md:text-2xl lg:text-4xl font-black tracking-wider text-white group-hover:text-cyan-400 transition-colors uppercase mb-1 md:mb-4 truncate">
                                     {event.title}
                                 </h3>
-                                <p className="text-white/50 text-sm leading-relaxed font-medium mb-6 max-w-md">
+                                <p className="hidden md:block text-white/50 text-sm leading-relaxed font-medium mb-6 max-w-md">
                                     {event.description}
                                 </p>
-                                <div className="flex items-center gap-4 text-white/40">
-                                    <Calendar size={14} />
-                                    <span className="font-display text-[10px] tracking-[0.3em] uppercase">Coming Soon</span>
+                                <div className="flex items-center gap-1 md:gap-4 text-white/40">
+                                    <Calendar size={8} className="md:w-[14px] md:h-[14px]" />
+                                    <span className="font-display text-[6px] md:text-[10px] tracking-[0.1em] md:tracking-[0.3em] uppercase">Soon</span>
                                 </div>
-                                <div className="mt-6 font-display text-[10px] tracking-[0.3em] text-cyan-400/50 uppercase group-hover:text-cyan-400 transition-colors flex items-center gap-2">
-                                    EXPLORE <span className="group-hover:translate-x-1 transition-transform"></span>
+                                <div className="mt-2 md:mt-6 font-display text-[6px] md:text-[10px] tracking-[0.1em] md:tracking-[0.3em] text-cyan-400/50 uppercase group-hover:text-cyan-400 transition-colors flex items-center gap-1">
+                                    EXPLORE
                                 </div>
                             </div>
                         </motion.div>

@@ -72,72 +72,73 @@ const MentorModal = ({ member, onClose }) => (
 
 /* ─── Photo Card ─── */
 const PhotoCard = ({ member, isFinal = false }) => (
-    <div className={`relative w-[320px] md:w-[380px] h-[300px] md:h-[450px] flex-shrink-0 group overflow-visible`}>
-        <div className="absolute inset-[-1px] rounded-xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-transparent group-hover:from-cyan-400/30 transition-all duration-700" />
-        <div className="relative w-full h-full rounded-xl bg-[#0c0f18] border border-white/[0.05] flex flex-col items-center justify-end overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
+    <div className={`relative w-full group overflow-visible`}>
+        <div className="absolute inset-[-1px] rounded-xl bg-gradient-to-b from-white/[0.08] via-white/[0.02] to-transparent group-hover:from-cyan-400/30 transition-all duration-700" />
+        <div className="relative w-full rounded-xl bg-[#0c0f18] border border-white/[0.05] flex flex-col items-center overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
 
-            {/* Background Image */}
-            <div className="absolute inset-0 w-full h-full overflow-hidden">
+            {/* Background Image Section */}
+            <div className="relative w-full h-[180px] md:h-[450px] overflow-hidden">
                 {member.photoUrl ? (
                     <img
                         src={member.photoUrl}
                         alt={member.name}
-                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out opacity-60 group-hover:opacity-80"
+                        className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-1000 ease-out opacity-80 group-hover:opacity-100"
                     />
                 ) : (
                     <div className="w-full h-full bg-white/[0.02] flex items-center justify-center">
-                        <svg className="w-24 h-24 text-white/[0.05]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
+                        <svg className="w-12 h-12 md:w-24 md:h-24 text-white/[0.05]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1">
                             <circle cx="12" cy="8" r="3.5" />
                             <path d="M5.5 20.5c0-3.59 2.91-6.5 6.5-6.5s6.5 2.91 6.5 6.5" strokeLinecap="round" />
                         </svg>
                     </div>
                 )}
-                {/* Gradient Overlay for Text Readability */}
-                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0f18] via-[#0c0f18]/40 to-transparent" />
+                {/* Subtle Gradient Overlay for consistency */}
+                <div className="absolute inset-0 bg-gradient-to-t from-[#0c0f18]/40 via-transparent to-transparent" />
             </div>
 
-            <div className="relative z-10 text-center px-6 pb-10 w-full">
-                <span className="font-display text-[9px] md:text-[11px] tracking-[0.4em] text-cyan-400 text-glow-cyan uppercase">
+            {/* Content Section Below Image */}
+            <div className="relative z-10 text-center px-2 md:px-6 py-4 md:py-8 w-full bg-white/[0.02] border-t border-white/5">
+                <span className="font-display text-[7px] md:text-[11px] tracking-[0.2em] md:tracking-[0.4em] text-cyan-400 text-glow-cyan uppercase mb-1 md:mb-2 block">
                     {formatRole(member.role)}
                 </span>
                 {isFinal && (
                     <motion.h3
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
-                        className="mt-3 text-white font-black italic text-xl md:text-2xl tracking-wider uppercase opacity-90 group-hover:opacity-100 transition-opacity"
+                        className="text-white font-black italic text-[10px] md:text-2xl tracking-tight md:tracking-wider uppercase opacity-90 group-hover:opacity-100 transition-opacity truncate w-full"
                     >
                         {member.name}
                     </motion.h3>
                 )}
 
                 {isFinal && (
-                    <div className="mt-4 flex flex-col items-center gap-4 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
+                    <div className="mt-2 md:mt-4 flex flex-col items-center gap-2 md:gap-4 opacity-0 group-hover:opacity-100 translate-y-2 group-hover:translate-y-0 transition-all duration-500">
                         {/* Social Links */}
-                        <div className="flex gap-4">
+                        <div className="flex gap-2 md:gap-4">
                             {member.linkedin && (
                                 <a
                                     href={member.linkedin}
                                     target="_blank"
                                     rel="noreferrer"
-                                    className="w-10 h-10 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-white/50 hover:text-cyan-400 hover:border-cyan-400/30 hover:bg-cyan-400/5 transition-all"
+                                    className="w-6 h-6 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-white/50 hover:text-cyan-400 hover:border-cyan-400/30 hover:bg-cyan-400/5 transition-all"
                                     onClick={e => e.stopPropagation()}
                                 >
-                                    <Linkedin size={18} />
+                                    <Linkedin size={10} className="md:w-4 md:h-4" />
                                 </a>
                             )}
                             {member.email && (
                                 <a
                                     href={`mailto:${member.email}`}
-                                    className="w-10 h-10 rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-white/50 hover:text-red-500 hover:border-red-500/20 hover:bg-red-500/5 transition-all"
+                                    className="w-6 h-6 md:w-10 md:h-10 rounded-lg md:rounded-xl bg-white/10 border border-white/10 flex items-center justify-center text-white/50 hover:text-red-500 hover:border-red-500/20 hover:bg-red-500/5 transition-all"
                                     onClick={e => e.stopPropagation()}
                                 >
-                                    <Mail size={18} />
+                                    <Mail size={10} className="md:w-4 md:h-4" />
                                 </a>
                             )}
                         </div>
 
                         {/* Details Hint */}
-                        <span className="flex items-center gap-2 text-[10px] text-cyan-400/80 font-black tracking-widest uppercase bg-cyan-400/10 px-3 py-1.5 rounded-full border border-cyan-400/20">
+                        <span className="hidden md:flex items-center gap-2 text-[10px] text-cyan-400/80 font-black tracking-widest uppercase bg-cyan-400/10 px-3 py-1.5 rounded-full border border-cyan-400/20">
                             <Info size={12} /> Click for details
                         </span>
                     </div>
@@ -275,58 +276,58 @@ const Team = () => {
 
 
     const renderGrid = (people) => (
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
+        <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-8">
             {people.map((member, i) => (
                 <motion.div
                     key={member.id || i}
                     {...fadeUp(0.1 + i * 0.08)}
-                    className="relative h-[380px] rounded-2xl overflow-hidden group cursor-pointer border border-white/5 hover:border-cyan-400/30 transition-all duration-500 shadow-2xl"
+                    className="relative rounded-xl md:rounded-2xl overflow-hidden group cursor-pointer border border-white/5 hover:border-cyan-400/30 transition-all duration-500 shadow-2xl flex flex-col"
                 >
                     {/* Background Image / Full Card Style */}
-                    <div className="absolute inset-0 z-0">
+                    <div className="relative h-[120px] md:h-[300px] overflow-hidden">
                         {member.photoUrl ? (
                             <img
                                 src={member.photoUrl}
                                 alt={member.name}
-                                className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-110 transition-transform duration-1000 ease-out"
+                                className="w-full h-full object-cover opacity-80 group-hover:opacity-100 group-hover:scale-110 transition-transform duration-1000 ease-out"
                             />
                         ) : (
                             <div className="w-full h-full bg-[#0c0f18] flex items-center justify-center">
-                                <span className="font-display text-4xl font-black text-white/5 group-hover:text-cyan-400/10 transition-colors">
+                                <span className="font-display text-xl md:text-4xl font-black text-white/5 group-hover:text-cyan-400/10 transition-colors">
                                     {member.initials || member.name.split(' ').map(n => n[0]).join('')}
                                 </span>
                             </div>
                         )}
                         {/* Gradient Overlay */}
-                        <div className="absolute inset-0 bg-gradient-to-t from-[#02040a] via-[#02040a]/40 to-transparent" />
+                        <div className="absolute inset-0 bg-gradient-to-t from-[#02040a]/60 to-transparent" />
                     </div>
 
-                    {/* Content */}
-                    <div className="relative z-10 h-full flex flex-col justify-end p-6 text-center">
-                        <div className="mb-4">
-                            <span className="font-display text-[9px] tracking-[0.3em] text-cyan-400 text-glow-cyan uppercase">
+                    {/* Content Section Below Image */}
+                    <div className="relative z-10 flex flex-col justify-end p-2 md:p-6 text-center bg-white/[0.02] border-t border-white/5">
+                        <div className="mb-2 md:mb-4">
+                            <span className="font-display text-[6px] md:text-[9px] tracking-[0.2em] md:tracking-[0.3em] text-cyan-400 text-glow-cyan uppercase mb-0 md:mb-1 block">
                                 {member.role}
                             </span>
-                            <h3 className="font-display text-base md:text-lg font-black tracking-wider text-white uppercase italic mt-1 group-hover:text-glow-white transition-all">
+                            <h3 className="font-display text-[8px] md:text-lg font-black tracking-tight md:tracking-wider text-white uppercase italic mt-0.5 md:mt-1 group-hover:text-glow-white transition-all truncate">
                                 {member.name}
                             </h3>
                         </div>
 
                         {/* Social Links on Hover */}
-                        <div className="flex justify-center gap-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
+                        <div className="flex justify-center gap-1.5 md:gap-4 opacity-0 group-hover:opacity-100 translate-y-4 group-hover:translate-y-0 transition-all duration-500">
                             {member.linkedin && (
-                                <a href={member.linkedin} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-cyan-400 hover:border-cyan-400/30 transition-all">
-                                    <Linkedin size={16} />
+                                <a href={member.linkedin} target="_blank" rel="noreferrer" className="w-5 h-5 md:w-10 md:h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-cyan-400 hover:border-cyan-400/30 transition-all">
+                                    <Linkedin size={10} className="md:w-4 md:h-4" />
                                 </a>
                             )}
                             {member.github && (
-                                <a href={member.github} target="_blank" rel="noreferrer" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white transition-all">
-                                    <Github size={16} />
+                                <a href={member.github} target="_blank" rel="noreferrer" className="w-5 h-5 md:w-10 md:h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-white transition-all">
+                                    <Github size={10} className="md:w-4 md:h-4" />
                                 </a>
                             )}
                             {member.email && (
-                                <a href={`mailto:${member.email}`} className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-red-500 transition-all">
-                                    <Mail size={16} />
+                                <a href={`mailto:${member.email}`} className="w-5 h-5 md:w-10 md:h-10 rounded-lg bg-white/5 border border-white/10 flex items-center justify-center text-white/40 hover:text-red-500 transition-all">
+                                    <Mail size={10} className="md:w-4 md:h-4" />
                                 </a>
                             )}
                         </div>
@@ -364,7 +365,7 @@ const Team = () => {
                         </p>
                     </div>
 
-                    <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
+                    <div className="grid grid-cols-2 md:flex md:flex-wrap items-center justify-center gap-4 md:gap-16">
                         {mentors.map((m, i) => (
                             <motion.div
                                 key={i}
