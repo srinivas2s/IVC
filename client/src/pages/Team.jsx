@@ -1,4 +1,4 @@
-import { useRef, useState, useEffect, useCallback } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Linkedin, Github, Mail, X, Info } from 'lucide-react';
 
@@ -8,6 +8,13 @@ const fadeUp = (delay = 0) => ({
     viewport: { once: true, margin: "-50px" },
     transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }
 });
+
+const formatRole = (role) => {
+    if (!role) return 'MENTOR';
+    const r = role.toUpperCase().trim();
+    if (r === 'MEMBER' || r === 'ASSOCIATE' || r === 'ASSOSIATE') return 'ASSOCIATES';
+    return r;
+};
 
 /* ─── Details Modal ─── */
 const MentorModal = ({ member, onClose }) => (
@@ -63,9 +70,9 @@ const MentorModal = ({ member, onClose }) => (
     </motion.div>
 );
 
-/* ─── Photo Card (landscape shape) ─── */
+/* ─── Photo Card ─── */
 const PhotoCard = ({ member, isFinal = false }) => (
-    <div className={`relative w-[320px] md:w-[420px] h-[300px] md:h-[380px] flex-shrink-0 group overflow-visible`}>
+    <div className={`relative w-[320px] md:w-[380px] h-[300px] md:h-[450px] flex-shrink-0 group overflow-visible`}>
         <div className="absolute inset-[-1px] rounded-xl bg-gradient-to-b from-white/[0.08] via-white/[0.03] to-transparent group-hover:from-cyan-400/30 transition-all duration-700" />
         <div className="relative w-full h-full rounded-xl bg-[#0c0f18] border border-white/[0.05] flex flex-col items-center justify-end overflow-hidden shadow-[0_30px_80px_rgba(0,0,0,0.5)]">
 
@@ -91,7 +98,7 @@ const PhotoCard = ({ member, isFinal = false }) => (
 
             <div className="relative z-10 text-center px-6 pb-10 w-full">
                 <span className="font-display text-[9px] md:text-[11px] tracking-[0.4em] text-cyan-400 text-glow-cyan uppercase">
-                    {member.role || 'MENTOR'}
+                    {formatRole(member.role)}
                 </span>
                 {isFinal && (
                     <motion.h3
@@ -150,7 +157,7 @@ const InfoCard = ({ member, position = "right" }) => (
                 <div className="flex items-center gap-2 mb-5">
                     <div className="w-2 h-2 rounded-full bg-cyan-400 shadow-[0_0_8px_rgba(34,211,238,0.6)]" />
                     <span className="font-display text-[9px] md:text-[10px] tracking-[0.3em] text-cyan-400/50 uppercase">
-                        IVC · {member.role}
+                        IVC · {formatRole(member.role)}
                     </span>
                 </div>
                 <h3 className="text-2xl md:text-3xl font-bold text-white/90 mb-5 leading-tight italic">
@@ -230,16 +237,26 @@ const Team = () => {
         'PRESIDENT': 1,
         'VICE PRESIDENT': 2,
         'SECRETARY': 3,
+        'SECERETARY': 3,
         'TREASURER': 4,
+        'TREASURERE': 4,
         'OPERATION LEAD': 5,
+        'OPERATIONS LEAD': 5,
         'PROJECT LEAD': 6,
+        'TECH LEAD': 6,
         'DESIGN LEAD': 7,
         'DOCUMENTATION LEAD': 8,
         'MARKETING LEAD': 9,
+        'SOCIAL MEDIA HEAD': 10,
         'SOCIAL MEDIA LEAD': 10,
+        'SOCIAL MIDEA LEAD': 10,
+        'COMMUNICATION AND OUTREACH LEAD': 11,
+        'COMMUNICATION AND OUTREACH': 11,
         'OUTREACH LEAD': 11,
         'ASSOCIATE': 12,
-        'ASSOCIATES': 12
+        'ASSOCIATES': 12,
+        'ASSOSIATE': 12, // Handle typo in DB
+        'MEMBER': 12 // Map to Associates rank
     };
 
     const mentors = fetchedMentors.length > 0 ? fetchedMentors : fallbackMentors;
@@ -256,103 +273,6 @@ const Team = () => {
         return a.name.localeCompare(b.name); // Alphabetical if same rank
     });
 
-    /* ─── Scroll-lock state machine ─── */
-    const [step, setStep] = useState(0);
-    const [isLocked, setIsLocked] = useState(false);
-    const sectionRef = useRef(null);
-    const scrollAccumulator = useRef(0);
-    const isAnimating = useRef(false);
-    const hasTriggered = useRef(false);
-    const SCROLL_THRESHOLD = 150;
-
-    useEffect(() => {
-        if (isLocked) {
-            document.body.style.overflow = 'hidden';
-            document.body.style.touchAction = 'none';
-        } else {
-            document.body.style.overflow = '';
-            document.body.style.touchAction = '';
-        }
-        return () => { document.body.style.overflow = ''; document.body.style.touchAction = ''; };
-    }, [isLocked]);
-
-    useEffect(() => {
-        const handleGlobalScroll = () => {
-            if (!sectionRef.current) return;
-            const rect = sectionRef.current.getBoundingClientRect();
-            if (rect.bottom < 0 || rect.top > window.innerHeight) {
-                if (hasTriggered.current) {
-                    setStep(0);
-                    hasTriggered.current = false;
-                    setIsLocked(false);
-                }
-            }
-        };
-        window.addEventListener('scroll', handleGlobalScroll, { passive: true });
-        return () => window.removeEventListener('scroll', handleGlobalScroll);
-    }, []);
-
-    useEffect(() => {
-        const section = sectionRef.current;
-        if (!section) return;
-        const observer = new IntersectionObserver(
-            ([entry]) => {
-                if (entry.isIntersecting && !hasTriggered.current && step === 0 && entry.boundingClientRect.top > 0) {
-                    hasTriggered.current = true;
-                    section.scrollIntoView({ behavior: 'smooth', block: 'start' });
-                    setTimeout(() => { setStep(1); setIsLocked(true); }, 500);
-                }
-            },
-            { threshold: 0.4 }
-        );
-        observer.observe(section);
-        return () => observer.disconnect();
-    }, [step]);
-
-    const handleWheel = useCallback((e) => {
-        if (!isLocked || isAnimating.current) return;
-        // 3 steps per mentor: 0:Reveal, 1:Info, 2:Fade
-        const maxStep = mentors.length * 3 - 1;
-        e.preventDefault?.();
-
-        if (e.deltaY > 0) {
-            scrollAccumulator.current += e.deltaY;
-            if (scrollAccumulator.current >= SCROLL_THRESHOLD) {
-                scrollAccumulator.current = 0;
-                isAnimating.current = true;
-                if (step < maxStep) {
-                    setStep(prev => prev + 1);
-                    setTimeout(() => { isAnimating.current = false; }, 900);
-                } else {
-                    setIsLocked(false);
-                    setStep(maxStep + 1);
-                    setTimeout(() => { isAnimating.current = false; }, 400);
-                }
-            }
-        }
-
-        if (e.deltaY < 0) {
-            scrollAccumulator.current -= Math.abs(e.deltaY);
-            if (scrollAccumulator.current <= -SCROLL_THRESHOLD) {
-                scrollAccumulator.current = 0;
-                isAnimating.current = true;
-                if (step > 1) {
-                    setStep(prev => prev - 1);
-                    setTimeout(() => { isAnimating.current = false; }, 900);
-                } else {
-                    setStep(0); setIsLocked(false); hasTriggered.current = false;
-                    setTimeout(() => { isAnimating.current = false; }, 400);
-                }
-            }
-        }
-    }, [isLocked, step]);
-
-    useEffect(() => {
-        if (isLocked) {
-            window.addEventListener('wheel', handleWheel, { passive: false });
-            return () => window.removeEventListener('wheel', handleWheel);
-        }
-    }, [isLocked, handleWheel]);
 
     const renderGrid = (people) => (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
@@ -419,12 +339,6 @@ const Team = () => {
         </div>
     );
 
-    /* ─── Dynamic Step Calculations ─── */
-    const mentorIdx = Math.min(Math.floor((step - 1) / 3), mentors.length - 1);
-    const subStep = (step - 1) % 3; // 0: Photo Reveal, 1: Info Show, 2: Info Fade
-    const isEven = mentorIdx % 2 === 0;
-    const photoX = subStep === 0 ? 0 : (isEven ? -220 : 220);
-
     return (
         <>
             <AnimatePresence>
@@ -436,89 +350,35 @@ const Team = () => {
                 )}
             </AnimatePresence>
 
-            {/* ═══════ MENTORS — Scroll-locked reveal ═══════ */}
-            <div ref={sectionRef} className="relative min-h-screen flex flex-col items-center justify-start overflow-hidden">
-                <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-[radial-gradient(circle,rgba(34,211,238,0.025)_0%,transparent_70%)] rounded-full pointer-events-none" />
-                <div className="absolute bottom-[-10%] left-[-10%] w-[40vw] h-[40vw] bg-[radial-gradient(circle,rgba(99,102,241,0.025)_0%,transparent_70%)] rounded-full pointer-events-none" />
+            {/* ═══════ MENTORS ═══════ */}
+            <section className="relative py-32 md:py-48 overflow-hidden bg-[radial-gradient(circle_at_top,rgba(34,211,238,0.03)_0%,transparent_50%)]">
                 <div className="watermark top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2" style={{ opacity: 0.015 }}>MENTORS</div>
 
-                <div className="relative z-10 text-center px-4 pt-[12vh] md:pt-[14vh]">
-                    <h2 className="font-display text-4xl md:text-7xl lg:text-[6rem] font-black tracking-wider uppercase mb-4">
-                        MEET OUR <span className="text-cyan-400 text-glow-cyan">MENTORS</span>
-                    </h2>
-                    <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
-                        The visionaries guiding IVC
-                    </p>
+                <div className="max-w-7xl mx-auto px-6 relative z-10">
+                    <div className="text-center mb-16">
+                        <h2 className="font-display text-4xl md:text-7xl lg:text-[6rem] font-black tracking-wider uppercase mb-4">
+                            MEET OUR <span className="text-cyan-400 text-glow-cyan">MENTORS</span>
+                        </h2>
+                        <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
+                            The visionaries guiding IVC
+                        </p>
+                    </div>
+
+                    <div className="flex flex-wrap items-center justify-center gap-10 md:gap-16">
+                        {mentors.map((m, i) => (
+                            <motion.div
+                                key={i}
+                                {...fadeUp(i * 0.1)}
+                                whileHover={{ y: -15 }}
+                                className="cursor-pointer"
+                                onClick={() => setSelectedMentor(m)}
+                            >
+                                <PhotoCard member={m} isFinal={true} />
+                            </motion.div>
+                        ))}
+                    </div>
                 </div>
-
-                <div className="relative z-10 flex items-center justify-center mt-10 md:mt-14 min-h-[320px] md:min-h-[420px] px-4 w-full">
-                    {step > 0 && (
-                        <div className="max-w-7xl mx-auto flex items-center justify-center relative w-full h-full">
-
-                            {step <= mentors.length * 3 - 1 ? (
-                                <>
-                                    {/* Reveal Phase: Transitioning Photo Card */}
-                                    <motion.div
-                                        layout
-                                        animate={{ x: photoX }}
-                                        transition={{ duration: 1, ease: [0.16, 1, 0.3, 1] }}
-                                        className="z-20"
-                                    >
-                                        <AnimatePresence mode="wait">
-                                            <motion.div
-                                                key={mentorIdx}
-                                                initial={{ opacity: 0, scale: 0.95 }}
-                                                animate={{ opacity: 1, scale: 1 }}
-                                                exit={{ opacity: 0, scale: 0.95 }}
-                                                transition={{ duration: 0.6 }}
-                                            >
-                                                <PhotoCard member={mentors[mentorIdx]} />
-                                            </motion.div>
-                                        </AnimatePresence>
-                                    </motion.div>
-
-                                    {/* Dynamic Info Card */}
-                                    <AnimatePresence mode="wait">
-                                        {subStep === 1 && mentors[mentorIdx] && (
-                                            <motion.div
-                                                key={`info-${mentorIdx}`}
-                                                initial={{ opacity: 0, x: isEven ? 100 : -100, scale: 0.9 }}
-                                                animate={{ opacity: 1, x: isEven ? 220 : -220, scale: 1 }}
-                                                exit={{ opacity: 0, x: isEven ? 100 : -100, scale: 0.9 }}
-                                                transition={{ duration: 0.8, ease: [0.16, 1, 0.3, 1] }}
-                                                className="absolute z-10"
-                                            >
-                                                <InfoCard member={mentors[mentorIdx]} position={isEven ? "right" : "left"} />
-                                            </motion.div>
-                                        )}
-                                    </AnimatePresence>
-                                </>
-                            ) : (
-                                /* FINAL PHASE: Interactive Side-by-Side Cards */
-                                <motion.div
-                                    initial={{ opacity: 0 }}
-                                    animate={{ opacity: 1 }}
-                                    className="flex flex-col md:flex-row items-center justify-center gap-10 md:gap-16 w-full"
-                                >
-                                    {mentors.map((m, i) => (
-                                        <motion.div
-                                            key={i}
-                                            initial={{ opacity: 0, x: i === 0 ? -100 : 100, scale: 0.9 }}
-                                            animate={{ opacity: 1, x: 0, scale: 1 }}
-                                            transition={{ duration: 1, delay: i * 0.2, ease: [0.16, 1, 0.3, 1] }}
-                                            whileHover={{ y: -15 }}
-                                            className="cursor-pointer"
-                                            onClick={() => setSelectedMentor(m)}
-                                        >
-                                            <PhotoCard member={m} isFinal={true} />
-                                        </motion.div>
-                                    ))}
-                                </motion.div>
-                            )}
-                        </div>
-                    )}
-                </div>
-            </div>
+            </section>
 
             {/* ═══════ TEAM MEMBERS — Normal scroll ═══════ */}
             <section className="relative py-32 md:py-48 overflow-hidden">
