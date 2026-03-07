@@ -361,7 +361,7 @@ const Team = () => {
                             MEET OUR <span className="text-cyan-400 text-glow-cyan">MENTORS</span>
                         </h2>
                         <p className="font-display text-[10px] md:text-xs tracking-[0.4em] text-white/50 uppercase">
-                            The visionaries guiding IVC
+                            IN THE DUTY OF GUIDING THE INNOVATRS IN IVC
                         </p>
                     </div>
 
