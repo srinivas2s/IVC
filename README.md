@@ -3,7 +3,6 @@
 ![IVC Platform](client/public/logo.png)
 
 A professional, full-stack digital platform for the Innovators & Visionaries Club (IVC). This project serves as a centralized hub to showcase innovatives projects, manage upcoming events, and provide a secure onboarding experience for club members.
-## visit ivc-vvce.vercel.app
 ---
 
 ## Project Highlights
