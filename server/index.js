@@ -411,11 +411,12 @@ app.delete('/api/admin/requests/:id', requireAdmin, async (req, res) => {
             await deletePhotoFromUrl(request.photo_url);
         }
 
-        // 2. Delete the DB entry with 'count' to verify
-        const { error: deleteError, count } = await supabase
+        // 2. Delete the DB entry (converting string ID to Number)
+        const { data: deletedData, error: deleteError } = await supabase
             .from('member_requests')
-            .delete({ count: 'exact' })
-            .eq('id', id);
+            .delete()
+            .eq('id', Number(id))
+            .select();
 
         if (deleteError) {
             console.error('Delete error:', deleteError);
@@ -423,8 +424,8 @@ app.delete('/api/admin/requests/:id', requireAdmin, async (req, res) => {
             return res.status(500).json({ error: `Delete failed: ${deleteError.message}${hint}` });
         }
         
-        if (count === 0) {
-            return res.status(404).json({ error: 'Database reported 0 rows deleted. The ID might be wrong.' });
+        if (!deletedData || deletedData.length === 0) {
+            return res.status(404).json({ error: `Database reports no record with ID ${id} was deleted.` });
         }
 
         res.json({ message: 'Request and associated photo deleted' });
@@ -537,11 +538,12 @@ app.delete('/api/admin/mentors/:id', requireAdmin, async (req, res) => {
             await deletePhotoFromUrl(mentor.photo_url);
         }
 
-        // 2. Delete the DB entry with 'count' check
-        const { error: deleteError, count } = await supabase
+        // 2. Delete the DB entry (converting string ID to Number)
+        const { data: deletedData, error: deleteError } = await supabase
             .from('mentors')
-            .delete({ count: 'exact' })
-            .eq('id', id);
+            .delete()
+            .eq('id', Number(id))
+            .select();
 
         if (deleteError) {
             console.error('Delete error:', deleteError);
@@ -549,8 +551,8 @@ app.delete('/api/admin/mentors/:id', requireAdmin, async (req, res) => {
             return res.status(500).json({ error: `Delete failed: ${deleteError.message}${hint}` });
         }
 
-        if (count === 0) {
-            return res.status(404).json({ error: 'Database reported 0 rows deleted for this Mentor ID.' });
+        if (!deletedData || deletedData.length === 0) {
+            return res.status(404).json({ error: `Mentor ID ${id} not found or already deleted.` });
         }
 
         res.json({ message: 'Mentor and associated photo deleted' });
