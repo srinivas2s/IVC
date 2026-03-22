@@ -215,8 +215,16 @@ const MentorManager = ({ token }) => {
         if (!confirm('Delete mentor?')) return;
         try {
             const res = await fetch(`/api/admin/mentors/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
-            if (res.ok) fetchMentors();
-        } catch (e) { console.error(e); }
+            if (res.ok) {
+                fetchMentors();
+            } else {
+                const data = await res.json();
+                alert(`Delete failed: ${data.error || 'Server error'}`);
+            }
+        } catch (e) { 
+            console.error(e); 
+            alert('Network error. Is the server running?');
+        }
     };
 
     return (
@@ -329,10 +337,19 @@ const AdminDashboard = ({ token, onLogout }) => {
     };
 
     const handleDelete = async (id) => {
+        if (!confirm('Delete this request?')) return;
         try {
             const res = await fetch(`/api/admin/requests/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
-            if (res.ok) fetchRequests();
-        } catch (e) { console.error(e); }
+            if (res.ok) {
+                fetchRequests();
+            } else {
+                const data = await res.json();
+                alert(`Delete failed: ${data.error || 'Server error'}`);
+            }
+        } catch (e) { 
+            console.error(e); 
+            alert('Network error. Is the server running?');
+        }
     };
 
     const filtered = requests

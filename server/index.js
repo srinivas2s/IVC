@@ -331,7 +331,12 @@ app.delete('/api/admin/requests/:id', requireAdmin, async (req, res) => {
             .from('member_requests')
             .select('photo_url')
             .eq('id', id)
-            .single();
+            .maybeSingle(); // maybeSingle is safer as it won't error on zero rows
+
+        if (fetchError) {
+            console.error('Fetch error:', fetchError);
+            return res.status(500).json({ error: `Fetch failed: ${fetchError.message}` });
+        }
 
         if (request?.photo_url) {
             await deletePhotoFromUrl(request.photo_url);
@@ -343,10 +348,14 @@ app.delete('/api/admin/requests/:id', requireAdmin, async (req, res) => {
             .delete()
             .eq('id', id);
 
-        if (deleteError) throw deleteError;
+        if (deleteError) {
+            console.error('Delete error:', deleteError);
+            return res.status(500).json({ error: `Delete failed: ${deleteError.message}` });
+        }
         res.json({ message: 'Request and associated photo deleted' });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error('Server error:', err);
+        res.status(500).json({ error: `Server exception: ${err.message}` });
     }
 });
 
@@ -438,7 +447,12 @@ app.delete('/api/admin/mentors/:id', requireAdmin, async (req, res) => {
             .from('mentors')
             .select('photo_url')
             .eq('id', id)
-            .single();
+            .maybeSingle();
+
+        if (fetchError) {
+            console.error('Fetch error:', fetchError);
+            return res.status(500).json({ error: `Fetch failed: ${fetchError.message}` });
+        }
 
         if (mentor?.photo_url) {
             await deletePhotoFromUrl(mentor.photo_url);
@@ -446,10 +460,14 @@ app.delete('/api/admin/mentors/:id', requireAdmin, async (req, res) => {
 
         // 2. Delete the DB entry
         const { error: deleteError } = await supabase.from('mentors').delete().eq('id', id);
-        if (deleteError) throw deleteError;
+        if (deleteError) {
+            console.error('Delete error:', deleteError);
+            return res.status(500).json({ error: `Delete failed: ${deleteError.message}` });
+        }
         res.json({ message: 'Mentor and associated photo deleted' });
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        console.error('Server error:', err);
+        res.status(500).json({ error: `Server exception: ${err.message}` });
     }
 });
 
