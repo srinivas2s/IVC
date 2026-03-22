@@ -391,11 +391,14 @@ app.delete('/api/admin/requests/:id', requireAdmin, async (req, res) => {
     const { id } = req.params;
 
     try {
+        const cleanId = id.toString().trim();
+        console.log(`Attempting deletion for Request ID: [${cleanId}]`);
+
         // 1. Get the request to find the photo URL
         const { data: request, error: fetchError } = await supabase
             .from('member_requests')
-            .select('photo_url')
-            .eq('id', id)
+            .select('id, photo_url')
+            .eq('id', cleanId)
             .maybeSingle();
 
         if (fetchError) {
@@ -404,18 +407,18 @@ app.delete('/api/admin/requests/:id', requireAdmin, async (req, res) => {
         }
 
         if (!request) {
-            return res.status(404).json({ error: 'Request not found in database. It may have already been deleted.' });
+            return res.status(404).json({ error: `Request ID ${cleanId} not found in database. Please refresh the page.` });
         }
 
         if (request?.photo_url) {
             await deletePhotoFromUrl(request.photo_url);
         }
 
-        // 2. Delete the DB entry (converting string ID to Number)
+        // 2. Delete the DB entry using the ID we JUST confirmed exists
         const { data: deletedData, error: deleteError } = await supabase
             .from('member_requests')
             .delete()
-            .eq('id', Number(id))
+            .eq('id', request.id) // Using the ID directly from the fetched object
             .select();
 
         if (deleteError) {
@@ -425,7 +428,7 @@ app.delete('/api/admin/requests/:id', requireAdmin, async (req, res) => {
         }
         
         if (!deletedData || deletedData.length === 0) {
-            return res.status(404).json({ error: `Database reports no record with ID ${id} was deleted.` });
+            return res.status(404).json({ error: `Database reports no record with ID ${cleanId} was deleted, even though it was found a millisecond ago.` });
         }
 
         res.json({ message: 'Request and associated photo deleted' });
@@ -518,11 +521,14 @@ app.delete('/api/admin/mentors/:id', requireAdmin, async (req, res) => {
     const { id } = req.params;
 
     try {
+        const cleanId = id.toString().trim();
+        console.log(`Attempting deletion for Mentor ID: [${cleanId}]`);
+
         // 1. Get the mentor to find the photo URL
         const { data: mentor, error: fetchError } = await supabase
             .from('mentors')
-            .select('photo_url')
-            .eq('id', id)
+            .select('id, photo_url')
+            .eq('id', cleanId)
             .maybeSingle();
 
         if (fetchError) {
@@ -531,7 +537,7 @@ app.delete('/api/admin/mentors/:id', requireAdmin, async (req, res) => {
         }
 
         if (!mentor) {
-            return res.status(404).json({ error: 'Mentor not found in database.' });
+            return res.status(404).json({ error: `Mentor ID ${cleanId} not found in database.` });
         }
 
         if (mentor?.photo_url) {
