@@ -191,6 +191,7 @@ const joinLimiter = rateLimit({
 const publicJoinSchema = z.object({
     name: z.string().min(2).max(100),
     email: z.string().email(),
+    phone: z.string().min(10).max(20),
     department: z.string().min(2).max(100),
     year: z.string().min(1).max(50),
 });
@@ -395,28 +396,37 @@ app.delete('/api/admin/requests/:id', requireAdmin, async (req, res) => {
             .from('member_requests')
             .select('photo_url')
             .eq('id', id)
-            .maybeSingle(); // maybeSingle is safer as it won't error on zero rows
+            .maybeSingle();
 
         if (fetchError) {
             console.error('Fetch error:', fetchError);
             return res.status(500).json({ error: `Fetch failed: ${fetchError.message}` });
         }
 
+        if (!request) {
+            return res.status(404).json({ error: 'Request not found in database. It may have already been deleted.' });
+        }
+
         if (request?.photo_url) {
             await deletePhotoFromUrl(request.photo_url);
         }
 
-        // 2. Delete the DB entry
-        const { error: deleteError } = await supabase
+        // 2. Delete the DB entry with 'count' to verify
+        const { error: deleteError, count } = await supabase
             .from('member_requests')
-            .delete()
+            .delete({ count: 'exact' })
             .eq('id', id);
 
         if (deleteError) {
             console.error('Delete error:', deleteError);
-            const hint = !serviceKey ? " (HINT: SUPABASE_SERVICE_ROLE_KEY is missing from environment variables)" : "";
+            const hint = !serviceKey ? " (HINT: SUPABASE_SERVICE_ROLE_KEY missing)" : "";
             return res.status(500).json({ error: `Delete failed: ${deleteError.message}${hint}` });
         }
+        
+        if (count === 0) {
+            return res.status(404).json({ error: 'Database reported 0 rows deleted. The ID might be wrong.' });
+        }
+
         res.json({ message: 'Request and associated photo deleted' });
     } catch (err) {
         console.error('Server error:', err);
@@ -519,17 +529,30 @@ app.delete('/api/admin/mentors/:id', requireAdmin, async (req, res) => {
             return res.status(500).json({ error: `Fetch failed: ${fetchError.message}` });
         }
 
+        if (!mentor) {
+            return res.status(404).json({ error: 'Mentor not found in database.' });
+        }
+
         if (mentor?.photo_url) {
             await deletePhotoFromUrl(mentor.photo_url);
         }
 
-        // 2. Delete the DB entry
-        const { error: deleteError } = await supabase.from('mentors').delete().eq('id', id);
+        // 2. Delete the DB entry with 'count' check
+        const { error: deleteError, count } = await supabase
+            .from('mentors')
+            .delete({ count: 'exact' })
+            .eq('id', id);
+
         if (deleteError) {
             console.error('Delete error:', deleteError);
-            const hint = !serviceKey ? " (HINT: SUPABASE_SERVICE_ROLE_KEY is missing)" : "";
+            const hint = !serviceKey ? " (HINT: SUPABASE_SERVICE_ROLE_KEY missing)" : "";
             return res.status(500).json({ error: `Delete failed: ${deleteError.message}${hint}` });
         }
+
+        if (count === 0) {
+            return res.status(404).json({ error: 'Database reported 0 rows deleted for this Mentor ID.' });
+        }
+
         res.json({ message: 'Mentor and associated photo deleted' });
     } catch (err) {
         console.error('Server error:', err);

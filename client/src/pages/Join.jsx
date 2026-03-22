@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Mail, School, Calendar, CheckCircle } from 'lucide-react';
+import { User, Mail, School, Calendar, CheckCircle, Phone } from 'lucide-react';
 
 const Join = ({ isModal = false }) => {
-    const [formData, setFormData] = useState({ name: '', email: '', department: '', year: '' });
+    const [formData, setFormData] = useState({ name: '', email: '', phone: '', department: '', year: '' });
     const [status, setStatus] = useState('');
     const [focusedField, setFocusedField] = useState(null);
 
@@ -20,7 +20,7 @@ const Join = ({ isModal = false }) => {
             });
             if (res.ok) {
                 setStatus('success');
-                setFormData({ name: '', email: '', department: '', year: '' });
+                setFormData({ name: '', email: '', phone: '', department: '', year: '' });
             } else {
                 const data = await res.json();
                 alert(data.error || 'Submission failed');
@@ -35,6 +35,7 @@ const Join = ({ isModal = false }) => {
     const fields = [
         { name: 'name', label: 'FULL NAME', icon: User, type: 'text', placeholder: 'Your Name' },
         { name: 'email', label: 'EMAIL', icon: Mail, type: 'email', placeholder: 'your@email.com' },
+        { name: 'phone', label: 'PHONE NUMBER', icon: Phone, type: 'tel', placeholder: '+91 00000 00000' },
         { name: 'department', label: 'DEPARTMENT', icon: School, type: 'text', placeholder: 'Computer Science' },
         { name: 'year', label: 'YEAR', icon: Calendar, type: 'text', placeholder: '3rd Year' },
     ];
