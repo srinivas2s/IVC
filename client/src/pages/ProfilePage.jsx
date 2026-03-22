@@ -275,22 +275,28 @@ const ProfileForm = ({ token }) => {
    ACCESS LOGIC WRAPPER
    ═══════════════════════════════════════ */
 const ProfilePage = () => {
-    // No longer persisting token to state on reload
     const [token, setToken] = useState('');
     const [verified, setVerified] = useState(false);
     const [checking, setChecking] = useState(true);
 
     useEffect(() => {
-        if (token) {
-            fetch('/api/profile/verify', { headers: { 'Authorization': `Bearer ${token}` } })
+        const t = sessionStorage.getItem('ivc_member_token');
+        if (t) {
+            fetch('/api/profile/verify', { headers: { 'Authorization': `Bearer ${t}` } })
                 .then(res => {
-                    if (res.ok) setVerified(true);
-                    else { sessionStorage.removeItem('ivc_member_token'); setToken(''); }
+                    if (res.ok) {
+                        setToken(t);
+                        setVerified(true);
+                    } else {
+                        sessionStorage.removeItem('ivc_member_token');
+                    }
                     setChecking(false);
                 })
                 .catch(() => setChecking(false));
-        } else setChecking(false);
-    }, [token]);
+        } else {
+            setChecking(false);
+        }
+    }, []);
 
     return (
         <div className="min-h-screen bg-[#02040a] text-white relative overflow-hidden">

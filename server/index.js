@@ -23,19 +23,26 @@ const ADMIN_SECRET = process.env.ADMIN_SECRET || crypto.randomBytes(32).toString
 
 // Supabase Configuration
 const supabaseUrl = process.env.SUPABASE_URL;
-const supabaseKey = process.env.SUPABASE_ANON_KEY;
+// Use Service Role Key if available (bypasses RLS), fallback to Anon Key
+const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
 const supabaseBucket = process.env.SUPABASE_BUCKET || 'member-photos';
 
 let supabase = null;
 if (supabaseUrl && supabaseKey && !supabaseUrl.includes('your_supabase_') && !supabaseKey.includes('your_supabase_')) {
     try {
-        supabase = createClient(supabaseUrl, supabaseKey);
+        // Option to skip RLS if using service role key
+        supabase = createClient(supabaseUrl, supabaseKey, {
+            auth: {
+                autoRefreshToken: false,
+                persistSession: false
+            }
+        });
     } catch (err) {
         console.error('Failed to initialize Supabase client:', err.message);
     }
 } else {
-    console.error('\x1b[31m%s\x1b[0m', 'CRITICAL ERROR: Supabase URL or Key missing or set to placeholder in .env!');
-    console.error('\x1b[33m%s\x1b[0m', 'Please replace the placeholders in your .env file with your actual Supabase credentials.');
+    console.error('\x1b[31m%s\x1b[0m', 'CRITICAL ERROR: Supabase configuration missing!');
+    console.error('\x1b[33m%s\x1b[0m', 'Please check your .env file or Vercel environment variables.');
 }
 
 // Multer for memory storage
@@ -66,6 +73,22 @@ function verifyToken(token) {
         return payload;
     } catch {
         return null;
+    }
+}
+
+// Helper to delete photo from storage
+async function deletePhotoFromUrl(url) {
+    if (!url || !supabase) return;
+    try {
+        // Extract filename from the Supabase public URL
+        // Format: .../storage/v1/object/public/[bucket]/[filename]
+        const pathParts = url.split('/');
+        const fileName = pathParts[pathParts.length - 1];
+        if (fileName) {
+            await supabase.storage.from(supabaseBucket).remove([fileName]);
+        }
+    } catch (err) {
+        console.error('Failed to delete storage file:', err.message);
     }
 }
 
@@ -302,16 +325,29 @@ app.delete('/api/admin/requests/:id', requireAdmin, async (req, res) => {
     }
     const { id } = req.params;
 
-    // 1. Get request to find photo filename to delete from storage optionally
-    // (Skipping photo deletion for now but it's a good practice)
+    try {
+        // 1. Get the request to find the photo URL
+        const { data: request, error: fetchError } = await supabase
+            .from('member_requests')
+            .select('photo_url')
+            .eq('id', id)
+            .single();
 
-    const { error } = await supabase
-        .from('member_requests')
-        .delete()
-        .eq('id', id);
+        if (request?.photo_url) {
+            await deletePhotoFromUrl(request.photo_url);
+        }
 
-    if (error) return res.status(500).json({ error: error.message });
-    res.json({ message: 'Request deleted' });
+        // 2. Delete the DB entry
+        const { error: deleteError } = await supabase
+            .from('member_requests')
+            .delete()
+            .eq('id', id);
+
+        if (deleteError) throw deleteError;
+        res.json({ message: 'Request and associated photo deleted' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 // Fetch approved members for Team page
@@ -395,9 +431,26 @@ app.post('/api/admin/mentors', requireAdmin, upload.single('photo'), async (req,
 app.delete('/api/admin/mentors/:id', requireAdmin, async (req, res) => {
     if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
     const { id } = req.params;
-    const { error } = await supabase.from('mentors').delete().eq('id', id);
-    if (error) return res.status(500).json({ error: error.message });
-    res.json({ message: 'Mentor deleted' });
+
+    try {
+        // 1. Get the mentor to find the photo URL
+        const { data: mentor, error: fetchError } = await supabase
+            .from('mentors')
+            .select('photo_url')
+            .eq('id', id)
+            .single();
+
+        if (mentor?.photo_url) {
+            await deletePhotoFromUrl(mentor.photo_url);
+        }
+
+        // 2. Delete the DB entry
+        const { error: deleteError } = await supabase.from('mentors').delete().eq('id', id);
+        if (deleteError) throw deleteError;
+        res.json({ message: 'Mentor and associated photo deleted' });
+    } catch (err) {
+        res.status(500).json({ error: err.message });
+    }
 });
 
 app.get('/api/mentors', async (req, res) => {
