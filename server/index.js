@@ -23,26 +23,24 @@ const ADMIN_SECRET = process.env.ADMIN_SECRET || crypto.randomBytes(32).toString
 
 // Supabase Configuration
 const supabaseUrl = process.env.SUPABASE_URL;
-// Use Service Role Key if available (bypasses RLS), fallback to Anon Key
-const supabaseKey = process.env.SUPABASE_SERVICE_ROLE_KEY || process.env.SUPABASE_ANON_KEY;
+const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
+const anonKey = process.env.SUPABASE_ANON_KEY;
+const supabaseKey = serviceKey || anonKey;
 const supabaseBucket = process.env.SUPABASE_BUCKET || 'member-photos';
 
 let supabase = null;
 if (supabaseUrl && supabaseKey && !supabaseUrl.includes('your_supabase_') && !supabaseKey.includes('your_supabase_')) {
     try {
-        // Option to skip RLS if using service role key
         supabase = createClient(supabaseUrl, supabaseKey, {
-            auth: {
-                autoRefreshToken: false,
-                persistSession: false
-            }
+            auth: { autoRefreshToken: false, persistSession: false }
         });
+        const keyType = serviceKey ? 'SERVICE_ROLE (Safe)' : 'ANON (Will fail deletes)';
+        console.log(`Supabase initialized with ${keyType} key.`);
     } catch (err) {
         console.error('Failed to initialize Supabase client:', err.message);
     }
 } else {
-    console.error('\x1b[31m%s\x1b[0m', 'CRITICAL ERROR: Supabase configuration missing!');
-    console.error('\x1b[33m%s\x1b[0m', 'Please check your .env file or Vercel environment variables.');
+    console.error('CRITICAL ERROR: Supabase configuration missing!');
 }
 
 // Multer for memory storage
@@ -182,6 +180,35 @@ app.get('/api/profile/verify', (req, res) => {
 });
 
 // ═══════════════════════════════════════
+// Public Join Applications (No Token Required)
+// ═══════════════════════════════════════
+const joinLimiter = rateLimit({
+    windowMs: 60 * 60 * 1000, // 1 hour
+    max: 5, // 5 attempts per IP per hour
+    message: { error: 'Too many applications from this IP. Please try again later.' }
+});
+
+const publicJoinSchema = z.object({
+    name: z.string().min(2).max(100),
+    email: z.string().email(),
+    department: z.string().min(2).max(100),
+    year: z.string().min(1).max(50),
+});
+
+app.post('/api/public/join', joinLimiter, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    try {
+        const validatedData = publicJoinSchema.parse(req.body);
+        const { error } = await supabase.from('public_applications').insert([validatedData]);
+        if (error) throw error;
+        res.status(201).json({ message: 'Application submitted successfully!' });
+    } catch (error) {
+        if (error instanceof z.ZodError) return res.status(400).json({ error: 'Invalid data' });
+        res.status(500).json({ error: 'Failed to submit application' });
+    }
+});
+
+// ═══════════════════════════════════════
 // Member Profile Submissions with Img Upload
 // ═══════════════════════════════════════
 
@@ -269,6 +296,36 @@ app.post('/api/member-request', upload.single('photo'), async (req, res) => {
 });
 
 // ═══════════════════════════════════════
+// Admin Management (Public Join Form)
+// ═══════════════════════════════════════
+app.get('/api/admin/applications', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    const { data, error } = await supabase.from('public_applications').select('*').order('applied_at', { ascending: false });
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
+app.patch('/api/admin/applications/:id', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    const { id } = req.params;
+    const { status } = req.body;
+    const { data, error } = await supabase.from('public_applications').update({ status }).eq('id', id).select();
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ message: 'Application updated', application: data[0] });
+});
+
+app.delete('/api/admin/applications/:id', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    const { id } = req.params;
+    const { error } = await supabase.from('public_applications').delete().eq('id', id);
+    if (error) {
+        const hint = !serviceKey ? " (HINT: SUPABASE_SERVICE_ROLE_KEY missing)" : "";
+        return res.status(500).json({ error: error.message + hint });
+    }
+    res.json({ message: 'Application deleted' });
+});
+
+// ═══════════════════════════════════════
 // Admin Interface
 // ═══════════════════════════════════════
 
@@ -350,7 +407,8 @@ app.delete('/api/admin/requests/:id', requireAdmin, async (req, res) => {
 
         if (deleteError) {
             console.error('Delete error:', deleteError);
-            return res.status(500).json({ error: `Delete failed: ${deleteError.message}` });
+            const hint = !serviceKey ? " (HINT: SUPABASE_SERVICE_ROLE_KEY is missing from environment variables)" : "";
+            return res.status(500).json({ error: `Delete failed: ${deleteError.message}${hint}` });
         }
         res.json({ message: 'Request and associated photo deleted' });
     } catch (err) {
@@ -462,7 +520,8 @@ app.delete('/api/admin/mentors/:id', requireAdmin, async (req, res) => {
         const { error: deleteError } = await supabase.from('mentors').delete().eq('id', id);
         if (deleteError) {
             console.error('Delete error:', deleteError);
-            return res.status(500).json({ error: `Delete failed: ${deleteError.message}` });
+            const hint = !serviceKey ? " (HINT: SUPABASE_SERVICE_ROLE_KEY is missing)" : "";
+            return res.status(500).json({ error: `Delete failed: ${deleteError.message}${hint}` });
         }
         res.json({ message: 'Mentor and associated photo deleted' });
     } catch (err) {

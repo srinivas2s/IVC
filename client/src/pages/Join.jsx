@@ -12,10 +12,24 @@ const Join = ({ isModal = false }) => {
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('submitting');
-        setTimeout(() => {
-            setStatus('success');
-            setFormData({ name: '', email: '', department: '', year: '' });
-        }, 2000);
+        try {
+            const res = await fetch('/api/public/join', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData),
+            });
+            if (res.ok) {
+                setStatus('success');
+                setFormData({ name: '', email: '', department: '', year: '' });
+            } else {
+                const data = await res.json();
+                alert(data.error || 'Submission failed');
+                setStatus('');
+            }
+        } catch (err) {
+            alert('Network error. Please try again.');
+            setStatus('');
+        }
     };
 
     const fields = [
