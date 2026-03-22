@@ -12,8 +12,11 @@ CREATE TABLE IF NOT EXISTS public_applications (
 -- Enable Security
 ALTER TABLE public_applications ENABLE ROW LEVEL SECURITY;
 
--- Allow anyone to apply
+-- Allow PUBLIC (anon role) to submit applications
+-- We add a check for status = 'unread' to prevent someone from inserting 
+-- pre-approved or archived applications.
 DROP POLICY IF EXISTS "Allow public to submit applications" ON public_applications;
 CREATE POLICY "Allow public to submit applications"
   ON public_applications FOR INSERT
-  WITH CHECK (true);
+  TO anon
+  WITH CHECK (status = 'unread');
