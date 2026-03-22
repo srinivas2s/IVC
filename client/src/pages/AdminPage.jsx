@@ -322,101 +322,36 @@ const ApplicationManager = ({ token }) => {
 
     useEffect(() => { fetchApps(); }, [fetchApps]);
 
-    const handleAction = async (id, status) => {
-        try {
-            const res = await fetch(`/api/admin/applications/${id}`, {
-                method: 'PATCH',
-                headers: { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' },
-                body: JSON.stringify({ status })
-            });
-            if (res.ok) fetchApps();
-        } catch (e) { console.error(e); }
-    };
-
-    const handleDelete = async (id) => {
-        if (!confirm('Delete application?')) return;
-        try {
-            const res = await fetch(`/api/admin/applications/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
-            if (res.ok) fetchApps();
-        } catch (e) { console.error(e); }
-    };
-
-    const exportToExcel = () => {
-        if (apps.length === 0) return alert('No records to export');
-        const headers = ['ID', 'Name', 'Email', 'Dept', 'Year', 'Status', 'Date'];
-        const csvRows = [headers.join(',')];
-        
-        apps.forEach(a => {
-            const row = [
-                a.id,
-                `"${a.name}"`,
-                a.email,
-                `"${a.department}"`,
-                a.year,
-                a.status,
-                new Date(a.applied_at).toLocaleDateString()
-            ];
-            csvRows.push(row.join(','));
-        });
-
-        const csvString = csvRows.join('\n');
-        const blob = new Blob([csvString], { type: 'text/csv' });
-        const url = window.URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.setAttribute('hidden', '');
-        a.setAttribute('href', url);
-        a.setAttribute('download', `IVC_Applications_${new Date().toISOString().split('T')[0]}.csv`);
-        document.body.appendChild(a);
-        a.click();
-        document.body.removeChild(a);
-    };
-
     return (
         <div className="space-y-6">
             <div className="flex justify-between items-center">
-                <h3 className="font-display text-[11px] tracking-[0.3em] text-white/40 uppercase">STUDENT APPLICATIONS ({apps.length})</h3>
-                <button onClick={exportToExcel} className="px-5 py-2 rounded-xl bg-emerald-400/5 border border-emerald-400/20 text-emerald-400 text-[10px] uppercase font-display tracking-widest hover:bg-emerald-400/10 transition-all flex items-center gap-2">
-                    <ExternalLink size={12} /> EXPORT TO EXCEL (CSV)
-                </button>
+                <h3 className="font-display text-[11px] tracking-[0.3em] text-white/40 uppercase">EXCEL RECORDS ({apps.length})</h3>
+                <a href="https://docs.google.com/spreadsheets/d/1Jt5RM71qsScLztmq1l6TJuDyoCGnOXGZU0saHRERpP4/edit" target="_blank" rel="noreferrer" className="px-5 py-2 rounded-xl bg-emerald-400/5 border border-emerald-400/20 text-emerald-400 text-[10px] uppercase font-display tracking-widest hover:bg-emerald-400/10 transition-all flex items-center gap-2">
+                    <ExternalLink size={12} /> OPEN IN GOOGLE SHEETS
+                </a>
             </div>
 
             <div className="bg-white/[0.01] border border-white/[0.06] rounded-2xl overflow-hidden overflow-x-auto">
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr className="border-b border-white/[0.04] bg-white/[0.02]">
-                            {['NAME', 'EMAIL', 'DEPT / YEAR', 'STATUS', 'ACTIONS'].map(h => (
+                            {['NAME', 'EMAIL', 'DEPT / YEAR', 'APPLIED ON'].map(h => (
                                 <th key={h} className="px-6 py-4 text-[9px] font-display tracking-widest text-white/30 uppercase">{h}</th>
                             ))}
                         </tr>
                     </thead>
                     <tbody className="divide-y divide-white/[0.04]">
-                        {apps.map(a => (
-                            <tr key={a.id} className="hover:bg-white/[0.01] transition-colors">
-                                <td className="px-6 py-4">
-                                    <p className="text-xs font-bold text-white uppercase">{a.name}</p>
-                                    <p className="text-[10px] text-white/30 mt-0.5">{new Date(a.applied_at).toLocaleDateString()}</p>
-                                </td>
+                        {apps.map((a, idx) => (
+                            <tr key={idx} className="hover:bg-white/[0.01] transition-colors">
+                                <td className="px-6 py-4"><p className="text-xs font-bold text-white uppercase">{a.name}</p></td>
                                 <td className="px-6 py-4 text-xs text-white/60">{a.email}</td>
                                 <td className="px-6 py-4 text-[10px] text-white/60 uppercase">{a.department} <span className="text-cyan-400/40 mx-2">|</span> {a.year}</td>
-                                <td className="px-6 py-4">
-                                    <select 
-                                        value={a.status} 
-                                        onChange={(e) => handleAction(a.id, e.target.value)}
-                                        className={`bg-transparent text-[8px] uppercase tracking-widest font-black p-1 rounded border ${a.status === 'unread' ? 'text-amber-400 border-amber-400/20' : 'text-emerald-400 border-emerald-400/20'}`}
-                                    >
-                                        <option value="unread" className="bg-[#02040a]">Unread</option>
-                                        <option value="contacted" className="bg-[#02040a]">Contacted</option>
-                                        <option value="archived" className="bg-[#02040a]">Archived</option>
-                                    </select>
-                                </td>
-                                <td className="px-6 py-4">
-                                    <button onClick={() => handleDelete(a.id)} className="text-white/20 hover:text-red-400 transition-colors"><Trash2 size={14} /></button>
-                                </td>
+                                <td className="px-6 py-4 text-[10px] text-white/30 uppercase font-display">{new Date(a.applied_at).toLocaleString()}</td>
                             </tr>
                         ))}
                     </tbody>
                 </table>
-                {apps.length === 0 && !loading && <div className="py-20 text-center text-white/10 text-xs uppercase tracking-widest">No applications found</div>}
+                {apps.length === 0 && !loading && <div className="py-20 text-center text-white/10 text-xs uppercase tracking-widest">No applications found in sheet</div>}
             </div>
         </div>
     );

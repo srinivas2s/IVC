@@ -196,15 +196,27 @@ const publicJoinSchema = z.object({
 });
 
 app.post('/api/public/join', joinLimiter, async (req, res) => {
-    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    const sheetUrl = process.env.GOOGLE_SHEET_URL;
+    if (!sheetUrl) return res.status(503).json({ error: 'Google Sheets not configured on server.' });
+
     try {
         const validatedData = publicJoinSchema.parse(req.body);
-        const { error } = await supabase.from('public_applications').insert([validatedData]);
-        if (error) throw error;
-        res.status(201).json({ message: 'Application submitted successfully!' });
+        
+        // Forward data to Google Apps Script
+        const response = await fetch(sheetUrl, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(validatedData)
+        });
+
+        if (response.ok) {
+            res.status(201).json({ message: 'Application sent to Google Sheets!' });
+        } else {
+            throw new Error('Failed to reach Google Sheets');
+        }
     } catch (error) {
-        if (error instanceof z.ZodError) return res.status(400).json({ error: 'Invalid data' });
-        res.status(500).json({ error: 'Failed to submit application' });
+        console.error('Sheet Error:', error);
+        res.status(500).json({ error: 'Failed to record application.' });
     }
 });
 
@@ -299,30 +311,25 @@ app.post('/api/member-request', upload.single('photo'), async (req, res) => {
 // Admin Management (Public Join Form)
 // ═══════════════════════════════════════
 app.get('/api/admin/applications', requireAdmin, async (req, res) => {
-    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
-    const { data, error } = await supabase.from('public_applications').select('*').order('applied_at', { ascending: false });
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data);
-});
-
-app.patch('/api/admin/applications/:id', requireAdmin, async (req, res) => {
-    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
-    const { id } = req.params;
-    const { status } = req.body;
-    const { data, error } = await supabase.from('public_applications').update({ status }).eq('id', id).select();
-    if (error) return res.status(500).json({ error: error.message });
-    res.json({ message: 'Application updated', application: data[0] });
-});
-
-app.delete('/api/admin/applications/:id', requireAdmin, async (req, res) => {
-    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
-    const { id } = req.params;
-    const { error } = await supabase.from('public_applications').delete().eq('id', id);
-    if (error) {
-        const hint = !serviceKey ? " (HINT: SUPABASE_SERVICE_ROLE_KEY missing)" : "";
-        return res.status(500).json({ error: error.message + hint });
+    const sheetUrl = process.env.GOOGLE_SHEET_URL;
+    if (!sheetUrl) return res.status(503).json({ error: 'Google Sheets URL not configured.' });
+    
+    try {
+        const response = await fetch(sheetUrl);
+        const data = await response.json();
+        // Return as if they were DB records
+        res.json(data.map((r, idx) => ({ 
+            id: idx, 
+            name: r.name, 
+            email: r.email, 
+            department: r.department, 
+            year: r.year, 
+            status: r.status || 'unread',
+            applied_at: r.date || new Date().toISOString()
+        })));
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch from Google Sheets' });
     }
-    res.json({ message: 'Application deleted' });
 });
 
 // ═══════════════════════════════════════
