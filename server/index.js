@@ -390,6 +390,10 @@ app.delete('/api/admin/requests/:id', requireAdmin, async (req, res) => {
     }
     const { id } = req.params;
 
+    if (!serviceKey) {
+        return res.status(500).json({ error: 'CRITICAL: SUPABASE_SERVICE_ROLE_KEY is missing from your environment variables. Deletion is blocked for security.' });
+    }
+
     try {
         const cleanId = id.toString().trim();
         console.log(`Attempting deletion for Request ID: [${cleanId}]`);
@@ -519,6 +523,10 @@ app.post('/api/admin/mentors', requireAdmin, upload.single('photo'), async (req,
 app.delete('/api/admin/mentors/:id', requireAdmin, async (req, res) => {
     if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
     const { id } = req.params;
+
+    if (!serviceKey) {
+        return res.status(500).json({ error: 'CRITICAL: SUPABASE_SERVICE_ROLE_KEY is missing. Add it to Vercel/local .env to enable deletions.' });
+    }
 
     try {
         const cleanId = id.toString().trim();
