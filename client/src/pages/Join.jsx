@@ -36,7 +36,7 @@ const Join = ({ isModal = false }) => {
         { name: 'name', label: 'FULL NAME', icon: User, type: 'text', placeholder: 'Your Name' },
         { name: 'email', label: 'EMAIL', icon: Mail, type: 'email', placeholder: 'your@email.com' },
         { name: 'phone', label: 'PHONE NUMBER', icon: Phone, type: 'tel', placeholder: '+91 00000 00000' },
-        { name: 'department', label: 'DEPARTMENT', icon: School, type: 'text', placeholder: 'Computer Science' },
+        { name: 'department', label: 'BRANCH', icon: School, type: 'text', placeholder: 'CSE, ISE, ECE, etc.' },
         { name: 'year', label: 'YEAR', icon: Calendar, type: 'text', placeholder: '3rd Year' },
     ];
 

@@ -335,7 +335,7 @@ const ApplicationManager = ({ token }) => {
                 <table className="w-full text-left border-collapse">
                     <thead>
                         <tr className="border-b border-white/[0.04] bg-white/[0.02]">
-                            {['NAME', 'EMAIL', 'DEPT / YEAR', 'APPLIED ON'].map(h => (
+                            {['NAME', 'EMAIL', 'BRANCH / YEAR', 'APPLIED ON'].map(h => (
                                 <th key={h} className="px-6 py-4 text-[9px] font-display tracking-widest text-white/30 uppercase">{h}</th>
                             ))}
                         </tr>
