@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Mail, School, Calendar, CheckCircle, Phone } from 'lucide-react';
+import { User, Mail, School, Calendar, CheckCircle, Phone, ChevronDown } from 'lucide-react';
 
 const Join = ({ isModal = false }) => {
     const [formData, setFormData] = useState({ name: '', email: '', phone: '', department: '', year: '' });
@@ -36,8 +36,22 @@ const Join = ({ isModal = false }) => {
         { name: 'name', label: 'FULL NAME', icon: User, type: 'text', placeholder: 'Your Name' },
         { name: 'email', label: 'EMAIL', icon: Mail, type: 'email', placeholder: 'your@email.com' },
         { name: 'phone', label: 'PHONE NUMBER', icon: Phone, type: 'tel', placeholder: '+91 00000 00000' },
-        { name: 'department', label: 'BRANCH', icon: School, type: 'text', placeholder: 'CSE, ISE, ECE, etc.' },
-        { name: 'year', label: 'YEAR', icon: Calendar, type: 'text', placeholder: '3rd Year' },
+        { 
+            name: 'department', 
+            label: 'BRANCH', 
+            icon: School, 
+            type: 'select', 
+            options: ['CSE', 'EEE', 'ECE', 'CSE AIML', 'ME', 'ISE'],
+            placeholder: 'Select Branch' 
+        },
+        { 
+            name: 'year', 
+            label: 'YEAR', 
+            icon: Calendar, 
+            type: 'select', 
+            options: ['1', '2', '3', '4'],
+            placeholder: 'Select Year' 
+        },
     ];
 
     return (
@@ -107,17 +121,39 @@ const Join = ({ isModal = false }) => {
                                                 <div className={`absolute left-4 top-1/2 -translate-y-1/2 transition-colors duration-300 ${focusedField === field.name ? 'text-cyan-400' : 'text-white/30'}`}>
                                                     <Icon size={16} />
                                                 </div>
-                                                <input
-                                                    type={field.type}
-                                                    name={field.name}
-                                                    placeholder={field.placeholder}
-                                                    value={formData[field.name]}
-                                                    onChange={handleChange}
-                                                    onFocus={() => setFocusedField(field.name)}
-                                                    onBlur={() => setFocusedField(null)}
-                                                    required
-                                                    className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl py-4 pl-12 pr-4 text-white text-sm font-medium placeholder-white/10 focus:outline-none focus:border-cyan-400/30 focus:bg-white/[0.03] transition-all duration-300"
-                                                />
+                                                {field.type === 'select' ? (
+                                                    <div className="relative group">
+                                                        <select
+                                                            name={field.name}
+                                                            value={formData[field.name]}
+                                                            onChange={handleChange}
+                                                            onFocus={() => setFocusedField(field.name)}
+                                                            onBlur={() => setFocusedField(null)}
+                                                            required
+                                                            className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl py-4 pl-12 pr-10 text-white text-sm font-medium focus:outline-none focus:border-cyan-400/30 focus:bg-white/[0.03] transition-all duration-300 appearance-none cursor-pointer"
+                                                        >
+                                                            <option value="" disabled className="bg-slate-900">{field.placeholder}</option>
+                                                            {field.options.map(opt => (
+                                                                <option key={opt} value={opt} className="bg-slate-900">{opt}</option>
+                                                            ))}
+                                                        </select>
+                                                        <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none text-white/20 group-hover:text-cyan-400/50 transition-colors">
+                                                            <ChevronDown size={14} />
+                                                        </div>
+                                                    </div>
+                                                ) : (
+                                                    <input
+                                                        type={field.type}
+                                                        name={field.name}
+                                                        placeholder={field.placeholder}
+                                                        value={formData[field.name]}
+                                                        onChange={handleChange}
+                                                        onFocus={() => setFocusedField(field.name)}
+                                                        onBlur={() => setFocusedField(null)}
+                                                        required
+                                                        className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl py-4 pl-12 pr-4 text-white text-sm font-medium placeholder-white/10 focus:outline-none focus:border-cyan-400/30 focus:bg-white/[0.03] transition-all duration-300"
+                                                    />
+                                                )}
                                                 {focusedField === field.name && (
                                                     <div className="absolute bottom-0 left-[15%] right-[15%] h-[1px] bg-gradient-to-r from-transparent via-cyan-400/40 to-transparent" />
                                                 )}
