@@ -1,5 +1,10 @@
+import { useState, useEffect } from 'react';
 import { motion } from 'framer-motion';
-import { Globe, Brain, Cpu, Briefcase, Palette, Bot } from 'lucide-react';
+import { Globe, Brain, Cpu, Briefcase, Palette, Bot, Layers, Smartphone, RefreshCw } from 'lucide-react';
+
+const IconMap = {
+    Globe, Brain, Cpu, Briefcase, Palette, Bot, Layers, Smartphone
+};
 
 const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: 40 },
@@ -9,14 +14,18 @@ const fadeUp = (delay = 0) => ({
 });
 
 const Domains = () => {
-    const domains = [
-        { title: 'Web Development', desc: 'Crafting high-performance, pixel-perfect digital experiences with modern web technologies.', icon: Globe },
-        { title: 'AI & ML', desc: 'Building intelligent systems and exploring neural networks and data science.', icon: Brain },
-        { title: 'IoT & Hardware', desc: 'Connecting the physical and digital worlds through smart electronics and systems.', icon: Cpu },
-        { title: 'Entrepreneurship', desc: 'Nurturing the next generation of founders through business strategy and innovation.', icon: Briefcase },
-        { title: 'UI/UX Design', desc: 'Designing intuitive, stunning interfaces that prioritize user experience.', icon: Palette },
-        { title: 'Robotics', desc: 'Designing and building autonomous machines and robotic systems for future impact.', icon: Bot },
-    ];
+    const [domains, setDomains] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch('/api/domains')
+            .then(res => res.json())
+            .then(data => {
+                setDomains(data);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    }, []);
 
     return (
         <section className="relative py-32 md:py-48 overflow-hidden ">
@@ -39,9 +48,18 @@ const Domains = () => {
                 </motion.div>
 
                 {/* Domain Grid - TechSolstice staggered layout */}
-                <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
-                    {domains.map((domain, i) => {
-                        const Icon = domain.icon;
+                <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 md:gap-8 min-h-[400px]">
+                    {loading ? (
+                        <div className="col-span-full flex flex-col items-center justify-center text-white/10 py-20">
+                            <RefreshCw className="animate-spin mb-4" size={40} />
+                            <span className="font-display text-[10px] tracking-[0.5em] uppercase font-black">ACCESSING DOMAINS...</span>
+                        </div>
+                    ) : domains.length === 0 ? (
+                        <div className="col-span-full text-center text-white/20 py-20">
+                             <span className="font-display text-[10px] tracking-[0.5em] uppercase font-black">NO DOMAINS REGISTRY FOUND</span>
+                        </div>
+                    ) : domains.map((domain, i) => {
+                        const Icon = IconMap[domain.icon] || Globe;
                         return (
                             <motion.div
                                 key={i}

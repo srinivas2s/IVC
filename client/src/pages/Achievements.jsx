@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import { Trophy, Users, BookOpen, Layers } from 'lucide-react';
+import { Trophy, Users, BookOpen, Layers, Star, CheckCircle, RefreshCw } from 'lucide-react';
+
+const IconMap = { Trophy, Users, BookOpen, Layers, Star, CheckCircle };
 
 const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: 40 },
@@ -9,7 +11,6 @@ const fadeUp = (delay = 0) => ({
     transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }
 });
 
-// Animated counter
 const Counter = ({ target, suffix = '' }) => {
     const [count, setCount] = useState(0);
     const [started, setStarted] = useState(false);
@@ -38,12 +39,18 @@ const Counter = ({ target, suffix = '' }) => {
 };
 
 const Achievements = () => {
-    const stats = [
-        { value: '2', label: 'HACKATHONS WON', icon: Trophy, highlight: true },
-        { value: '30', label: 'ACTIVE MEMBERS', icon: Users },
-        { value: '0', label: 'WORKSHOPS', icon: BookOpen },
-        { value: '6', label: 'ACTIVE DOMAINS', icon: Layers },
-    ];
+    const [stats, setStats] = useState([]);
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        fetch('/api/achievements')
+            .then(res => res.json())
+            .then(data => {
+                setStats(data);
+                setLoading(false);
+            })
+            .catch(() => setLoading(false));
+    }, []);
 
     return (
         <section className="relative py-32 md:py-48 overflow-hidden">
@@ -66,21 +73,30 @@ const Achievements = () => {
                 </motion.div>
 
                 {/* Stats Grid */}
-                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
-                    {stats.map((stat, i) => {
-                        const Icon = stat.icon;
+                <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 min-h-[300px]">
+                    {loading ? (
+                        <div className="col-span-full py-20 text-center text-white/10">
+                            <RefreshCw className="animate-spin mx-auto mb-4" size={40} />
+                            <span className="font-display text-[10px] tracking-[0.5em] uppercase font-black italic">Accessing Performance Records...</span>
+                        </div>
+                    ) : stats.length === 0 ? (
+                        <div className="col-span-full py-20 text-center text-white/20">
+                            <span className="font-display text-[10px] tracking-[0.5em] uppercase font-black italic">NO ACHIEVEMENTS LOGGED YET</span>
+                        </div>
+                    ) : stats.map((stat, i) => {
+                        const Icon = IconMap[stat.icon] || Trophy;
                         return (
                             <motion.div
-                                key={i}
+                                key={stat.id || i}
                                 {...fadeUp(0.1 + i * 0.08)}
-                                className="glow-card rounded-2xl p-8 md:p-10 text-center group cursor-pointer relative overflow-hidden"
+                                className={`glow-card rounded-2xl p-8 md:p-10 text-center group cursor-pointer relative overflow-hidden ${stat.highlight ? 'border-cyan-400/30' : ''}`}
                             >
-                                {i === 3 && (
+                                {stat.highlight && (
                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-cyan-400/10 blur-[40px] rounded-full pointer-events-none" />
                                 )}
                                 {/* Icon */}
                                 <div className="relative z-10 w-12 h-12 rounded-xl bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center mx-auto mb-6 group-hover:bg-cyan-400/10 group-hover:border-cyan-400/25 transition-all duration-500">
-                                    <Icon className="text-cyan-400/70" size={20} />
+                                    <Icon className={stat.highlight ? "text-cyan-400" : "text-cyan-400/70"} size={20} />
                                 </div>
 
                                 {/* Number */}
