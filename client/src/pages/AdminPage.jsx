@@ -531,44 +531,41 @@ const AdminDashboard = ({ token, onLogout }) => {
                 <div className="absolute inset-0 dot-matrix opacity-[0.04]" />
             </div>
 
-            <nav className="border-b border-white/[0.06] bg-[#02040a]/40 backdrop-blur-3xl sticky top-0 z-50">
-                <div className="max-w-7xl mx-auto px-6 py-5 flex justify-between items-center">
-                    <div className="flex items-center gap-5">
-                        <Link to="/" className="text-white/20 hover:text-white transition-colors"><ArrowLeft size={18} /></Link>
-                        <div className="flex items-center gap-3 border-l border-white/10 pl-5">
-                            <Shield className="text-cyan-400" size={18} />
-                            <span className="font-display text-[10px] tracking-[0.4em] uppercase font-black opacity-60">SYSTEM ADMIN</span>
-                        </div>
-                    </div>
-                    <button onClick={onLogout} className="text-[10px] tracking-[0.4em] text-white/20 hover:text-red-500 font-black uppercase transition-colors">LOGOUT</button>
-                </div>
-            </nav>
-
             <div className="max-w-7xl mx-auto px-6 py-12 relative z-10">
                 <div className="mb-10 flex flex-col md:flex-row md:items-end justify-between gap-6">
                     <div>
-                        <p className="font-display text-[10px] tracking-[0.5em] text-cyan-400/40 uppercase font-black mb-2 italic">CONTROL PANEL V2</p>
-                        <h1 className="font-display text-4xl font-black uppercase tracking-tighter text-white">
-                            {activeTab === 'requests' ? 'MEMBER PORTAL' : activeTab === 'mentors' ? 'MENTOR CENTER' : 'APPLICATION LOGS'}
-                        </h1>
+                        <div className="flex items-center gap-4 mb-4">
+                            <Link to="/" className="w-10 h-10 rounded-xl bg-white/5 border border-white/10 flex items-center justify-center text-white/20 hover:text-white hover:bg-white/10 transition-all">
+                                <ArrowLeft size={18} />
+                            </Link>
+                            <div>
+                                <p className="font-display text-[10px] tracking-[0.5em] text-cyan-400/40 uppercase font-black italic">CONTROL PANEL V2</p>
+                                <h1 className="font-display text-4xl font-black uppercase tracking-tighter text-white">
+                                    {activeTab === 'requests' ? 'MEMBER PORTAL' : activeTab === 'mentors' ? 'MENTOR CENTER' : 'APPLICATION LOGS'}
+                                </h1>
+                            </div>
+                        </div>
                     </div>
                     
-                    <div className="inline-flex p-1 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-xl shadow-2xl">
-                        {['requests', 'mentors', 'applications'].map(tab => (
-                            <button 
-                                key={tab} 
-                                onClick={() => setActiveTab(tab)} 
-                                className={`px-6 py-3 rounded-xl text-[10px] tracking-widest uppercase transition-all relative font-black ${activeTab === tab ? 'text-[#02040a]' : 'text-white/30 hover:text-white/60'}`}
-                            >
-                                {activeTab === tab && (
-                                    <motion.div 
-                                        layoutId="floating-bg" 
-                                        className="absolute inset-0 bg-white rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.2)]" 
-                                    />
-                                )}
-                                <span className="relative z-10">{tab}</span>
-                            </button>
-                        ))}
+                    <div className="flex flex-col md:flex-row items-center gap-6">
+                        <div className="inline-flex p-1 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-xl shadow-2xl">
+                            {['requests', 'mentors', 'applications'].map(tab => (
+                                <button 
+                                    key={tab} 
+                                    onClick={() => setActiveTab(tab)} 
+                                    className={`px-6 py-3 rounded-xl text-[10px] tracking-widest uppercase transition-all relative font-black ${activeTab === tab ? 'text-[#02040a]' : 'text-white/30 hover:text-white/60'}`}
+                                >
+                                    {activeTab === tab && (
+                                        <motion.div 
+                                            layoutId="floating-bg" 
+                                            className="absolute inset-0 bg-white rounded-xl shadow-[0_0_20px_rgba(255,255,255,0.2)]" 
+                                        />
+                                    )}
+                                    <span className="relative z-10">{tab}</span>
+                                </button>
+                            ))}
+                        </div>
+                        <button onClick={onLogout} className="px-6 py-3 rounded-xl border border-red-500/20 text-red-500/60 hover:text-red-500 hover:bg-red-500/10 text-[10px] tracking-[0.3em] font-black uppercase transition-all">LOGOUT</button>
                     </div>
                 </div>
 
