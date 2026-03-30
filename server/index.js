@@ -7,7 +7,7 @@ const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
 const multer = require('multer');
 const { z } = require('zod');
-
+const sharp = require('sharp');
 const path = require('path');
 if (process.env.NODE_ENV !== 'production') {
     dotenv.config({ path: path.resolve(__dirname, '../.env') });
@@ -87,6 +87,20 @@ async function deletePhotoFromUrl(url) {
         }
     } catch (err) {
         console.error('Failed to delete storage file:', err.message);
+    }
+}
+
+// Helper to compress image
+async function compressImage(buffer) {
+    if (!buffer) return null;
+    try {
+        return await sharp(buffer)
+            .resize(1000, 1000, { fit: 'inside', withoutEnlargement: true })
+            .webp({ quality: 80 })
+            .toBuffer();
+    } catch (err) {
+        console.error('Sharp compression error:', err.message);
+        return buffer; // Fallback to original
     }
 }
 
@@ -258,14 +272,17 @@ app.post('/api/member-request', upload.single('photo'), async (req, res) => {
 
         // 3. Upload Photo to Supabase if file exists
         if (req.file) {
-            const fileExt = req.file.originalname.split('.').pop();
+            const fileExt = 'webp'; // Force webp after compression
             const fileName = `${Date.now()}-${Math.random().toString(36).substring(2)}.${fileExt}`;
             const filePath = `${fileName}`;
 
+            // Compress before upload
+            const compressedBuffer = await compressImage(req.file.buffer);
+
             const { data, error: uploadError } = await supabase.storage
                 .from(supabaseBucket)
-                .upload(filePath, req.file.buffer, {
-                    contentType: req.file.mimetype,
+                .upload(filePath, compressedBuffer, {
+                    contentType: 'image/webp',
                     upsert: false
                 });
 
@@ -495,9 +512,9 @@ app.post('/api/admin/mentors', requireAdmin, upload.single('photo'), async (req,
         let photoUrl = '';
 
         if (req.file) {
-            const fileExt = req.file.originalname.split('.').pop();
-            const fileName = `mentor-${Date.now()}.${fileExt}`;
-            const { error: uploadError } = await supabase.storage.from(supabaseBucket).upload(fileName, req.file.buffer, { contentType: req.file.mimetype });
+            const compressedBuffer = await compressImage(req.file.buffer);
+            const fileName = `mentor-${Date.now()}.webp`;
+            const { error: uploadError } = await supabase.storage.from(supabaseBucket).upload(fileName, compressedBuffer, { contentType: 'image/webp' });
             if (uploadError) throw uploadError;
             const { data: { publicUrl } } = supabase.storage.from(supabaseBucket).getPublicUrl(fileName);
             photoUrl = publicUrl;
@@ -516,6 +533,75 @@ app.post('/api/admin/mentors', requireAdmin, upload.single('photo'), async (req,
         res.status(201).json({ message: 'Mentor added successfully' });
     } catch (error) {
         console.error('Mentor add error:', error);
+        res.status(error instanceof z.ZodError ? 400 : 500).json({ error: error.message || 'Server error' });
+    }
+});
+
+// Update Mentor
+app.put('/api/admin/mentors/:id', requireAdmin, upload.single('photo'), async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    const { id } = req.params;
+    try {
+        const validatedData = mentorSchema.parse(req.body);
+        
+        // Get existing mentor to check for old photo
+        const { data: existing } = await supabase.from('mentors').select('photo_url').eq('id', id).single();
+        let photoUrl = existing?.photo_url || '';
+
+        if (req.file) {
+            // Delete old photo if it exists
+            if (existing?.photo_url) await deletePhotoFromUrl(existing.photo_url);
+            
+            const compressedBuffer = await compressImage(req.file.buffer);
+            const fileName = `mentor-${Date.now()}.webp`;
+            const { error: uploadError } = await supabase.storage.from(supabaseBucket).upload(fileName, compressedBuffer, { contentType: 'image/webp' });
+            if (uploadError) throw uploadError;
+            const { data: { publicUrl } } = supabase.storage.from(supabaseBucket).getPublicUrl(fileName);
+            photoUrl = publicUrl;
+        }
+
+        const { error: dbError } = await supabase.from('mentors').update({
+            name: validatedData.name,
+            email: validatedData.email,
+            linkedin: validatedData.linkedin,
+            quote: validatedData.quote,
+            other_info: validatedData.otherInfo,
+            photo_url: photoUrl
+        }).eq('id', id);
+
+        if (dbError) throw dbError;
+        res.json({ message: 'Mentor updated successfully' });
+    } catch (error) {
+        res.status(error instanceof z.ZodError ? 400 : 500).json({ error: error.message || 'Server error' });
+    }
+});
+
+// Update Member Request (Admin editing approved profiles or pending ones)
+app.put('/api/admin/requests/:id', requireAdmin, upload.single('photo'), async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    const { id } = req.params;
+    try {
+        const validatedData = memberRequestSchema.parse(req.body);
+        const { data: existing } = await supabase.from('member_requests').select('photo_url').eq('id', id).single();
+        let photoUrl = existing?.photo_url || '';
+
+        if (req.file) {
+            if (existing?.photo_url) await deletePhotoFromUrl(existing.photo_url);
+            const compressedBuffer = await compressImage(req.file.buffer);
+            const fileName = `profile-${Date.now()}.webp`;
+            await supabase.storage.from(supabaseBucket).upload(fileName, compressedBuffer, { contentType: 'image/webp' });
+            const { data: { publicUrl } } = supabase.storage.from(supabaseBucket).getPublicUrl(fileName);
+            photoUrl = publicUrl;
+        }
+
+        const { error: dbError } = await supabase.from('member_requests').update({
+            ...validatedData,
+            photo_url: photoUrl
+        }).eq('id', id);
+
+        if (dbError) throw dbError;
+        res.json({ message: 'Member updated successfully' });
+    } catch (error) {
         res.status(error instanceof z.ZodError ? 400 : 500).json({ error: error.message || 'Server error' });
     }
 });

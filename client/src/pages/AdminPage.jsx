@@ -4,7 +4,7 @@ import {
     Shield, Users, CheckCircle, XCircle, Clock, Eye, Trash2,
     RefreshCw, LogIn, Lock, ArrowLeft, Search, LayoutGrid,
     List, Linkedin, Github, Mail, User, Camera, FileText,
-    ExternalLink
+    ExternalLink, Edit3
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
@@ -104,51 +104,46 @@ const StatCard = ({ icon: Icon, label, value, color }) => (
 /* ═══════════════════════════════════════
    REQUEST CARD (MEMBERS)
    ═══════════════════════════════════════ */
-const RequestCard = ({ request, onApprove, onReject, onDelete, viewMode }) => {
+const RequestCard = ({ request, onApprove, onReject, onDelete, onEdit, viewMode }) => {
     const [expanded, setExpanded] = useState(false);
     const s = {
         pending: { bg: 'bg-amber-400/5', border: 'border-amber-400/20', text: 'text-amber-400', icon: Clock },
         approved: { bg: 'bg-emerald-400/5', border: 'border-emerald-400/20', text: 'text-emerald-400', icon: CheckCircle },
         rejected: { bg: 'bg-red-400/5', border: 'border-red-400/20', text: 'text-red-400', icon: XCircle }
-    }[request.status] || { bg: 'bg-white/5', border: 'border-white/10', text: 'text-white', icon: Clock };
+    }[request.status] || { bg: 'bg-slate-400/5', border: 'border-slate-400/20', text: 'text-slate-400', icon: Clock };
+
     const StatusIcon = s.icon;
 
     if (viewMode === 'list') {
         return (
-            <motion.div layout initial={{ opacity: 0 }} animate={{ opacity: 1 }} className="rounded-xl border border-white/[0.06] bg-white/[0.01] overflow-hidden">
-                <div className="flex items-center gap-4 p-4">
-                    <div className="w-10 h-10 rounded-full bg-white/[0.03] overflow-hidden">
-                        {request.photoUrl ? <img src={request.photoUrl} className="w-full h-full object-cover" /> : <User className="w-full h-full p-2 opacity-10" />}
-                    </div>
-                    <div className="flex-1 min-w-0">
-                        <h4 className="font-display text-xs font-bold text-white uppercase">{request.name}</h4>
-                        <p className="text-white/30 text-[10px] mt-0.5">{request.email}</p>
-                    </div>
-                    <div className={`px-2 py-0.5 rounded-full ${s.bg} border ${s.border} text-[8px] ${s.text} uppercase flex items-center gap-1`}>
-                        <StatusIcon size={8} /> {request.status}
-                    </div>
-                    <div className="flex items-center gap-2">
-                        <button onClick={() => setExpanded(!expanded)} className="w-8 h-8 rounded-lg border border-white/[0.06] flex items-center justify-center text-white/30 hover:text-white"><Eye size={14} /></button>
-                        {request.status === 'pending' && (
-                            <>
-                                <button onClick={() => onApprove(request.id)} className="w-8 h-8 rounded-lg border border-emerald-400/20 text-emerald-400 flex items-center justify-center"><CheckCircle size={14} /></button>
-                                <button onClick={() => onReject(request.id)} className="w-8 h-8 rounded-lg border border-red-400/20 text-red-400 flex items-center justify-center"><XCircle size={14} /></button>
-                            </>
-                        )}
-                        <button onClick={() => onDelete(request.id)} className="w-8 h-8 rounded-lg border border-white/[0.06] text-white/20 hover:text-red-400 flex items-center justify-center"><Trash2 size={14} /></button>
-                    </div>
+            <motion.div layout className="glow-card p-4 rounded-xl border border-white/[0.06] flex items-center gap-6 group">
+                <div className="w-10 h-10 rounded-full bg-white/[0.03] overflow-hidden border border-white/[0.05] shrink-0">
+                    {request.photoUrl ? <img src={request.photoUrl} className="w-full h-full object-cover" /> : <User className="w-full h-full p-2 opacity-10" />}
                 </div>
+                <div className="min-w-0 flex-1">
+                    <h4 className="font-display text-[10px] font-bold text-white uppercase tracking-wider">{request.name}</h4>
+                    <p className="text-white/30 text-[9px] truncate">{request.email}</p>
+                </div>
+                <div className={`px-3 py-1 rounded-full ${s.bg} border ${s.border} text-[8px] ${s.text} uppercase hidden md:flex items-center gap-1.5`}>
+                    <StatusIcon size={10} /> {request.status}
+                </div>
+                <div className="flex items-center gap-2">
+                    <button onClick={() => setExpanded(!expanded)} className="p-2 text-white/20 hover:text-cyan-400 transition-colors"><Eye size={14} /></button>
+                    <button onClick={() => onEdit(request)} className="p-2 text-white/20 hover:text-amber-400 transition-colors"><Edit3 size={14} /></button>
+                    <button onClick={() => onDelete(request.id)} className="p-2 text-white/20 hover:text-red-400 transition-colors"><Trash2 size={14} /></button>
+                </div>
+                
                 <AnimatePresence>
                     {expanded && (
-                        <motion.div initial={{ height: 0 }} animate={{ height: 'auto' }} exit={{ height: 0 }} className="overflow-hidden border-t border-white/[0.04] bg-black/20 p-4 grid grid-cols-2 gap-4">
-                            <div><p className="text-[8px] text-white/30 uppercase">Email</p><p className="text-xs text-white/60 truncate">{request.email}</p></div>
-                            <div><p className="text-[8px] text-white/30 uppercase">Post / Position</p><p className="text-xs text-cyan-400/80 uppercase font-black tracking-widest">{request.role}</p></div>
-                            <div className="col-span-2"><p className="text-[8px] text-white/30 uppercase">Bio / Info</p><p className="text-xs text-white/60 italic leading-relaxed">"{request.bio || 'No bio provided'}"</p></div>
-                            <div><p className="text-[8px] text-white/30 uppercase">Department</p><p className="text-xs text-white/60">{request.department || 'N/A'}</p></div>
-                            <div><p className="text-[8px] text-white/30 uppercase">Submitted</p><p className="text-xs text-white/60">{new Date(request.submittedAt).toLocaleDateString()}</p></div>
-                            <div className="col-span-2 flex gap-3 pt-2 border-t border-white/5">
-                                {request.linkedin && <a href={request.linkedin} target="_blank" rel="noreferrer" className="text-white/20 hover:text-blue-400"><Linkedin size={14} /></a>}
-                                {request.github && <a href={request.github} target="_blank" rel="noreferrer" className="text-white/20 hover:text-white"><Github size={14} /></a>}
+                        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="absolute top-full left-0 right-0 mt-2 z-20 glow-card p-6 rounded-xl border border-white/[0.1] bg-black shadow-2xl">
+                             <div className="grid grid-cols-2 gap-4 text-[10px]">
+                                <div><span className="opacity-30 uppercase block mb-1">Role / Position</span><p className="text-cyan-400">{request.role}</p></div>
+                                <div><span className="opacity-30 uppercase block mb-1">Department</span><p>{request.department || 'N/A'}</p></div>
+                                <div className="col-span-2 mt-2"><span className="opacity-30 uppercase block mb-1">Bio</span><p className="italic">"{request.bio || 'No bio provided'}"</p></div>
+                                <div className="flex gap-4 mt-2">
+                                    {request.linkedin && <a href={request.linkedin} target="_blank" rel="noreferrer" className="text-white/20 hover:text-blue-400"><Linkedin size={14} /></a>}
+                                    {request.github && <a href={request.github} target="_blank" rel="noreferrer" className="text-white/20 hover:text-white"><Github size={14} /></a>}
+                                </div>
                             </div>
                         </motion.div>
                     )}
@@ -158,7 +153,12 @@ const RequestCard = ({ request, onApprove, onReject, onDelete, viewMode }) => {
     }
 
     return (
-        <motion.div layout className="glow-card p-6 rounded-2xl border border-white/[0.06] text-center">
+        <motion.div layout className="glow-card p-6 rounded-2xl border border-white/[0.06] text-center relative group">
+            <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button onClick={() => onEdit(request)} className="p-2 rounded-lg bg-black/40 border border-white/10 text-white/20 hover:text-amber-400 transition-all"><Edit3 size={12} /></button>
+                <button onClick={() => onDelete(request.id)} className="p-2 rounded-lg bg-black/40 border border-white/10 text-white/20 hover:text-red-400 transition-all"><Trash2 size={12} /></button>
+            </div>
+
             <div className="w-16 h-16 rounded-full bg-white/[0.03] mx-auto mb-4 overflow-hidden border border-white/[0.05]">
                 {request.photoUrl ? <img src={request.photoUrl} className="w-full h-full object-cover" /> : <User className="w-full h-full p-4 opacity-10" />}
             </div>
@@ -174,7 +174,7 @@ const RequestCard = ({ request, onApprove, onReject, onDelete, viewMode }) => {
                         <button onClick={() => onReject(request.id)} className="flex-1 py-2.5 rounded-lg border border-red-400/20 bg-red-400/5 text-red-400 text-[10px] uppercase">Reject</button>
                     </>
                 ) : (
-                    <button onClick={() => onDelete(request.id)} className="flex-1 py-2.5 rounded-lg border border-white/[0.06] text-white/30 text-[10px] uppercase hover:text-red-400 transition-colors">Delete</button>
+                    <button onClick={() => setExpanded(!expanded)} className="flex-1 py-2.5 rounded-lg border border-white/[0.06] text-white/30 text-[10px] uppercase hover:text-cyan-400 transition-colors">View Details</button>
                 )}
             </div>
         </motion.div>
@@ -202,15 +202,35 @@ const MentorManager = ({ token }) => {
 
     useEffect(() => { fetchMentors(); }, [fetchMentors]);
 
-    const handleAdd = async (e) => {
+    const handleEdit = (mentor) => {
+        setFormData({
+            id: mentor.id,
+            name: mentor.name,
+            email: mentor.email,
+            linkedin: mentor.linkedin || '',
+            quote: mentor.quote || '',
+            otherInfo: mentor.other_info || ''
+        });
+        setPreview(mentor.photo_url);
+        setShowForm(true);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const handleAction = async (e) => {
         e.preventDefault();
+        const isEdit = !!formData.id;
         const data = new FormData();
-        Object.keys(formData).forEach(k => data.append(k, formData[k]));
+        Object.keys(formData).forEach(k => {
+            if (k !== 'id') data.append(k, formData[k]);
+        });
         if (photo) data.append('photo', photo);
 
         try {
-            const res = await fetch('/api/admin/mentors', {
-                method: 'POST',
+            const url = isEdit ? `/api/admin/mentors/${formData.id}` : '/api/admin/mentors';
+            const method = isEdit ? 'PUT' : 'POST';
+            
+            const res = await fetch(url, {
+                method,
                 headers: { 'Authorization': `Bearer ${token}` },
                 body: data
             });
@@ -239,10 +259,10 @@ const MentorManager = ({ token }) => {
     };
 
     return (
-        <div className="space-y-8">
-            <div className="flex justify-between items-center">
+        <div className="space-y-8 relative z-10">
+            <div className="flex justify-between items-center bg-white/[0.02] p-4 rounded-2xl border border-white/[0.05] backdrop-blur-xl">
                 <h3 className="font-display text-[11px] tracking-[0.3em] text-white/40 uppercase">MANAGE MENTORS</h3>
-                <button onClick={() => setShowForm(!showForm)} className="px-5 py-2 rounded-xl bg-cyan-400/5 border border-cyan-400/20 text-cyan-400 text-[10px] uppercase font-display tracking-widest hover:bg-cyan-400/10 transition-all">
+                <button onClick={() => { setShowForm(!showForm); if(showForm) setFormData({ name: '', email: '', linkedin: '', quote: '', otherInfo: '' }); }} className="px-5 py-2 rounded-xl bg-cyan-400/5 border border-cyan-400/20 text-cyan-400 text-[10px] uppercase font-display tracking-widest hover:bg-cyan-400/10 transition-all">
                     {showForm ? 'CANCEL' : 'ADD NEW MENTOR'}
                 </button>
             </div>
@@ -250,7 +270,8 @@ const MentorManager = ({ token }) => {
             <AnimatePresence>
                 {showForm && (
                     <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="overflow-hidden">
-                        <form onSubmit={handleAdd} className="glow-card p-6 md:p-8 rounded-2xl border border-white/[0.06] space-y-6">
+                        <form onSubmit={handleAction} className="glow-card p-6 md:p-8 rounded-2xl border border-white/[0.06] space-y-6">
+                            <h4 className="text-center font-display text-xs tracking-widest uppercase opacity-40">{formData.id ? 'EDITING MENTOR' : 'NEW MENTOR PROFILE'}</h4>
                             <div className="flex flex-col md:flex-row gap-8">
                                 <div className="flex flex-col items-center gap-4">
                                     <div className="w-32 h-32 rounded-2xl bg-white/[0.02] border border-white/[0.06] overflow-hidden flex items-center justify-center">
@@ -296,12 +317,20 @@ const MentorManager = ({ token }) => {
                         </div>
 
                         {/* Actions */}
-                        <button
-                            onClick={() => handleDelete(m.id)}
-                            className="absolute top-3 right-3 z-20 w-8 h-8 rounded-lg bg-black/40 border border-white/10 flex items-center justify-center text-white/20 hover:text-red-400 hover:bg-red-500/10 transition-all"
-                        >
-                            <Trash2 size={14} />
-                        </button>
+                        <div className="absolute top-3 right-3 z-20 flex gap-2">
+                            <button
+                                onClick={() => handleEdit(m)}
+                                className="w-8 h-8 rounded-lg bg-black/40 border border-white/10 flex items-center justify-center text-white/20 hover:text-amber-400 hover:bg-amber-500/10 transition-all"
+                            >
+                                <Edit3 size={14} />
+                            </button>
+                            <button
+                                onClick={() => handleDelete(m.id)}
+                                className="w-8 h-8 rounded-lg bg-black/40 border border-white/10 flex items-center justify-center text-white/20 hover:text-red-400 hover:bg-red-500/10 transition-all"
+                            >
+                                <Trash2 size={14} />
+                            </button>
+                        </div>
 
                         {/* Content */}
                         <div className="relative z-10 h-full flex flex-col justify-end p-5 text-center">
@@ -378,6 +407,10 @@ const AdminDashboard = ({ token, onLogout }) => {
     const [filter, setFilter] = useState('all');
     const [search, setSearch] = useState('');
     const [viewMode, setViewMode] = useState('grid');
+    const [editingRequest, setEditingRequest] = useState(null);
+    const [editFormData, setEditFormData] = useState({});
+    const [editPhoto, setEditPhoto] = useState(null);
+    const [editPreview, setEditPreview] = useState(null);
     const [refreshing, setRefreshing] = useState(false);
 
     const fetchRequests = useCallback(async () => {
@@ -396,6 +429,41 @@ const AdminDashboard = ({ token, onLogout }) => {
         try {
             const res = await fetch(`/api/admin/requests/${id}/${action}`, { method: 'PATCH', headers: { 'Authorization': `Bearer ${token}` } });
             if (res.ok) fetchRequests();
+        } catch (e) { console.error(e); }
+    };
+
+    const handleEdit = (request) => {
+        setEditingRequest(request);
+        setEditFormData({
+            name: request.name,
+            email: request.email,
+            role: request.role,
+            department: request.department || '',
+            year: request.year || '',
+            bio: request.bio || '',
+            linkedin: request.linkedin || '',
+            github: request.github || ''
+        });
+        setEditPreview(request.photoUrl);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
+    const handleUpdate = async (e) => {
+        e.preventDefault();
+        const data = new FormData();
+        Object.keys(editFormData).forEach(k => data.append(k, editFormData[k]));
+        if (editPhoto) data.append('photo', editPhoto);
+
+        try {
+            const res = await fetch(`/api/admin/requests/${editingRequest.id}`, {
+                method: 'PUT',
+                headers: { 'Authorization': `Bearer ${token}` },
+                body: data
+            });
+            if (res.ok) {
+                setEditingRequest(null);
+                fetchRequests();
+            }
         } catch (e) { console.error(e); }
     };
 
@@ -421,14 +489,32 @@ const AdminDashboard = ({ token, onLogout }) => {
 
     return (
         <div className="min-h-screen bg-[#02040a] text-white overflow-hidden relative">
-            {/* Dashboard Background Gradient */}
+            {/* Logo Watermark Background (Persistent like ProfilePage) */}
+            <div className="fixed inset-0 pointer-events-none overflow-hidden z-0 flex items-center justify-center">
+                <motion.div 
+                    animate={{ 
+                        y: [-25, 25, -25],
+                        rotate: [-2, 2, -2]
+                    }}
+                    transition={{ 
+                        duration: 10,
+                        repeat: Infinity,
+                        ease: "easeInOut"
+                    }}
+                    className="w-[90%] h-[90%] flex items-center justify-center opacity-[0.03] grayscale select-none"
+                >
+                    <img src={logo} alt="Watermark" className="max-w-full max-h-full object-contain scale-125" />
+                </motion.div>
+            </div>
+
+            {/* Existing Dashboard Background Glows */}
             <div className="fixed inset-0 pointer-events-none z-0">
                 <div className="absolute top-[-10%] right-[-10%] w-[50vw] h-[50vw] bg-[radial-gradient(circle,rgba(34,211,238,0.05)_0%,transparent_70%)] rounded-full blur-[80px]" />
                 <div className="absolute bottom-[-10%] left-[-10%] w-[50vw] h-[50vw] bg-[radial-gradient(circle,rgba(99,102,241,0.05)_0%,transparent_70%)] rounded-full blur-[80px]" />
-                <div className="absolute inset-0 dot-matrix opacity-[0.03]" />
+                <div className="absolute inset-0 dot-matrix opacity-[0.04]" />
             </div>
 
-            <nav className="border-b border-white/[0.06] bg-[#02040a]/80 backdrop-blur-xl sticky top-0 z-50">
+            <nav className="border-b border-white/[0.06] bg-[#02040a]/40 backdrop-blur-3xl sticky top-0 z-50">
                 <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
                     <div className="flex items-center gap-4">
                         <Link to="/" className="text-white/20 hover:text-white"><ArrowLeft size={16} /></Link>
@@ -442,18 +528,100 @@ const AdminDashboard = ({ token, onLogout }) => {
             </nav>
 
             <div className="max-w-7xl mx-auto px-6 py-12">
-                <div className="mb-10">
-                    <h1 className="font-display text-3xl font-black uppercase mb-2">
-                        {activeTab === 'requests' ? 'MEMBER REQUESTS' : activeTab === 'mentors' ? 'MENTOR MANAGEMENT' : 'STUDENT APPLICATIONS'}
+                <div className="mb-10 relative z-10">
+                    <h1 className="font-display text-3xl font-black uppercase mb-4 tracking-tighter">
+                        {activeTab === 'requests' ? 'MEMBER PORTAL' : activeTab === 'mentors' ? 'MENTOR CENTER' : 'APPLICATION LOGS'}
                     </h1>
-                    <div className="flex gap-6 border-b border-white/5 mt-8">
+                    
+                    {/* Floating Tab Navigation */}
+                    <div className="inline-flex p-1.5 bg-white/[0.02] border border-white/[0.06] rounded-2xl backdrop-blur-3xl shadow-2xl">
                         {['requests', 'mentors', 'applications'].map(tab => (
-                            <button key={tab} onClick={() => setActiveTab(tab)} className={`pb-4 px-1 text-[10px] tracking-widest uppercase relative transition-all ${activeTab === tab ? 'text-cyan-400' : 'text-white/30 hover:text-white/60'}`}>
-                                {tab} {activeTab === tab && <motion.div layoutId="t" className="absolute bottom-0 left-0 right-0 h-0.5 bg-cyan-400" />}
+                            <button 
+                                key={tab} 
+                                onClick={() => setActiveTab(tab)} 
+                                className={`px-8 py-3 rounded-xl text-[9px] tracking-[0.3em] uppercase transition-all relative font-black ${activeTab === tab ? 'text-white' : 'text-white/20 hover:text-white/40'}`}
+                            >
+                                {activeTab === tab && (
+                                    <motion.div 
+                                        layoutId="floating-bg" 
+                                        className="absolute inset-0 bg-gradient-to-br from-cyan-400/20 to-indigo-400/20 border border-cyan-400/30 rounded-xl shadow-[0_0_20px_rgba(34,211,238,0.1)]" 
+                                    />
+                                )}
+                                <span className="relative z-10">{tab}</span>
                             </button>
                         ))}
                     </div>
                 </div>
+
+                <AnimatePresence>
+                    {editingRequest && (
+                        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="mb-12 overflow-hidden relative z-20">
+                            <form onSubmit={handleUpdate} className="glow-card p-6 md:p-10 rounded-3xl border border-cyan-400/20 bg-black/40 backdrop-blur-3xl space-y-8">
+                                <div className="flex justify-between items-center mb-4">
+                                    <h2 className="font-display text-sm tracking-[0.4em] text-cyan-400 uppercase font-black">EDITING PROFILE: {editingRequest.name}</h2>
+                                    <button type="button" onClick={() => setEditingRequest(null)} className="text-white/20 hover:text-white transition-colors"><XCircle size={20} /></button>
+                                </div>
+                                
+                                <div className="flex flex-col md:flex-row gap-8">
+                                    <div className="flex flex-col items-center gap-4 shrink-0">
+                                        <div className="w-40 h-40 rounded-3xl bg-white/[0.02] border border-white/[0.06] overflow-hidden flex items-center justify-center relative group">
+                                            {editPreview ? <img src={editPreview} className="w-full h-full object-cover" /> : <Camera size={40} className="text-white/10" />}
+                                            <label className="absolute inset-0 bg-black/60 opacity-0 group-hover:opacity-100 flex items-center justify-center cursor-pointer transition-opacity">
+                                                <Camera size={24} className="text-white" />
+                                                <input type="file" className="hidden" onChange={e => {
+                                                    const file = e.target.files[0];
+                                                    if (file) { setEditPhoto(file); setEditPreview(URL.createObjectURL(file)); }
+                                                }} accept="image/*" />
+                                            </label>
+                                        </div>
+                                        <p className="text-[8px] tracking-widest text-white/30 uppercase">Change Profile Photo</p>
+                                    </div>
+
+                                    <div className="flex-1 grid grid-cols-1 md:grid-cols-2 gap-6">
+                                        <div className="space-y-1">
+                                            <label className="text-[9px] tracking-widest text-white/30 uppercase ml-1">FULL NAME</label>
+                                            <input type="text" value={editFormData.name} onChange={e => setEditFormData({...editFormData, name: e.target.value})} className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-sm focus:border-cyan-400/30 outline-none transition-all" required />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[9px] tracking-widest text-white/30 uppercase ml-1">EMAIL</label>
+                                            <input type="email" value={editFormData.email} onChange={e => setEditFormData({...editFormData, email: e.target.value})} className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-sm focus:border-cyan-400/30 outline-none transition-all" required />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[9px] tracking-widest text-white/30 uppercase ml-1">POSITION / POST</label>
+                                            <input type="text" value={editFormData.role} onChange={e => setEditFormData({...editFormData, role: e.target.value})} className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-sm focus:border-cyan-400/30 outline-none transition-all" />
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-4">
+                                            <div className="space-y-1">
+                                                <label className="text-[9px] tracking-widest text-white/30 uppercase ml-1">DEPT</label>
+                                                <input type="text" value={editFormData.department} onChange={e => setEditFormData({...editFormData, department: e.target.value})} className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-sm focus:border-cyan-400/30 outline-none transition-all" />
+                                            </div>
+                                            <div className="space-y-1">
+                                                <label className="text-[9px] tracking-widest text-white/30 uppercase ml-1">YEAR</label>
+                                                <input type="text" value={editFormData.year} onChange={e => setEditFormData({...editFormData, year: e.target.value})} className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-sm focus:border-cyan-400/30 outline-none transition-all" />
+                                            </div>
+                                        </div>
+                                        <div className="md:col-span-2 space-y-1">
+                                            <label className="text-[9px] tracking-widest text-white/30 uppercase ml-1">BIO / INFO</label>
+                                            <textarea value={editFormData.bio} onChange={e => setEditFormData({...editFormData, bio: e.target.value})} rows={3} className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-sm focus:border-cyan-400/30 outline-none transition-all resize-none" />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[9px] tracking-widest text-white/30 uppercase ml-1">LINKEDIN</label>
+                                            <input type="text" value={editFormData.linkedin} onChange={e => setEditFormData({...editFormData, linkedin: e.target.value})} className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-sm focus:border-cyan-400/30 outline-none transition-all" />
+                                        </div>
+                                        <div className="space-y-1">
+                                            <label className="text-[9px] tracking-widest text-white/30 uppercase ml-1">GITHUB</label>
+                                            <input type="text" value={editFormData.github} onChange={e => setEditFormData({...editFormData, github: e.target.value})} className="w-full bg-white/[0.03] border border-white/10 rounded-xl px-5 py-4 text-sm focus:border-cyan-400/30 outline-none transition-all" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="flex gap-4">
+                                    <button type="submit" className="flex-1 py-5 bg-gradient-to-r from-cyan-500/20 to-indigo-500/20 border border-cyan-400/30 rounded-2xl font-display text-[11px] tracking-[0.4em] uppercase font-black hover:from-cyan-500/30 hover:to-indigo-500/30 transition-all shadow-xl shadow-cyan-500/5">SAVE UPDATED PROFILE</button>
+                                    <button type="button" onClick={() => setEditingRequest(null)} className="px-10 py-5 border border-white/10 rounded-2xl font-display text-[11px] tracking-[0.4em] uppercase text-white/30 hover:text-white transition-all">CANCEL</button>
+                                </div>
+                            </form>
+                        </motion.div>
+                    )}
+                </AnimatePresence>
 
                 {activeTab === 'requests' ? (
                     <>
@@ -484,7 +652,7 @@ const AdminDashboard = ({ token, onLogout }) => {
                         {loading ? <div className="py-24 text-center opacity-20"><RefreshCw className="animate-spin mx-auto" /></div> : (
                             <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 gap-6' : 'space-y-4'}>
                                 {filtered.map(r => (
-                                    <RequestCard key={r.id} request={r} viewMode={viewMode} onApprove={id => handleAction(id, 'approve')} onReject={id => handleAction(id, 'reject')} onDelete={handleDelete} />
+                                    <RequestCard key={r.id} request={r} viewMode={viewMode} onEdit={handleEdit} onApprove={id => handleAction(id, 'approve')} onReject={id => handleAction(id, 'reject')} onDelete={handleDelete} />
                                 ))}
                             </div>
                         )}
