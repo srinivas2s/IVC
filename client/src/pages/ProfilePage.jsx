@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Mail, Linkedin, Github, CheckCircle, Send, ArrowLeft, Shield, Lock, LogIn, Camera } from 'lucide-react';
 import { Link } from 'react-router-dom';
+import logo from '../assets/logo.png';
 
 /* ═══════════════════════════════════════
    ACCESS KEY LOGIN SCREEN
@@ -47,21 +48,21 @@ const LoginScreen = ({ onLogin }) => {
                         initial={{ scale: 0 }}
                         animate={{ scale: 1 }}
                         transition={{ type: "spring", delay: 0.2 }}
-                        className="w-20 h-20 rounded-2xl bg-white/[0.02] border border-white/[0.06] flex items-center justify-center mx-auto mb-6"
+                        className="w-20 h-20 rounded-2xl bg-slate-900/[0.05] border border-slate-900/[0.1] flex items-center justify-center mx-auto mb-6 shadow-sm"
                     >
-                        <Lock className="text-cyan-400" size={32} />
+                        <Lock className="text-cyan-600" size={32} />
                     </motion.div>
-                    <h1 className="font-display text-3xl font-black tracking-wider uppercase mb-2">
-                        MEMBER <span className="text-cyan-400 text-glow-cyan">ACCESS</span>
+                    <h1 className="font-display text-3xl font-black tracking-wider uppercase mb-2 text-slate-900">
+                        MEMBER <span className="text-cyan-600">ACCESS</span>
                     </h1>
-                    <p className="font-display text-[9px] tracking-[0.3em] text-white/30 uppercase leading-relaxed">
+                    <p className="font-display text-[9px] tracking-[0.3em] text-slate-500 uppercase leading-relaxed font-bold">
                         Enter the club access key to <br />submit your profile info
                     </p>
                 </div>
 
                 <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
-                        <label className="block font-display text-[9px] tracking-[0.3em] text-white/40 uppercase mb-2 ml-1">
+                        <label className="block font-display text-[9px] tracking-[0.3em] text-slate-400 uppercase mb-2 ml-1 font-bold">
                             CLUB ACCESS KEY
                         </label>
                         <input
@@ -69,25 +70,27 @@ const LoginScreen = ({ onLogin }) => {
                             value={password}
                             onChange={(e) => setPassword(e.target.value)}
                             placeholder="Enter access key"
-                            className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl py-4 px-4 text-white text-sm font-medium placeholder-white/10 focus:outline-none focus:border-cyan-400/30 focus:bg-white/[0.03] transition-all duration-300"
+                            className="w-full bg-white border border-slate-200 rounded-xl py-4 px-4 text-slate-900 text-sm font-medium placeholder-slate-300 focus:outline-none focus:border-cyan-500/50 focus:ring-4 focus:ring-cyan-500/[0.05] transition-all duration-300 shadow-sm"
                             required
                         />
                     </div>
 
                     {error && (
-                        <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-red-500/20 bg-red-500/5 p-3 text-center">
-                            <p className="text-red-400 text-xs font-medium">{error}</p>
+                        <motion.div initial={{ opacity: 0, y: -5 }} animate={{ opacity: 1, y: 0 }} className="rounded-xl border border-red-500/20 bg-red-50 p-3 text-center">
+                            <p className="text-red-500 text-xs font-semibold">{error}</p>
                         </motion.div>
                     )}
 
                     <button
                         type="submit"
                         disabled={loading}
-                        className="w-full py-4 rounded-xl font-display text-[11px] tracking-[0.4em] uppercase border border-cyan-400/20 bg-cyan-400/5 text-cyan-400 hover:bg-cyan-400/10 hover:border-cyan-400/40 hover:shadow-[0_0_30px_rgba(34,211,238,0.1)] transition-all duration-500 flex items-center justify-center gap-3"
+                        className="w-full py-4 rounded-xl font-display text-[11px] tracking-[0.4em] uppercase bg-slate-900 text-white hover:bg-slate-800 shadow-lg shadow-slate-900/10 transition-all duration-500 flex items-center justify-center gap-3 active:scale-95"
                     >
                         <LogIn size={14} />
                         {loading ? 'VERIFYING...' : 'ACCESS FORM'}
                     </button>
+                    
+                    <p className="text-[10px] text-center text-slate-400 uppercase tracking-widest pt-4">Official Innovators & Visionaries Club Portal</p>
                 </form>
             </motion.div>
         </div>
@@ -299,22 +302,34 @@ const ProfilePage = () => {
     }, []);
 
     return (
-        <div className="min-h-screen bg-[#02040a] text-white relative overflow-hidden">
+        <div className={`min-h-screen transition-colors duration-700 relative overflow-hidden ${verified ? 'bg-[#02040a] text-white' : 'bg-slate-50 text-slate-900'}`}>
             {/* Background effects */}
-            <div className="fixed inset-0 pointer-events-none">
-                <div className="absolute top-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-[radial-gradient(circle,rgba(34,211,238,0.03)_0%,transparent_60%)] rounded-full" />
-                <div className="absolute inset-0 dot-matrix opacity-[0.03]" />
+            <div className="fixed inset-0 pointer-events-none overflow-hidden">
+                {verified ? (
+                    <>
+                        <div className="absolute top-[-20%] right-[-10%] w-[60vw] h-[60vw] bg-[radial-gradient(circle,rgba(34,211,238,0.03)_0%,transparent_60%)] rounded-full" />
+                        <div className="absolute inset-0 dot-matrix opacity-[0.03]" />
+                    </>
+                ) : (
+                    <>
+                        {/* Light theme watermark */}
+                        <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[80%] h-[80%] flex items-center justify-center opacity-[0.03] grayscale">
+                             <img src={logo} alt="Watermark" className="max-w-full max-h-full object-contain" />
+                        </div>
+                        <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_20%,rgba(34,211,238,0.05)_0%,transparent_40%),radial-gradient(circle_at_70%_80%,rgba(34,211,238,0.05)_0%,transparent_40%)]" />
+                    </>
+                )}
             </div>
 
-            <nav className="relative z-50 border-b border-white/[0.06] bg-[#02040a]/80 backdrop-blur-2xl">
+            <nav className={`relative z-50 border-b transition-colors duration-700 ${verified ? 'border-white/[0.06] bg-[#02040a]/80 backdrop-blur-2xl' : 'border-slate-200 bg-white/80 backdrop-blur-2xl'}`}>
                 <div className="max-w-7xl mx-auto px-6 py-4 flex items-center justify-between">
                     <Link to="/" className="flex items-center gap-3 group">
-                        <ArrowLeft size={16} className="text-white/40 group-hover:text-cyan-400 transition-colors" />
-                        <span className="font-display text-[10px] tracking-[0.3em] text-white/40 uppercase group-hover:text-cyan-400 transition-colors">BACK TO SITE</span>
+                        <ArrowLeft size={16} className={`${verified ? 'text-white/40' : 'text-slate-400'} group-hover:text-cyan-500 transition-colors`} />
+                        <span className={`font-display text-[10px] tracking-[0.3em] uppercase group-hover:text-cyan-500 transition-colors ${verified ? 'text-white/40' : 'text-slate-400'}`}>BACK TO SITE</span>
                     </Link>
                     <div className="flex items-center gap-2">
-                        <Shield size={14} className="text-cyan-400/50" />
-                        <span className="font-display text-[10px] tracking-[0.3em] text-white/30 uppercase">IVC MEMBER PORTAL</span>
+                        <Shield size={14} className="text-cyan-500/50" />
+                        <span className={`font-display text-[10px] tracking-[0.3em] uppercase ${verified ? 'text-white/30' : 'text-slate-400'}`}>IVC MEMBER PORTAL</span>
                     </div>
                 </div>
             </nav>
