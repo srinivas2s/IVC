@@ -41,38 +41,44 @@ const LoginScreen = ({ onLogin }) => {
     };
 
     return (
-        <div className="min-h-screen bg-[#02040a] text-white flex items-center justify-center relative overflow-hidden">
-            {/* Logo Gradient Background */}
+        <div className="min-h-screen bg-slate-50 text-slate-900 flex items-center justify-center relative overflow-hidden">
+            {/* Logo Gradient Background (Light) */}
             <div className="absolute inset-0 pointer-events-none">
-                <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.1)_0%,transparent_50%),radial-gradient(circle_at_80%_80%,rgba(99,102,241,0.1)_0%,transparent_50%)]" />
-                <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[100vw] h-[100vw] bg-[radial-gradient(circle,rgba(34,211,238,0.02)_0%,transparent_60%)] rounded-full" />
-                <div className="absolute inset-0 dot-matrix opacity-[0.03]" />
+                <div className="absolute top-0 left-0 w-full h-full bg-[radial-gradient(circle_at_20%_20%,rgba(34,211,238,0.15)_0%,transparent_50%),radial-gradient(circle_at_80%_80%,rgba(99,102,241,0.15)_0%,transparent_50% )]" />
+                <div className="absolute inset-0 dot-matrix opacity-[0.05]" />
             </div>
 
-            <motion.div initial={{ opacity: 0, scale: 0.95 }} animate={{ opacity: 1, scale: 1 }} className="relative z-10 w-full max-w-md px-6">
+            <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} className="relative z-10 w-full max-w-md px-6">
                 <div className="text-center mb-10">
                     <motion.div 
-                        initial={{ rotate: -10, scale: 0.8 }}
-                        animate={{ rotate: 0, scale: 1 }}
-                        className="w-24 h-24 rounded-3xl bg-white/[0.03] border border-white/[0.08] flex items-center justify-center mx-auto mb-6 p-4 backdrop-blur-xl shadow-[0_0_50px_rgba(34,211,238,0.1)]"
+                        animate={{ 
+                            scale: [1, 1.05, 1],
+                            rotate: [0, 2, -2, 0]
+                        }}
+                        transition={{ 
+                            duration: 6,
+                            repeat: Infinity,
+                            ease: "easeInOut"
+                        }}
+                        className="w-48 h-48 flex items-center justify-center mx-auto mb-6 p-4 select-none"
                     >
-                        <img src={logo} alt="IVC Logo" className="w-full h-full object-contain drop-shadow-[0_0_15px_rgba(34,211,238,0.4)]" />
+                        <img src={logo} alt="IVC Logo" className="w-full h-full object-contain filter drop-shadow-2xl" />
                     </motion.div>
-                    <h1 className="font-display text-3xl font-black tracking-wider uppercase mb-2 bg-gradient-to-r from-cyan-400 to-indigo-400 bg-clip-text text-transparent">ADMIN PANEL</h1>
-                    <p className="font-display text-[9px] tracking-[0.3em] text-white/30 uppercase">IVC Website Management Console</p>
+                    <h1 className="font-display text-4xl font-black tracking-tighter uppercase mb-2 bg-gradient-to-r from-cyan-600 to-indigo-600 bg-clip-text text-transparent italic">ADMIN PANEL</h1>
+                    <p className="font-display text-[10px] tracking-[0.4em] text-slate-400 uppercase font-bold">Innovation & Visionaries Club</p>
                 </div>
 
-                <form onSubmit={handleSubmit} className="space-y-6">
+                <form onSubmit={handleSubmit} className="space-y-6 bg-white/40 backdrop-blur-3xl p-8 rounded-[2.5rem] border border-white shadow-2xl shadow-slate-200">
                     <div>
-                        <label className="block text-[9px] tracking-[0.3em] text-white/40 uppercase mb-2 ml-1">ADMIN PASSWORD</label>
+                        <label className="block text-[10px] tracking-[0.3em] text-slate-900 uppercase mb-3 ml-1 font-black">ACCESS KEY</label>
                         <div className="relative">
-                            <Lock size={16} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/20" />
-                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full bg-white/[0.02] border border-white/[0.06] rounded-xl py-4 pl-12 pr-4 text-white placeholder-white/10 focus:outline-none focus:border-cyan-400/30 transition-all" placeholder="Enter admin password" required />
+                            <Lock size={18} className="absolute left-5 top-1/2 -translate-y-1/2 text-slate-400" />
+                            <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} className="w-full bg-white border-2 border-slate-100 rounded-2xl py-5 pl-14 pr-4 text-slate-900 placeholder-slate-300 focus:outline-none focus:border-cyan-500/50 focus:ring-4 focus:ring-cyan-500/5 transition-all shadow-sm font-bold" placeholder="••••••••" required />
                         </div>
                     </div>
-                    {error && <div className="p-3 bg-red-500/5 border border-red-500/20 rounded-xl text-red-400 text-xs text-center">{error}</div>}
-                    <button type="submit" disabled={loading} className="w-full py-4 rounded-xl font-display text-[11px] tracking-[0.4em] uppercase border border-cyan-400/20 bg-cyan-400/5 text-cyan-400 hover:bg-cyan-400/10 transition-all flex items-center justify-center gap-3">
-                        <LogIn size={14} /> {loading ? 'AUTHENTICATING...' : 'ACCESS PANEL'}
+                    {error && <div className="p-4 bg-red-50 border border-red-100 rounded-2xl text-red-600 text-[10px] font-bold text-center uppercase tracking-widest">{error}</div>}
+                    <button type="submit" disabled={loading} className="w-full py-5 rounded-2xl font-display text-[11px] tracking-[0.4em] uppercase bg-slate-900 text-white hover:bg-black hover:scale-[1.02] active:scale-95 transition-all flex items-center justify-center gap-3 shadow-xl">
+                        <LogIn size={16} /> {loading ? 'AUTHENTICATING...' : 'ENTER CONSOLE'}
                     </button>
                 </form>
             </motion.div>
@@ -84,17 +90,15 @@ const LoginScreen = ({ onLogin }) => {
    STAT CARD
    ═══════════════════════════════════════ */
 const StatCard = ({ icon: Icon, label, value, color }) => (
-    <div className="glow-card p-6 rounded-2xl border border-white/[0.06] bg-white/[0.01] overflow-hidden group">
-        <div className="absolute top-0 right-0 w-32 h-32 bg-gradient-to-br from-cyan-500/10 to-indigo-500/10 blur-[50px] -mr-16 -mt-16 group-hover:opacity-100 opacity-50 transition-opacity" />
-        <div className="flex items-center gap-4 relative z-10">
-            <div className={`p-3 rounded-xl bg-gradient-to-br from-cyan-400/20 to-indigo-400/20 border border-white/10`}>
-                <Icon size={20} className="text-cyan-400" />
+    <div className="bg-white p-6 rounded-[2rem] border border-slate-100 shadow-xl shadow-slate-200/50 overflow-hidden group relative">
+        <div className="flex items-center gap-5 relative z-10">
+            <div className={`p-4 rounded-2xl bg-slate-50 border border-slate-100`}>
+                <Icon size={24} className="text-slate-900" />
             </div>
             <div>
-                <p className="text-[9px] tracking-[0.2em] text-white/30 uppercase">{label}</p>
+                <p className="text-[10px] tracking-[0.2em] text-slate-400 uppercase font-black">{label}</p>
                 <div className="flex items-baseline gap-2">
-                    <p className="text-2xl font-black text-white mt-1">{value}</p>
-                    <div className="h-1 w-8 bg-gradient-to-r from-cyan-500 to-indigo-500 rounded-full opacity-50" />
+                    <p className="text-3xl font-black text-slate-900 mt-1 tracking-tighter">{value}</p>
                 </div>
             </div>
         </div>
@@ -107,42 +111,42 @@ const StatCard = ({ icon: Icon, label, value, color }) => (
 const RequestCard = ({ request, onApprove, onReject, onDelete, onEdit, viewMode }) => {
     const [expanded, setExpanded] = useState(false);
     const s = {
-        pending: { bg: 'bg-amber-400/5', border: 'border-amber-400/20', text: 'text-amber-400', icon: Clock },
-        approved: { bg: 'bg-emerald-400/5', border: 'border-emerald-400/20', text: 'text-emerald-400', icon: CheckCircle },
-        rejected: { bg: 'bg-red-400/5', border: 'border-red-400/20', text: 'text-red-400', icon: XCircle }
-    }[request.status] || { bg: 'bg-slate-400/5', border: 'border-slate-400/20', text: 'text-slate-400', icon: Clock };
+        pending: { bg: 'bg-amber-100', border: 'border-amber-200', text: 'text-amber-700', icon: Clock },
+        approved: { bg: 'bg-emerald-100', border: 'border-emerald-200', text: 'text-emerald-700', icon: CheckCircle },
+        rejected: { bg: 'bg-red-100', border: 'border-red-200', text: 'text-red-700', icon: XCircle }
+    }[request.status] || { bg: 'bg-slate-100', border: 'border-slate-200', text: 'text-slate-700', icon: Clock };
 
     const StatusIcon = s.icon;
 
     if (viewMode === 'list') {
         return (
-            <motion.div layout className="glow-card p-4 rounded-xl border border-white/[0.06] flex items-center gap-6 group">
-                <div className="w-10 h-10 rounded-full bg-white/[0.03] overflow-hidden border border-white/[0.05] shrink-0">
-                    {request.photoUrl ? <img src={request.photoUrl} className="w-full h-full object-cover" /> : <User className="w-full h-full p-2 opacity-10" />}
+            <motion.div layout className="bg-white p-5 rounded-2xl border border-slate-100 flex items-center gap-6 group shadow-sm hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 rounded-full bg-slate-50 overflow-hidden border border-slate-100 shrink-0">
+                    {request.photoUrl ? <img src={request.photoUrl} className="w-full h-full object-cover" /> : <User className="w-full h-full p-3 text-slate-300" />}
                 </div>
                 <div className="min-w-0 flex-1">
-                    <h4 className="font-display text-[10px] font-bold text-white uppercase tracking-wider">{request.name}</h4>
-                    <p className="text-white/30 text-[9px] truncate">{request.email}</p>
+                    <h4 className="font-display text-[11px] font-black text-slate-900 uppercase tracking-wider">{request.name}</h4>
+                    <p className="text-slate-400 text-[10px] font-medium truncate">{request.email}</p>
                 </div>
-                <div className={`px-3 py-1 rounded-full ${s.bg} border ${s.border} text-[8px] ${s.text} uppercase hidden md:flex items-center gap-1.5`}>
-                    <StatusIcon size={10} /> {request.status}
+                <div className={`px-4 py-1.5 rounded-full ${s.bg} border ${s.border} text-[9px] font-black ${s.text} uppercase hidden md:flex items-center gap-2`}>
+                    <StatusIcon size={12} /> {request.status}
                 </div>
-                <div className="flex items-center gap-2">
-                    <button onClick={() => setExpanded(!expanded)} className="p-2 text-white/20 hover:text-cyan-400 transition-colors"><Eye size={14} /></button>
-                    <button onClick={() => onEdit(request)} className="p-2 text-white/20 hover:text-amber-400 transition-colors"><Edit3 size={14} /></button>
-                    <button onClick={() => onDelete(request.id)} className="p-2 text-white/20 hover:text-red-400 transition-colors"><Trash2 size={14} /></button>
+                <div className="flex items-center gap-3">
+                    <button onClick={() => setExpanded(!expanded)} className="p-2.5 rounded-xl bg-slate-50 text-slate-400 hover:text-slate-900 hover:bg-slate-100 transition-all"><Eye size={16} /></button>
+                    <button onClick={() => onEdit(request)} className="p-2.5 rounded-xl bg-slate-50 text-slate-400 hover:text-amber-600 hover:bg-amber-50 transition-all"><Edit3 size={16} /></button>
+                    <button onClick={() => onDelete(request.id)} className="p-2.5 rounded-xl bg-slate-50 text-slate-400 hover:text-red-600 hover:bg-red-50 transition-all"><Trash2 size={16} /></button>
                 </div>
                 
                 <AnimatePresence>
                     {expanded && (
-                        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="absolute top-full left-0 right-0 mt-2 z-20 glow-card p-6 rounded-xl border border-white/[0.1] bg-black shadow-2xl">
-                             <div className="grid grid-cols-2 gap-4 text-[10px]">
-                                <div><span className="opacity-30 uppercase block mb-1">Role / Position</span><p className="text-cyan-400">{request.role}</p></div>
-                                <div><span className="opacity-30 uppercase block mb-1">Department</span><p>{request.department || 'N/A'}</p></div>
-                                <div className="col-span-2 mt-2"><span className="opacity-30 uppercase block mb-1">Bio</span><p className="italic">"{request.bio || 'No bio provided'}"</p></div>
-                                <div className="flex gap-4 mt-2">
-                                    {request.linkedin && <a href={request.linkedin} target="_blank" rel="noreferrer" className="text-white/20 hover:text-blue-400"><Linkedin size={14} /></a>}
-                                    {request.github && <a href={request.github} target="_blank" rel="noreferrer" className="text-white/20 hover:text-white"><Github size={14} /></a>}
+                        <motion.div initial={{ height: 0, opacity: 0 }} animate={{ height: 'auto', opacity: 1 }} exit={{ height: 0, opacity: 0 }} className="absolute top-full left-0 right-0 mt-3 z-30 bg-white p-8 rounded-3xl border border-slate-100 shadow-2xl">
+                             <div className="grid grid-cols-2 gap-6 text-[11px] font-bold">
+                                <div><span className="text-slate-400 uppercase block mb-1 text-[9px]">Role / Position</span><p className="text-slate-900">{request.role}</p></div>
+                                <div><span className="text-slate-400 uppercase block mb-1 text-[9px]">Department</span><p className="text-slate-900">{request.department || 'N/A'}</p></div>
+                                <div className="col-span-2 mt-2 font-medium"><span className="text-slate-400 uppercase block mb-1 text-[9px]">Bio</span><p className="italic text-slate-600 leading-relaxed">"{request.bio || 'No bio provided'}"</p></div>
+                                <div className="flex gap-5 mt-3">
+                                    {request.linkedin && <a href={request.linkedin} target="_blank" rel="noreferrer" className="text-slate-300 hover:text-blue-600 transition-colors"><Linkedin size={18} /></a>}
+                                    {request.github && <a href={request.github} target="_blank" rel="noreferrer" className="text-slate-300 hover:text-black transition-colors"><Github size={18} /></a>}
                                 </div>
                             </div>
                         </motion.div>
@@ -153,28 +157,28 @@ const RequestCard = ({ request, onApprove, onReject, onDelete, onEdit, viewMode 
     }
 
     return (
-        <motion.div layout className="glow-card p-6 rounded-2xl border border-white/[0.06] text-center relative group">
-            <div className="absolute top-3 right-3 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
-                <button onClick={() => onEdit(request)} className="p-2 rounded-lg bg-black/40 border border-white/10 text-white/20 hover:text-amber-400 transition-all"><Edit3 size={12} /></button>
-                <button onClick={() => onDelete(request.id)} className="p-2 rounded-lg bg-black/40 border border-white/10 text-white/20 hover:text-red-400 transition-all"><Trash2 size={12} /></button>
+        <motion.div layout className="bg-white p-8 rounded-[2.5rem] border border-slate-100 text-center relative group shadow-sm hover:shadow-xl transition-all duration-500">
+            <div className="absolute top-5 right-5 flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                <button onClick={() => onEdit(request)} className="p-3 rounded-2xl bg-white border border-slate-100 text-slate-400 hover:text-amber-500 shadow-sm transition-all hover:scale-110"><Edit3 size={14} /></button>
+                <button onClick={() => onDelete(request.id)} className="p-3 rounded-2xl bg-white border border-slate-100 text-slate-400 hover:text-red-500 shadow-sm transition-all hover:scale-110"><Trash2 size={14} /></button>
             </div>
 
-            <div className="w-16 h-16 rounded-full bg-white/[0.03] mx-auto mb-4 overflow-hidden border border-white/[0.05]">
-                {request.photoUrl ? <img src={request.photoUrl} className="w-full h-full object-cover" /> : <User className="w-full h-full p-4 opacity-10" />}
+            <div className="w-20 h-20 rounded-[2rem] bg-slate-50 mx-auto mb-5 overflow-hidden border border-slate-100 shadow-inner">
+                {request.photoUrl ? <img src={request.photoUrl} className="w-full h-full object-cover" /> : <User className="w-full h-full p-5 text-slate-200" />}
             </div>
-            <h4 className="font-display text-sm font-bold text-white uppercase">{request.name}</h4>
-            <div className={`mt-2 mb-4 inline-flex items-center gap-1.5 px-3 py-1 rounded-full ${s.bg} border ${s.border} text-[8px] ${s.text} uppercase`}>
-                <StatusIcon size={10} /> {request.status}
+            <h4 className="font-display text-xs font-black text-slate-900 uppercase tracking-widest">{request.name}</h4>
+            <div className={`mt-3 mb-5 inline-flex items-center gap-2 px-4 py-1.5 rounded-full ${s.bg} border ${s.border} text-[9px] font-black ${s.text} uppercase`}>
+                <StatusIcon size={12} /> {request.status}
             </div>
-            <p className="text-white/30 text-[10px] truncate mb-6">{request.email}</p>
-            <div className="flex gap-2">
+            <p className="text-slate-400 text-[10px] font-medium truncate mb-8">{request.email}</p>
+            <div className="flex gap-3 px-2">
                 {request.status === 'pending' ? (
                     <>
-                        <button onClick={() => onApprove(request.id)} className="flex-1 py-2.5 rounded-lg border border-emerald-400/20 bg-emerald-400/5 text-emerald-400 text-[10px] uppercase">Approve</button>
-                        <button onClick={() => onReject(request.id)} className="flex-1 py-2.5 rounded-lg border border-red-400/20 bg-red-400/5 text-red-400 text-[10px] uppercase">Reject</button>
+                        <button onClick={() => onApprove(request.id)} className="flex-1 py-3.5 rounded-2xl bg-emerald-500 text-white text-[10px] font-black uppercase shadow-lg shadow-emerald-500/10 hover:bg-emerald-600 transition-all">Approve</button>
+                        <button onClick={() => onReject(request.id)} className="flex-1 py-3.5 rounded-2xl bg-red-500 text-white text-[10px] font-black uppercase shadow-lg shadow-red-500/10 hover:bg-red-600 transition-all">Reject</button>
                     </>
                 ) : (
-                    <button onClick={() => setExpanded(!expanded)} className="flex-1 py-2.5 rounded-lg border border-white/[0.06] text-white/30 text-[10px] uppercase hover:text-cyan-400 transition-colors">View Details</button>
+                    <button onClick={() => setExpanded(!expanded)} className="flex-1 py-3.5 rounded-2xl bg-slate-900 text-white text-[10px] font-black uppercase shadow-lg shadow-slate-900/10 hover:bg-black transition-all">Update Entry</button>
                 )}
             </div>
         </motion.div>
