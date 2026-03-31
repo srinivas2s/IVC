@@ -362,6 +362,505 @@ const MentorManager = ({ token }) => {
     );
 };
 
+const DomainManager = ({ token }) => {
+    const [domains, setDomains] = useState([]);
+    const [editing, setEditing] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [formData, setFormData] = useState({ title: '', desc: '', icon: 'Globe' });
+
+    useEffect(() => { fetchDomains(); }, []);
+
+    const fetchDomains = async () => {
+        try {
+            const res = await fetch('/api/domains');
+            const data = await res.json();
+            setDomains(data);
+        } catch (err) { console.error(err); }
+        setLoading(false);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const url = editing ? `/api/admin/domains/${editing.id}` : '/api/admin/domains';
+        const method = editing ? 'PUT' : 'POST';
+        try {
+            const res = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify(formData)
+            });
+            if (res.ok) {
+                setEditing(null);
+                setFormData({ title: '', desc: '', icon: 'Globe' });
+                fetchDomains();
+            }
+        } catch (err) { console.error(err); }
+    };
+
+    const handleDelete = async (id) => {
+        if (!confirm('Delete this domain?')) return;
+        try {
+            await fetch(`/api/admin/domains/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            fetchDomains();
+        } catch (err) { console.error(err); }
+    };
+
+    return (
+        <div className="space-y-8 animate-in fade-in duration-700">
+            <div className="flex justify-between items-center">
+                <h2 className="font-display text-2xl font-black text-white uppercase tracking-wider">DOMAIN REGISTRY</h2>
+                <button onClick={() => { setEditing(null); setFormData({ title: '', desc: '', icon: 'Globe' }); }} className="bg-cyan-500 text-[#02040a] px-6 py-2.5 rounded-xl font-display text-[10px] font-black tracking-widest hover:bg-cyan-400 transition-colors flex items-center gap-2">
+                    <Plus size={14} /> NEW DOMAIN
+                </button>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <form onSubmit={handleSubmit} className="lg:col-span-1 glow-card p-8 rounded-2xl space-y-6 h-fit sticky top-24">
+                    <h3 className="font-display text-[10px] tracking-[0.4em] text-cyan-400 uppercase font-black">{editing ? 'EDIT DOMAIN' : 'CREATE DOMAIN'}</h3>
+                    <div className="space-y-4">
+                        <div>
+                            <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Icon Type</label>
+                            <select value={formData.icon} onChange={e => setFormData({ ...formData, icon: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-medium outline-none focus:border-cyan-400/30">
+                                {['Globe', 'Brain', 'Cpu', 'Briefcase', 'Palette', 'Bot', 'Layers', 'Smartphone'].map(i => <option key={i} value={i} className="bg-[#0a0f1a]">{i}</option>)}
+                            </select>
+                        </div>
+                        <div>
+                            <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Title</label>
+                            <input type="text" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-medium outline-none focus:border-cyan-400/30" required />
+                        </div>
+                        <div>
+                            <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Description</label>
+                            <textarea value={formData.desc} onChange={e => setFormData({ ...formData, desc: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-medium outline-none focus:border-cyan-400/30 h-32 resize-none" required />
+                        </div>
+                    </div>
+                    <button type="submit" className="w-full bg-white text-[#02040a] py-4 rounded-xl font-display text-[10px] font-black tracking-widest hover:bg-cyan-400 transition-colors">
+                        {editing ? 'UPDATE DOMAIN' : 'SAVE DOMAIN'}
+                    </button>
+                    {editing && <button type="button" onClick={() => setEditing(null)} className="w-full text-white/40 text-[9px] tracking-widest uppercase font-bold py-2">Cancel Edit</button>}
+                </form>
+
+                <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 h-fit">
+                    {loading ? <div className="col-span-full py-20 text-center text-white/10"><RefreshCw className="animate-spin mx-auto mb-4" /></div> : domains.map(d => (
+                        <div key={d.id} className="glow-card p-6 rounded-2xl group border border-white/5 hover:border-cyan-400/20 transition-all">
+                            <div className="flex justify-between items-start mb-4">
+                                <div className="w-10 h-10 rounded-lg bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center text-cyan-400">
+                                    <Globe size={18} />
+                                </div>
+                                <div className="flex gap-2">
+                                    <button onClick={() => { setEditing(d); setFormData({ title: d.title, desc: d.desc, icon: d.icon }); }} className="p-2 text-white/20 hover:text-cyan-400 transition-colors"><Edit size={16} /></button>
+                                    <button onClick={() => handleDelete(d.id)} className="p-2 text-white/20 hover:text-red-500 transition-colors"><Trash2 size={16} /></button>
+                                </div>
+                            </div>
+                            <h4 className="font-display text-lg font-black text-white uppercase tracking-wider mb-2">{d.title}</h4>
+                            <p className="text-xs text-white/40 leading-relaxed line-clamp-3">{d.desc}</p>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const AchievementManager = ({ token }) => {
+    const [achievements, setAchievements] = useState([]);
+    const [editing, setEditing] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [formData, setFormData] = useState({ value: '', label: '', icon: 'Trophy', suffix: '', highlight: false });
+
+    useEffect(() => { fetchAchievements(); }, []);
+
+    const fetchAchievements = async () => {
+        try {
+            const res = await fetch('/api/achievements');
+            const data = await res.json();
+            setAchievements(data);
+        } catch (err) { console.error(err); }
+        setLoading(false);
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        const url = editing ? `/api/admin/achievements/${editing.id}` : '/api/admin/achievements';
+        const method = editing ? 'PUT' : 'POST';
+        try {
+            const res = await fetch(url, {
+                method,
+                headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+                body: JSON.stringify(formData)
+            });
+            if (res.ok) {
+                setEditing(null);
+                setFormData({ value: '', label: '', icon: 'Trophy', suffix: '', highlight: false });
+                fetchAchievements();
+            }
+        } catch (err) { console.error(err); }
+    };
+
+    const handleDelete = async (id) => {
+        if (!confirm('Delete this achievement?')) return;
+        try {
+            await fetch(`/api/admin/achievements/${id}`, {
+                method: 'DELETE',
+                headers: { 'Authorization': `Bearer ${token}` }
+            });
+            fetchAchievements();
+        } catch (err) { console.error(err); }
+    };
+
+    return (
+        <div className="space-y-8 animate-in fade-in duration-700">
+            <div className="flex justify-between items-center">
+                <h2 className="font-display text-2xl font-black text-white uppercase tracking-wider">MILESTONE TRACKER</h2>
+                <button onClick={() => { setEditing(null); setFormData({ value: '', label: '', icon: 'Trophy', suffix: '', highlight: false }); }} className="bg-cyan-500 text-[#02040a] px-6 py-2.5 rounded-xl font-display text-[10px] font-black tracking-widest hover:bg-cyan-400 transition-colors flex items-center gap-2">
+                    <Plus size={14} /> NEW STAT
+                </button>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <form onSubmit={handleSubmit} className="lg:col-span-1 glow-card p-8 rounded-2xl space-y-6 h-fit sticky top-24">
+                    <h3 className="font-display text-[10px] tracking-[0.4em] text-cyan-400 uppercase font-black">{editing ? 'EDIT STAT' : 'CREATE STAT'}</h3>
+                    <div className="space-y-4">
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Value</label>
+                                <input type="text" value={formData.value} onChange={e => setFormData({ ...formData, value: e.target.value })} placeholder="e.g. 50" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-medium outline-none" required />
+                            </div>
+                            <div>
+                                <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Suffix</label>
+                                <input type="text" value={formData.suffix} onChange={e => setFormData({ ...formData, suffix: e.target.value })} placeholder="e.g. +" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-medium outline-none" />
+                            </div>
+                        </div>
+                        <div>
+                            <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Label</label>
+                            <input type="text" value={formData.label} onChange={e => setFormData({ ...formData, label: e.target.value })} placeholder="e.g. CLUBS JOINED" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white font-medium outline-none" required />
+                        </div>
+                        <div className="grid grid-cols-2 gap-4">
+                            <div>
+                                <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Icon</label>
+                                <select value={formData.icon} onChange={e => setFormData({ ...formData, icon: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-sm text-white outline-none">
+                                    {['Trophy', 'Users', 'BookOpen', 'Layers', 'Star', 'CheckCircle'].map(i => <option key={i} value={i} className="bg-[#0a0f1a]">{i}</option>)}
+                                </select>
+                            </div>
+                            <div className="flex items-center gap-3 pt-6">
+                                <input type="checkbox" checked={formData.highlight} onChange={e => setFormData({ ...formData, highlight: e.target.checked })} className="w-4 h-4 rounded bg-white/5 border-white/10" />
+                                <span className="text-[9px] tracking-[0.2em] font-black text-white/30 uppercase">Highlight</span>
+                            </div>
+                        </div>
+                    </div>
+                    <button type="submit" className="w-full bg-white text-[#02040a] py-4 rounded-xl font-display text-[10px] font-black tracking-widest hover:bg-cyan-400 transition-colors">
+                        {editing ? 'UPDATE STAT' : 'SAVE STAT'}
+                    </button>
+                    {editing && <button type="button" onClick={() => setEditing(null)} className="w-full text-white/40 text-[9px] tracking-widest uppercase font-bold py-2">Cancel Edit</button>}
+                </form>
+
+                <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 h-fit">
+                    {loading ? <div className="col-span-full py-20 text-center text-white/10"><RefreshCw className="animate-spin mx-auto mb-4" /></div> : achievements.map(a => (
+                        <div key={a.id} className={`glow-card p-6 rounded-2xl flex items-center justify-between group border ${a.highlight ? 'border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.1)]' : 'border-white/5'}`}>
+                            <div className="flex items-center gap-6">
+                                <div className="w-12 h-12 rounded-xl bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center text-cyan-400">
+                                    <Trophy size={18} />
+                                </div>
+                                <div>
+                                    <p className="font-display text-2xl font-black text-white">{a.value}{a.suffix}</p>
+                                    <p className="text-[8px] tracking-[0.3em] text-white/30 uppercase font-black">{a.label}</p>
+                                </div>
+                            </div>
+                            <div className="flex gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
+                                <button onClick={() => { setEditing(a); setFormData({ value: a.value, label: a.label, icon: a.icon, suffix: a.suffix || '', highlight: a.highlight }); }} className="p-2 text-white/20 hover:text-cyan-400 transition-colors"><Edit size={16} /></button>
+                                <button onClick={() => handleDelete(a.id)} className="p-2 text-white/20 hover:text-red-500 transition-colors"><Trash2 size={16} /></button>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const EventManager = ({ token }) => {
+    const [events, setEvents] = useState([]);
+    const [editing, setEditing] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [formData, setFormData] = useState({ title: '', fullTitle: '', date: '', time: '', location: '', description: '', type: 'Workshop' });
+    const [photo, setPhoto] = useState(null);
+    const [preview, setPreview] = useState('');
+
+    useEffect(() => { fetchEvents(); }, []);
+
+    const fetchEvents = async () => {
+        try {
+            const res = await fetch('/api/events');
+            const data = await res.json();
+            setEvents(data);
+        } catch (err) { console.error(err); }
+        setLoading(false);
+    };
+
+    const handlePhoto = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setPhoto(file);
+            setPreview(URL.createObjectURL(file));
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setSaving(true);
+        const url = editing ? `/api/admin/events/${editing.id}` : '/api/admin/events';
+        const method = editing ? 'PUT' : 'POST';
+        
+        const data = new FormData();
+        Object.keys(formData).forEach(k => data.append(k, formData[k]));
+        if (photo) data.append('photo', photo);
+
+        try {
+            await fetch(url, { method, headers: { 'Authorization': `Bearer ${token}` }, body: data });
+            setEditing(null);
+            setFormData({ title: '', fullTitle: '', date: '', time: '', location: '', description: '', type: 'Workshop' });
+            setPhoto(null); setPreview('');
+            fetchEvents();
+        } catch (err) { console.error(err); }
+        setSaving(false);
+    };
+
+    const handleDelete = async (id) => {
+        if (!confirm('Delete this event?')) return;
+        try {
+            await fetch(`/api/admin/events/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+            fetchEvents();
+        } catch (err) { console.error(err); }
+    };
+
+    return (
+        <div className="space-y-8 animate-in fade-in duration-700">
+            <div className="flex justify-between items-center">
+                <h2 className="font-display text-2xl font-black text-white uppercase tracking-wider">EVENT LOGISTICS</h2>
+                <button onClick={() => { setEditing(null); setFormData({ title: '', fullTitle: '', date: '', time: '', location: '', description: '', type: 'Workshop' }); setPreview(''); }} className="bg-cyan-500 text-[#02040a] px-6 py-2.5 rounded-xl font-display text-[10px] font-black tracking-widest hover:bg-cyan-400 transition-colors flex items-center gap-2">
+                    <Plus size={14} /> NEW EVENT
+                </button>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <form onSubmit={handleSubmit} className="lg:col-span-5 glow-card p-8 rounded-2xl space-y-6 h-fit sticky top-24">
+                    <h3 className="font-display text-[10px] tracking-[0.4em] text-cyan-400 uppercase font-black">{editing ? 'UPDATE EVENT' : 'REGISTER NEW EVENT'}</h3>
+                    
+                    <div className="relative h-48 rounded-xl bg-white/5 border border-white/10 overflow-hidden mb-6 group">
+                        {(preview || (editing && editing.image_url)) ? (
+                            <img src={preview || editing.image_url} className="w-full h-full object-cover" alt="Preview" />
+                        ) : (
+                            <div className="flex flex-col items-center justify-center h-full text-white/20">
+                                <Camera size={32} />
+                                <span className="text-[10px] font-black tracking-[0.3em] uppercase mt-2">Upload Cover</span>
+                            </div>
+                        )}
+                        <input type="file" onChange={handlePhoto} className="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" />
+                        <div className="absolute inset-0 bg-black/40 opacity-0 group-hover:opacity-100 flex items-center justify-center transition-opacity pointer-events-none">
+                            <span className="text-white text-[10px] font-black tracking-widest uppercase">CHANGE PHOTO</span>
+                        </div>
+                    </div>
+
+                    <div className="grid grid-cols-2 gap-4">
+                        <div>
+                            <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Display Title</label>
+                            <input type="text" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} placeholder="e.g. OpenCV" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white" required />
+                        </div>
+                        <div>
+                            <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Category</label>
+                            <select value={formData.type} onChange={e => setFormData({ ...formData, type: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white">
+                                {['Workshop', 'Hackathon', 'Webinar', 'Meetup', 'Challenge'].map(t => <option key={t} value={t} className="bg-[#0a0f1a]">{t}</option>)}
+                            </select>
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Full Promotional Title</label>
+                        <input type="text" value={formData.fullTitle} onChange={e => setFormData({ ...formData, fullTitle: e.target.value })} placeholder="e.g. Computer Vision and Image Processing Workshop" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white" required />
+                    </div>
+                    <div className="grid grid-cols-3 gap-4">
+                        <div>
+                            <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Date</label>
+                            <input type="text" value={formData.date} onChange={e => setFormData({ ...formData, date: e.target.value })} placeholder="Soon" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white" required />
+                        </div>
+                        <div>
+                            <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Time</label>
+                            <input type="text" value={formData.time} onChange={e => setFormData({ ...formData, time: e.target.value })} placeholder="9:00 AM" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white" required />
+                        </div>
+                        <div>
+                            <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Location</label>
+                            <input type="text" value={formData.location} onChange={e => setFormData({ ...formData, location: e.target.value })} placeholder="L-Block" className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white" required />
+                        </div>
+                    </div>
+                    <div>
+                        <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Detailed Description</label>
+                        <textarea value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white h-24 resize-none" required />
+                    </div>
+                    <button type="submit" disabled={saving} className="w-full bg-white text-[#02040a] py-4 rounded-xl font-display text-[10px] font-black tracking-widest hover:bg-cyan-400 transition-colors flex items-center justify-center gap-3 disabled:opacity-50">
+                        {saving ? <RefreshCw className="animate-spin" size={14} /> : (editing ? 'UPDATE EVENT' : 'PUBLISH EVENT')}
+                    </button>
+                    {editing && <button type="button" onClick={() => setEditing(null)} className="w-full text-white/40 text-[9px] tracking-widest uppercase font-bold py-2">Cancel Edit</button>}
+                </form>
+
+                <div className="lg:col-span-7 space-y-4">
+                    {loading ? <div className="py-20 text-center"><RefreshCw className="animate-spin mx-auto opacity-20" /></div> : events.map(ev => (
+                        <div key={ev.id} className="glow-card p-6 rounded-2xl flex gap-6 items-center group border border-white/5 hover:border-cyan-400/20 transition-all">
+                            <div className="w-24 h-24 rounded-lg overflow-hidden shrink-0 border border-white/10">
+                                <img src={ev.image_url} className="w-full h-full object-cover" alt="" />
+                            </div>
+                            <div className="flex-1">
+                                <div className="flex justify-between items-start">
+                                    <div>
+                                        <p className="text-[8px] tracking-[0.3em] text-cyan-400 uppercase font-black mb-1">{ev.type}</p>
+                                        <h4 className="font-display text-lg font-black text-white uppercase">{ev.title}</h4>
+                                    </div>
+                                    <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                        <button onClick={() => { setEditing(ev); setFormData({ title: ev.title, fullTitle: ev.fullTitle, date: ev.date, time: ev.time, location: ev.location, description: ev.description, type: ev.type }); }} className="p-2 text-white/20 hover:text-cyan-400 transition-colors"><Edit size={16} /></button>
+                                        <button onClick={() => handleDelete(ev.id)} className="p-2 text-white/20 hover:text-red-500 transition-colors"><Trash2 size={16} /></button>
+                                    </div>
+                                </div>
+                                <div className="flex gap-4 mt-2">
+                                    <span className="text-[9px] text-white/30 flex items-center gap-1"><Calendar size={10} /> {ev.date}</span>
+                                    <span className="text-[9px] text-white/30 flex items-center gap-1"><MapPin size={10} /> {ev.location}</span>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
+const ProjectManager = ({ token }) => {
+    const [projects, setProjects] = useState([]);
+    const [editing, setEditing] = useState(null);
+    const [loading, setLoading] = useState(true);
+    const [saving, setSaving] = useState(false);
+    const [formData, setFormData] = useState({ title: '', description: '', domain: '' });
+    const [photo, setPhoto] = useState(null);
+    const [preview, setPreview] = useState('');
+
+    useEffect(() => { fetchProjects(); }, []);
+
+    const fetchProjects = async () => {
+        try {
+            const res = await fetch('/api/admin/projects', { headers: { 'Authorization': `Bearer ${token}` } });
+            const data = await res.json();
+            setProjects(data);
+        } catch (err) { console.error(err); }
+        setLoading(false);
+    };
+
+    const handlePhoto = (e) => {
+        const file = e.target.files[0];
+        if (file) {
+            setPhoto(file);
+            setPreview(URL.createObjectURL(file));
+        }
+    };
+
+    const handleSubmit = async (e) => {
+        e.preventDefault();
+        setSaving(true);
+        const url = editing ? `/api/admin/projects/${editing.id}` : '/api/admin/projects';
+        const method = editing ? 'PUT' : 'POST';
+        
+        const data = new FormData();
+        Object.keys(formData).forEach(k => data.append(k, formData[k]));
+        if (photo) data.append('photo', photo);
+
+        try {
+            await fetch(url, { method, headers: { 'Authorization': `Bearer ${token}` }, body: data });
+            setEditing(null);
+            setFormData({ title: '', description: '', domain: '' });
+            setPhoto(null); setPreview('');
+            fetchProjects();
+        } catch (err) { console.error(err); }
+        setSaving(false);
+    };
+
+    const handleDelete = async (id) => {
+        if (!confirm('Delete this project?')) return;
+        try {
+            await fetch(`/api/admin/projects/${id}`, { method: 'DELETE', headers: { 'Authorization': `Bearer ${token}` } });
+            fetchProjects();
+        } catch (err) { console.error(err); }
+    };
+
+    return (
+        <div className="space-y-8 animate-in fade-in duration-700">
+            <div className="flex justify-between items-center">
+                <h2 className="font-display text-2xl font-black text-white uppercase tracking-wider">PROJECT REGISTRY</h2>
+                <button onClick={() => { setEditing(null); setFormData({ title: '', description: '', domain: '' }); setPreview(''); }} className="bg-cyan-500 text-[#02040a] px-6 py-2.5 rounded-xl font-display text-[10px] font-black tracking-widest hover:bg-cyan-400 transition-colors flex items-center gap-2">
+                    <Plus size={14} /> NEW PROJECT
+                </button>
+            </div>
+
+            <div className="grid grid-cols-1 lg:grid-cols-12 gap-8">
+                <form onSubmit={handleSubmit} className="lg:col-span-12 glow-card p-8 rounded-2xl space-y-6 h-fit">
+                    <h3 className="font-display text-[10px] tracking-[0.4em] text-cyan-400 uppercase font-black">{editing ? 'UPDATE PROJECT' : 'REGISTER NEW PROJECT'}</h3>
+                    
+                    <div className="relative h-48 rounded-xl bg-white/5 border border-white/10 overflow-hidden mb-6 group max-w-md mx-auto">
+                        {(preview || (editing && editing.image_url)) ? (
+                            <img src={preview || editing.image_url} className="w-full h-full object-cover" alt="Preview" />
+                        ) : (
+                            <div className="flex flex-col items-center justify-center h-full text-white/20">
+                                <Camera size={32} />
+                                <span className="text-[10px] font-black tracking-[0.3em] uppercase mt-2">Upload Cover</span>
+                            </div>
+                        )}
+                        <input type="file" onChange={handlePhoto} className="absolute inset-0 opacity-0 cursor-pointer" accept="image/*" />
+                    </div>
+
+                    <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <div className="space-y-6">
+                            <div>
+                                <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Project Title</label>
+                                <input type="text" value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white" required />
+                            </div>
+                            <div>
+                                <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Domain</label>
+                                <input type="text" value={formData.domain} onChange={e => setFormData({ ...formData, domain: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white" required />
+                            </div>
+                        </div>
+                        <div>
+                            <label className="block text-[9px] tracking-[0.3em] font-black text-white/30 uppercase mb-2">Description</label>
+                            <textarea value={formData.description} onChange={e => setFormData({ ...formData, description: e.target.value })} className="w-full bg-white/5 border border-white/10 rounded-xl px-4 py-3 text-xs text-white h-full min-h-[120px] resize-none" required />
+                        </div>
+                    </div>
+
+                    <button type="submit" disabled={saving} className="w-full bg-white text-[#02040a] py-4 rounded-xl font-display text-[10px] font-black tracking-widest hover:bg-cyan-400 transition-colors flex items-center justify-center gap-3 disabled:opacity-50">
+                        {saving ? <RefreshCw className="animate-spin" size={14} /> : (editing ? 'UPDATE PROJECT' : 'PUBLISH PROJECT')}
+                    </button>
+                    {editing && <button type="button" onClick={() => setEditing(null)} className="w-full text-white/40 text-[9px] tracking-widest uppercase font-bold py-2">Cancel Edit</button>}
+                </form>
+
+                <div className="lg:col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    {loading ? <div className="col-span-full py-20 text-center"><RefreshCw className="animate-spin mx-auto opacity-20" /></div> : projects.map(proj => (
+                        <div key={proj.id} className="glow-card p-6 rounded-2xl flex flex-col gap-4 group border border-white/5 hover:border-cyan-400/20 transition-all">
+                            <div className="w-full h-40 rounded-lg overflow-hidden shrink-0 border border-white/10 shadow-2xl relative">
+                                {proj.image_url ? <img src={proj.image_url} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full bg-white/5 flex items-center justify-center text-white/10"><LayoutGrid size={24} /></div>}
+                                <div className="absolute top-2 right-2 flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                                    <button onClick={() => { setEditing(proj); setFormData({ title: proj.title, description: proj.description, domain: proj.domain }); setPreview(''); }} className="w-8 h-8 rounded-lg bg-black/60 text-white/40 hover:text-cyan-400 transition-colors flex items-center justify-center"><Edit size={14} /></button>
+                                    <button onClick={() => handleDelete(proj.id)} className="w-8 h-8 rounded-lg bg-black/60 text-white/40 hover:text-red-500 transition-colors flex items-center justify-center"><Trash2 size={14} /></button>
+                                </div>
+                            </div>
+                            <div>
+                                <p className="text-[8px] tracking-[0.3em] text-cyan-400 uppercase font-black mb-1">{proj.domain}</p>
+                                <h4 className="font-display text-sm font-black text-white uppercase tracking-tight">{proj.title}</h4>
+                                <p className="text-[10px] text-white/40 mt-2 line-clamp-2 leading-relaxed">{proj.description}</p>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
+        </div>
+    );
+};
+
 /* ═══════════════════════════════════════
    APPLICATIONS MANAGER (Public Join Form)
    ═══════════════════════════════════════ */
@@ -549,12 +1048,11 @@ const AdminDashboard = ({ token, onLogout }) => {
                     <div>
                         <p className="font-display text-[10px] tracking-[0.5em] text-cyan-400/40 uppercase font-black mb-2 italic">CONTROL PANEL V2</p>
                         <h1 className="font-display text-4xl font-black uppercase tracking-tighter text-white">
-                            {activeTab === 'requests' ? 'MEMBER PORTAL' : activeTab === 'mentors' ? 'MENTOR CENTER' : 'APPLICATION LOGS'}
+                            {activeTab} Portal
                         </h1>
                     </div>
-                    
                     <div className="inline-flex p-1 bg-white/5 rounded-2xl border border-white/10 backdrop-blur-xl shadow-2xl">
-                        {['requests', 'mentors', 'applications'].map(tab => (
+                        {['requests', 'mentors', 'domains', 'achievements', 'events', 'projects', 'applications'].map(tab => (
                             <button 
                                 key={tab} 
                                 onClick={() => setActiveTab(tab)} 
@@ -672,6 +1170,14 @@ const AdminDashboard = ({ token, onLogout }) => {
                     </>
                 ) : activeTab === 'mentors' ? (
                     <MentorManager token={token} />
+                ) : activeTab === 'domains' ? (
+                    <DomainManager token={token} />
+                ) : activeTab === 'achievements' ? (
+                    <AchievementManager token={token} />
+                ) : activeTab === 'events' ? (
+                    <EventManager token={token} />
+                ) : activeTab === 'projects' ? (
+                    <ProjectManager token={token} />
                 ) : (
                     <ApplicationManager token={token} />
                 )}

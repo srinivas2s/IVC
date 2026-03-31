@@ -712,6 +712,295 @@ app.get('/api/mentors', async (req, res) => {
     res.json(mentors);
 });
 
+// ═══════════════════════════════════════
+// Domains Management
+// ═══════════════════════════════════════
+const domainSchema = z.object({
+    title: z.string().min(2),
+    desc: z.string().min(5),
+    icon: z.string().min(1),
+});
+
+app.get('/api/domains', async (req, res) => {
+    if (!supabase) return res.json([]);
+    const { data, error } = await supabase.from('domains').select('*').order('created_at', { ascending: true });
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
+app.post('/api/admin/domains', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    try {
+        const validatedData = domainSchema.parse(req.body);
+        const { error: dbError } = await supabase.from('domains').insert([validatedData]);
+        if (dbError) throw dbError;
+        res.status(201).json({ message: 'Domain added' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.put('/api/admin/domains/:id', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    try {
+        const validatedData = domainSchema.parse(req.body);
+        const { error: dbError } = await supabase.from('domains').update(validatedData).eq('id', req.params.id);
+        if (dbError) throw dbError;
+        res.json({ message: 'Domain updated' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.delete('/api/admin/domains/:id', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    const { error } = await supabase.from('domains').delete().eq('id', req.params.id);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ message: 'Domain deleted' });
+});
+
+// ═══════════════════════════════════════
+// Achievements Management
+// ═══════════════════════════════════════
+const achievementSchema = z.object({
+    value: z.string().min(1),
+    label: z.string().min(1),
+    icon: z.string().min(1),
+    suffix: z.string().optional().or(z.literal('')),
+    highlight: z.boolean().default(false),
+});
+
+app.get('/api/achievements', async (req, res) => {
+    if (!supabase) return res.json([]);
+    const { data, error } = await supabase.from('achievements').select('*').order('created_at', { ascending: true });
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
+app.post('/api/admin/achievements', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    try {
+        const validatedData = achievementSchema.parse(req.body);
+        const { error: dbError } = await supabase.from('achievements').insert([validatedData]);
+        if (dbError) throw dbError;
+        res.status(201).json({ message: 'Achievement added' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.put('/api/admin/achievements/:id', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    try {
+        const validatedData = achievementSchema.parse(req.body);
+        const { error: dbError } = await supabase.from('achievements').update(validatedData).eq('id', req.params.id);
+        if (dbError) throw dbError;
+        res.json({ message: 'Achievement updated' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.delete('/api/admin/achievements/:id', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    const { error } = await supabase.from('achievements').delete().eq('id', req.params.id);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ message: 'Achievement deleted' });
+});
+
+// ═══════════════════════════════════════
+// Events Management
+// ═══════════════════════════════════════
+const eventSchema = z.object({
+    title: z.string().min(2),
+    fullTitle: z.string().min(2),
+    date: z.string().min(1),
+    time: z.string().min(1),
+    location: z.string().min(1),
+    description: z.string().min(5),
+    type: z.string().min(1),
+});
+
+app.get('/api/events', async (req, res) => {
+    if (!supabase) return res.json([]);
+    const { data, error } = await supabase.from('events').select('*').order('created_at', { ascending: false });
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
+app.post('/api/admin/events', requireAdmin, upload.single('photo'), async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    try {
+        const validatedData = eventSchema.parse(req.body);
+        let imageUrl = '';
+
+        if (req.file) {
+            const compressedBuffer = await compressImage(req.file.buffer);
+            const fileName = `event-${Date.now()}.webp`;
+            const { error: uploadError } = await supabase.storage.from(supabaseBucket).upload(fileName, compressedBuffer, { contentType: 'image/webp' });
+            if (uploadError) throw uploadError;
+            const { data: { publicUrl } } = supabase.storage.from(supabaseBucket).getPublicUrl(fileName);
+            imageUrl = publicUrl;
+        }
+
+        const { error: dbError } = await supabase.from('events').insert([{
+            ...validatedData,
+            image_url: imageUrl
+        }]);
+
+        if (dbError) throw dbError;
+        res.status(201).json({ message: 'Event added successfully' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.put('/api/admin/events/:id', requireAdmin, upload.single('photo'), async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    const { id } = req.params;
+    try {
+        const validatedData = eventSchema.parse(req.body);
+        const { data: existing } = await supabase.from('events').select('image_url').eq('id', id).single();
+        let imageUrl = existing?.image_url || '';
+
+        if (req.file) {
+            if (existing?.image_url) await deletePhotoFromUrl(existing.image_url);
+            const compressedBuffer = await compressImage(req.file.buffer);
+            const fileName = `event-${Date.now()}.webp`;
+            const { error: uploadError } = await supabase.storage.from(supabaseBucket).upload(fileName, compressedBuffer, { contentType: 'image/webp' });
+            if (uploadError) throw uploadError;
+            const { data: { publicUrl } } = supabase.storage.from(supabaseBucket).getPublicUrl(fileName);
+            imageUrl = publicUrl;
+        }
+
+        const { error: dbError } = await supabase.from('events').update({
+            ...validatedData,
+            image_url: imageUrl
+        }).eq('id', id);
+
+        if (dbError) throw dbError;
+        res.json({ message: 'Event updated successfully' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.delete('/api/admin/events/:id', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    const { id } = req.params;
+    try {
+        const { data: existing } = await supabase.from('events').select('image_url').eq('id', id).single();
+        if (existing?.image_url) await deletePhotoFromUrl(existing.image_url);
+        
+        const { error } = await supabase.from('events').delete().eq('id', id);
+        if (error) throw error;
+        res.json({ message: 'Event deleted' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// ═══════════════════════════════════════
+// Projects Management
+// ═══════════════════════════════════════
+const projectSchema = z.object({
+    title: z.string().min(2),
+    description: z.string().min(5),
+    domain: z.string().min(2),
+});
+
+app.get('/api/projects', async (req, res) => {
+    if (!supabase) return res.json([]);
+    const { data, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
+app.get('/api/admin/projects', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    const { data, error } = await supabase.from('projects').select('*').order('created_at', { ascending: false });
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
+app.post('/api/admin/projects', requireAdmin, upload.single('photo'), async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    try {
+        const validatedData = projectSchema.parse(req.body);
+        let imageUrl = '';
+
+        if (req.file) {
+            const compressedBuffer = await compressImage(req.file.buffer);
+            const fileName = `project-${Date.now()}.webp`;
+            const { error: uploadError } = await supabase.storage.from(supabaseBucket).upload(fileName, compressedBuffer, { contentType: 'image/webp' });
+            if (uploadError) throw uploadError;
+            const { data: { publicUrl } } = supabase.storage.from(supabaseBucket).getPublicUrl(fileName);
+            imageUrl = publicUrl;
+        }
+
+        const { error: dbError } = await supabase.from('projects').insert([{
+            ...validatedData,
+            image_url: imageUrl
+        }]);
+
+        if (dbError) throw dbError;
+        res.status(201).json({ message: 'Project added successfully' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.put('/api/admin/projects/:id', requireAdmin, upload.single('photo'), async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    const { id } = req.params;
+    try {
+        const validatedData = projectSchema.parse(req.body);
+        const { data: existing } = await supabase.from('projects').select('image_url').eq('id', id).single();
+        let imageUrl = existing?.image_url || '';
+
+        if (req.file) {
+            if (existing?.image_url) await deletePhotoFromUrl(existing.image_url);
+            const compressedBuffer = await compressImage(req.file.buffer);
+            const fileName = `project-${Date.now()}.webp`;
+            const { error: uploadError } = await supabase.storage.from(supabaseBucket).upload(fileName, compressedBuffer, { contentType: 'image/webp' });
+            if (uploadError) throw uploadError;
+            const { data: { publicUrl } } = supabase.storage.from(supabaseBucket).getPublicUrl(fileName);
+            imageUrl = publicUrl;
+        }
+
+        const { error: dbError } = await supabase.from('projects').update({
+            ...validatedData,
+            image_url: imageUrl
+        }).eq('id', id);
+
+        if (dbError) throw dbError;
+        res.json({ message: 'Project updated successfully' });
+    } catch (error) {
+        res.status(400).json({ error: error.message });
+    }
+});
+
+app.delete('/api/admin/projects/:id', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    const { id } = req.params;
+    try {
+        const { data: existing } = await supabase.from('projects').select('image_url').eq('id', id).single();
+        if (existing?.image_url) await deletePhotoFromUrl(existing.image_url);
+        
+        const { error } = await supabase.from('projects').delete().eq('id', id);
+        if (error) throw error;
+        res.json({ message: 'Project deleted' });
+    } catch (error) {
+        res.status(500).json({ error: error.message });
+    }
+});
+
+// Final Error Handler
+app.use((err, req, res, next) => {
+    console.error('[FINAL ERROR]', err);
+    res.status(500).json({ error: 'An unexpected server error occurred.' });
+});
+
 
 module.exports = app;
 
