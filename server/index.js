@@ -7,13 +7,21 @@ const crypto = require('crypto');
 const { createClient } = require('@supabase/supabase-js');
 const multer = require('multer');
 const { z } = require('zod');
-const sharp = require('sharp');
+let sharp;
+try {
+    sharp = require('sharp');
+} catch (err) {
+    console.error('Sharp failed to load on this architecture:', err.message);
+}
 const path = require('path');
+const { v4: uuidv4 } = require('uuid');
+
 if (process.env.NODE_ENV !== 'production') {
     dotenv.config({ path: path.resolve(__dirname, '../.env') });
 }
 
 const app = express();
+app.set('trust proxy', 1);
 const PORT = process.env.PORT || 5000;
 
 // Passwords — MUST be set via environment variables (.env file or Vercel settings)
@@ -365,8 +373,8 @@ app.get('/api/admin/requests', requireAdmin, async (req, res) => {
 
     if (error) return res.status(500).json({ error: error.message });
 
-    // Map DB fields to current frontend CamelCase if needed
-    const requests = data.map(r => ({
+    // Map DB fields to current frontend CamelCase
+    const members = data.filter(r => r.status === 'approved').map(r => ({
         id: r.id,
         name: r.name,
         email: r.email,
@@ -381,7 +389,28 @@ app.get('/api/admin/requests', requireAdmin, async (req, res) => {
         submittedAt: r.submitted_at
     }));
 
-    res.json({ requests });
+    res.json({ members });
+});
+
+app.get('/api/approved-members', async (req, res) => {
+    if (!supabase) return res.json({ members: [] });
+    const { data, error } = await supabase.from('member_requests').select('*').eq('status', 'approved');
+    if (error) return res.status(500).json({ error: error.message });
+    const members = data.map(r => ({
+        ...r,
+        photoUrl: r.photo_url || ''
+    }));
+    res.json({ members });
+});
+
+app.get('/api/mentors', async (req, res) => {
+    if (!supabase) return res.json([]);
+    const { data, error } = await supabase.from('mentors').select('*');
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data.map(m => ({
+        ...m,
+        photoUrl: m.photo_url || ''
+    })));
 });
 
 app.patch('/api/admin/requests/:id/:action', requireAdmin, async (req, res) => {
