@@ -389,7 +389,7 @@ app.get('/api/admin/requests', requireAdmin, async (req, res) => {
         submittedAt: r.submitted_at
     }));
 
-    res.json({ members });
+    res.json({ requests: members });
 });
 
 app.get('/api/approved-members', async (req, res) => {
