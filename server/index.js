@@ -131,7 +131,7 @@ function requireAdmin(req, res, next) {
 app.use(helmet());
 app.use(cors({
     origin: process.env.NODE_ENV === 'production'
-        ? ['https://ivc-vvce.vercel.app']
+        ? ['https://ivc-vvce.vercel.app', 'https://www.ivc-vvce.ac.in', 'https://ivc-vvce.ac.in']
         : true,
     methods: ['GET', 'POST', 'PATCH', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization']
