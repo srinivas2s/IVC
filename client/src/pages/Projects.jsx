@@ -54,7 +54,11 @@ const Projects = () => {
                                 className="glow-card rounded-2xl overflow-hidden group cursor-pointer"
                             >
                                 <div className="h-48 overflow-hidden relative">
-                                    <img src={project.image} alt={project.title} className="w-full h-full object-cover brightness-[0.4] group-hover:brightness-[0.6] group-hover:scale-105 transition-all duration-700" />
+                                    <img 
+                                        src={project.image_url || 'https://via.placeholder.com/800x400/02040a/cyan?text=IVC+PROJECT'} 
+                                        alt={project.title} 
+                                        className="w-full h-full object-cover brightness-[0.4] group-hover:brightness-[0.6] group-hover:scale-105 transition-all duration-700" 
+                                    />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#060b18] via-transparent to-transparent" />
                                     <div className="absolute top-4 left-4 px-3 py-1 rounded-lg border border-cyan-400/15 bg-[#060b18]/60 backdrop-blur-md">
                                         <span className="font-display text-[9px] tracking-[0.2em] text-cyan-400/60 uppercase">{project.domain}</span>
