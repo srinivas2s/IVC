@@ -16,9 +16,8 @@ try {
 const path = require('path');
 const { v4: uuidv4 } = require('uuid');
 
-if (process.env.NODE_ENV !== 'production') {
-    dotenv.config({ path: path.resolve(__dirname, '../.env') });
-}
+dotenv.config();
+dotenv.config({ path: path.join(__dirname, '../.env') });
 
 const app = express();
 app.set('trust proxy', 1);
@@ -130,10 +129,9 @@ function requireAdmin(req, res, next) {
 // Security Middleware
 app.use(helmet());
 app.use(cors({
-    origin: process.env.NODE_ENV === 'production'
-        ? ['https://ivc-vvce.vercel.app', 'https://www.ivc-vvce.ac.in', 'https://ivc-vvce.ac.in']
-        : true,
-    methods: ['GET', 'POST', 'PATCH', 'DELETE'],
+    origin: true,
+    methods: ['GET', 'POST', 'PATCH', 'DELETE', 'OPTIONS'],
+    credentials: true,
     allowedHeaders: ['Content-Type', 'Authorization']
 }));
 
@@ -149,6 +147,19 @@ app.use(express.json({ limit: '10kb' }));
 // ═══════════════════════════════════════
 // Admin Authentication
 // ═══════════════════════════════════════
+// API HEALTH & STATUS (Debugging)
+app.get('/api/status', (req, res) => {
+    res.json({
+        status: 'online',
+        database: supabase ? 'CONNECTED' : 'DISCONNECTED (Missing keys)',
+        bucket: supabaseBucket,
+        auth: {
+            admin_password: !!process.env.ADMIN_PASSWORD,
+            admin_secret: !!process.env.ADMIN_SECRET
+        }
+    });
+});
+
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100, // Increased from 10 to 100 to prevent frequent warnings
