@@ -4,7 +4,8 @@ import {
     Shield, Users, CheckCircle, XCircle, Clock, Eye, Trash2,
     RefreshCw, LogIn, Lock, ArrowLeft, Search, LayoutGrid,
     List, Linkedin, Github, Mail, User, Camera, FileText,
-    ExternalLink, Edit3
+    ExternalLink, Edit3, Plus, Globe, Award, Trophy, MapPin, Calendar, Check, X,
+    Edit, Trash
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';

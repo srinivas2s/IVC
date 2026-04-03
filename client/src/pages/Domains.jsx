@@ -1,5 +1,8 @@
 import { motion } from 'framer-motion';
-import { Globe, Brain, Cpu, Briefcase, Palette, Bot } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Globe, Brain, Cpu, Briefcase, Palette, Bot, Layers, Smartphone } from 'lucide-react';
+
+const iconMap = { Globe, Brain, Cpu, Briefcase, Palette, Bot, Layers, Smartphone };
 
 const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: 40 },
@@ -9,14 +12,26 @@ const fadeUp = (delay = 0) => ({
 });
 
 const Domains = () => {
-    const domains = [
-        { title: 'Web Development', desc: 'Crafting high-performance, pixel-perfect digital experiences with modern web technologies.', icon: Globe },
-        { title: 'AI & ML', desc: 'Building intelligent systems and exploring neural networks and data science.', icon: Brain },
-        { title: 'IoT & Hardware', desc: 'Connecting the physical and digital worlds through smart electronics and systems.', icon: Cpu },
-        { title: 'Entrepreneurship', desc: 'Nurturing the next generation of founders through business strategy and innovation.', icon: Briefcase },
-        { title: 'UI/UX Design', desc: 'Designing intuitive, stunning interfaces that prioritize user experience.', icon: Palette },
-        { title: 'Robotics', desc: 'Designing and building autonomous machines and robotic systems for future impact.', icon: Bot },
+    const fallbackDomains = [
+        { title: 'Web Development', desc: 'Crafting high-performance, pixel-perfect digital experiences with modern web technologies.', icon: 'Globe' },
+        { title: 'AI & ML', desc: 'Building intelligent systems and exploring neural networks and data science.', icon: 'Brain' },
+        { title: 'IoT & Hardware', desc: 'Connecting the physical and digital worlds through smart electronics and systems.', icon: 'Cpu' },
+        { title: 'Entrepreneurship', desc: 'Nurturing the next generation of founders through business strategy and innovation.', icon: 'Briefcase' },
+        { title: 'UI/UX Design', desc: 'Designing intuitive, stunning interfaces that prioritize user experience.', icon: 'Palette' },
+        { title: 'Robotics', desc: 'Designing and building autonomous machines and robotic systems for future impact.', icon: 'Bot' },
     ];
+
+    const [domains, setDomains] = useState([]);
+
+    useEffect(() => {
+        fetch('/api/domains')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.length > 0) setDomains(data);
+                else setDomains(fallbackDomains);
+            })
+            .catch(() => setDomains(fallbackDomains));
+    }, []);
 
     return (
         <section className="relative py-32 md:py-48 overflow-hidden ">
@@ -41,7 +56,7 @@ const Domains = () => {
                 {/* Domain Grid - TechSolstice staggered layout */}
                 <div className="grid grid-cols-3 md:grid-cols-2 lg:grid-cols-3 gap-2 md:gap-6">
                     {domains.map((domain, i) => {
-                        const Icon = domain.icon;
+                        const Icon = iconMap[domain.icon] || iconMap['Globe'];
                         return (
                             <motion.div
                                 key={i}

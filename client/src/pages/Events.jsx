@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Github, Triangle, Calendar, Clock, MapPin, X } from 'lucide-react';
 
@@ -9,7 +9,7 @@ const fadeUp = (delay = 0) => ({
     transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }
 });
 
-const events = [
+const fallbackEvents = [
     {
         id: 1,
         title: "GitHub & Vercel",
@@ -18,7 +18,7 @@ const events = [
         time: "--",
         location: "Vidya Vardhaka College Of Engineering",
         description: "Master version control with GitHub and learn to deploy web applications using Vercel. A hands-on session for all skill levels.",
-        image: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2088&auto=format&fit=crop",
+        image_url: "https://images.unsplash.com/photo-1618401471353-b98afee0b2eb?q=80&w=2088&auto=format&fit=crop",
         type: "Workshop"
     },
     {
@@ -29,13 +29,24 @@ const events = [
         time: "--",
         location: "Vidya Vardhaka College Of Engineering",
         description: "Dive into Computer Vision with OpenCV. Learn image processing, object detection, and the fundamentals of AI-driven vision.",
-        image: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=2070&auto=format&fit=crop",
+        image_url: "https://images.unsplash.com/photo-1555949963-ff9fe0c870eb?q=80&w=2070&auto=format&fit=crop",
         type: "Workshop"
     }
 ];
 
 const Events = () => {
     const [selectedId, setSelectedId] = useState(null);
+    const [events, setEvents] = useState([]);
+
+    useEffect(() => {
+        fetch('/api/events')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.length > 0) setEvents(data);
+                else setEvents(fallbackEvents);
+            })
+            .catch(() => setEvents(fallbackEvents));
+    }, []);
 
     return (
         <section className="relative py-32 md:py-48 overflow-hidden ">
@@ -66,7 +77,7 @@ const Events = () => {
                             {/* Image */}
                             <div className="w-full md:w-1/2 h-24 md:h-80 relative overflow-hidden">
                                 <img
-                                    src={event.image}
+                                    src={event.image_url}
                                     alt={event.title}
                                     className="w-full h-full object-cover brightness-[0.4] group-hover:brightness-[0.6] group-hover:scale-105 transition-all duration-1000"
                                 />
@@ -121,7 +132,7 @@ const Events = () => {
                             </button>
                             <div className="flex flex-col md:flex-row">
                                 <div className="md:w-1/2 h-56 md:h-auto relative">
-                                    <img src={events.find(e => e.id === selectedId).image} alt="Event" className="w-full h-full object-cover brightness-[0.5]" />
+                                    <img src={events.find(e => e.id === selectedId).image_url} alt="Event" className="w-full h-full object-cover brightness-[0.5]" />
                                     <div className="absolute inset-0 bg-gradient-to-r from-[#0a1020] via-transparent to-transparent hidden md:block" />
                                     <div className="absolute inset-0 bg-gradient-to-t from-[#0a1020] to-transparent md:hidden" />
                                 </div>

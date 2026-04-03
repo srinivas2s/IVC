@@ -1,6 +1,8 @@
 import { motion } from 'framer-motion';
 import { useEffect, useRef, useState } from 'react';
-import { Trophy, Users, BookOpen, Layers } from 'lucide-react';
+import { Trophy, Users, BookOpen, Layers, Star, CheckCircle } from 'lucide-react';
+
+const iconMap = { Trophy, Users, BookOpen, Layers, Star, CheckCircle };
 
 const fadeUp = (delay = 0) => ({
     initial: { opacity: 0, y: 40 },
@@ -38,12 +40,24 @@ const Counter = ({ target, suffix = '' }) => {
 };
 
 const Achievements = () => {
-    const stats = [
-        { value: '2', label: 'HACKATHONS WON', icon: Trophy, highlight: true },
-        { value: '30', label: 'ACTIVE MEMBERS', icon: Users },
-        { value: '0', label: 'WORKSHOPS', icon: BookOpen },
-        { value: '6', label: 'ACTIVE DOMAINS', icon: Layers },
+    const fallbackStats = [
+        { value: '2', label: 'HACKATHONS WON', icon: 'Trophy', highlight: true },
+        { value: '30', label: 'ACTIVE MEMBERS', icon: 'Users' },
+        { value: '0', label: 'WORKSHOPS', icon: 'BookOpen' },
+        { value: '6', label: 'ACTIVE DOMAINS', icon: 'Layers' },
     ];
+
+    const [stats, setStats] = useState([]);
+    
+    useEffect(() => {
+        fetch('/api/achievements')
+            .then(res => res.json())
+            .then(data => {
+                if (data && data.length > 0) setStats(data);
+                else setStats(fallbackStats);
+            })
+            .catch(() => setStats(fallbackStats));
+    }, []);
 
     return (
         <section className="relative py-32 md:py-48 overflow-hidden">
@@ -68,14 +82,14 @@ const Achievements = () => {
                 {/* Stats Grid */}
                 <div className="grid grid-cols-2 lg:grid-cols-4 gap-6">
                     {stats.map((stat, i) => {
-                        const Icon = stat.icon;
+                        const Icon = iconMap[stat.icon] || iconMap['Trophy'];
                         return (
                             <motion.div
                                 key={i}
                                 {...fadeUp(0.1 + i * 0.08)}
-                                className="glow-card rounded-2xl p-8 md:p-10 text-center group cursor-pointer relative overflow-hidden"
+                                className={`glow-card rounded-2xl p-8 md:p-10 text-center group cursor-pointer relative overflow-hidden ${stat.highlight ? 'border border-cyan-400/30' : ''}`}
                             >
-                                {i === 3 && (
+                                {stat.highlight && (
                                     <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-32 h-32 bg-cyan-400/10 blur-[40px] rounded-full pointer-events-none" />
                                 )}
                                 {/* Icon */}
