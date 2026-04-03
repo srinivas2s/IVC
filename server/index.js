@@ -1006,6 +1006,46 @@ app.delete('/api/admin/projects/:id', requireAdmin, async (req, res) => {
     }
 });
 
+app.get('/api/admin/applications', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    // Returns pending member_requests
+    const { data, error } = await supabase.from('member_requests').select('*').order('submitted_at', { ascending: false });
+    if (error) return res.status(500).json({ error: error.message });
+    // Normalize to what the frontend expects
+    const apps = data.map(r => ({
+        name: r.name,
+        email: r.email,
+        department: r.department,
+        year: r.year,
+        applied_at: r.submitted_at
+    }));
+    res.json(apps);
+});
+
+// Settings Management
+let joinUsEnabled = true;
+
+app.get('/api/settings/join-status', async (req, res) => {
+    if (supabase) {
+        try {
+            const { data, error } = await supabase.from('app_settings').select('value').eq('key', 'join_us_enabled').maybeSingle();
+            if (!error && data) joinUsEnabled = (data.value === 'true' || data.value === true);
+        } catch (e) { console.error('Settings fetch error:', e.message); }
+    }
+    res.json({ enabled: joinUsEnabled });
+});
+
+app.post('/api/admin/settings/join-status', requireAdmin, async (req, res) => {
+    const { enabled } = req.body;
+    joinUsEnabled = !!enabled;
+    if (supabase) {
+        try {
+            await supabase.from('app_settings').upsert({ key: 'join_us_enabled', value: joinUsEnabled.toString() });
+        } catch (e) { console.error('Settings save error:', e.message); }
+    }
+    res.json({ message: `Join Applications ${joinUsEnabled ? 'ENABLED' : 'DISABLED'}`, enabled: joinUsEnabled });
+});
+
 // Final Error Handler
 app.use((err, req, res, next) => {
     console.error('[FINAL ERROR]', err);

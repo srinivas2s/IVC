@@ -34,8 +34,18 @@ const Projects = () => {
                 </motion.div>
 
                 {loading ? (
-                    <div className="flex justify-center items-center h-64">
-                        <div className="w-8 h-8 border-2 border-cyan-400/20 border-t-cyan-400 rounded-full animate-spin" />
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 w-full">
+                        {[1, 2, 3].map((n) => (
+                            <div key={n} className="glow-card rounded-2xl overflow-hidden animate-pulse">
+                                <div className="h-48 bg-white/[0.02]" />
+                                <div className="p-6 md:p-8">
+                                    <div className="h-6 w-3/4 bg-white/[0.03] rounded mb-4" />
+                                    <div className="h-4 w-full bg-white/[0.02] rounded mb-2" />
+                                    <div className="h-4 w-5/6 bg-white/[0.02] rounded mb-6" />
+                                    <div className="h-3 w-1/4 bg-white/[0.03] rounded" />
+                                </div>
+                            </div>
+                        ))}
                     </div>
                 ) : projects.length === 0 ? (
                     <motion.div {...fadeUp(0.2)} className="glow-card rounded-2xl p-16 text-center">

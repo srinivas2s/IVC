@@ -867,24 +867,67 @@ const ProjectManager = ({ token }) => {
 const ApplicationManager = ({ token }) => {
     const [apps, setApps] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [joinEnabled, setJoinEnabled] = useState(true);
+    const [saving, setSaving] = useState(false);
 
-    const fetchApps = useCallback(async () => {
+    const fetchData = useCallback(async () => {
         try {
-            const res = await fetch('/api/admin/applications', { headers: { 'Authorization': `Bearer ${token}` } });
-            if (res.ok) setApps(await res.json());
+            const resApps = await fetch('/api/admin/applications', { headers: { 'Authorization': `Bearer ${token}` } });
+            if (resApps.ok) setApps(await resApps.json());
+            
+            const resStatus = await fetch('/api/settings/join-status');
+            if (resStatus.ok) {
+                const data = await resStatus.json();
+                setJoinEnabled(data.enabled);
+            }
         } catch (e) { console.error(e); }
         setLoading(false);
     }, [token]);
 
-    useEffect(() => { fetchApps(); }, [fetchApps]);
+    useEffect(() => { fetchData(); }, [fetchData]);
+
+    const toggleJoinStatus = async () => {
+        setSaving(true);
+        try {
+            const res = await fetch('/api/admin/settings/join-status', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` 
+                },
+                body: JSON.stringify({ enabled: !joinEnabled })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setJoinEnabled(data.enabled);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+        setSaving(false);
+    };
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center bg-white/[0.02] p-4 rounded-xl border border-white/[0.05] backdrop-blur-xl mb-6">
+            <div className="flex flex-col md:flex-row justify-between items-center bg-white/[0.02] p-4 rounded-xl border border-white/[0.05] backdrop-blur-xl mb-6 gap-4">
                 <h3 className="font-display text-[11px] tracking-[0.3em] text-white/40 uppercase">EXCEL RECORDS ({apps.length})</h3>
-                <a href="https://docs.google.com/spreadsheets/d/1Jt5RM71qsScLztmq1l6TJuDyoCGnOXGZU0saHRERpP4/edit" target="_blank" rel="noreferrer" className="px-5 py-2 rounded-xl bg-emerald-400/5 border border-emerald-400/20 text-emerald-400 text-[10px] uppercase font-display tracking-widest hover:bg-emerald-400/10 transition-all flex items-center gap-2">
-                    <ExternalLink size={12} /> OPEN IN GOOGLE SHEETS
-                </a>
+                
+                <div className="flex gap-4 items-center">
+                    <div className="flex items-center gap-3">
+                        <span className="font-display text-[9px] tracking-widest uppercase text-white/40">Accepting Forms:</span>
+                        <button 
+                            disabled={saving}
+                            onClick={toggleJoinStatus}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors disabled:opacity-50 ${joinEnabled ? 'bg-cyan-500' : 'bg-white/10'}`}
+                        >
+                            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${joinEnabled ? 'translate-x-6' : 'translate-x-1'}`} />
+                        </button>
+                    </div>
+
+                    <a href="https://docs.google.com/spreadsheets/d/1Jt5RM71qsScLztmq1l6TJuDyoCGnOXGZU0saHRERpP4/edit" target="_blank" rel="noreferrer" className="px-5 py-2 rounded-xl bg-emerald-400/5 border border-emerald-400/20 text-emerald-400 text-[10px] uppercase font-display tracking-widest hover:bg-emerald-400/10 transition-all flex items-center gap-2">
+                        <ExternalLink size={12} /> Google Sheets
+                    </a>
+                </div>
             </div>
 
             <div className="bg-white/[0.01] border border-white/[0.06] rounded-xl overflow-hidden overflow-x-auto">
