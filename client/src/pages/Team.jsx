@@ -260,7 +260,13 @@ const Team = () => {
         'MEMBER': 12 // Map to Associates rank
     };
 
-    const mentors = fetchedMentors.length > 0 ? fetchedMentors : fallbackMentors;
+    const mentors = [...(fetchedMentors.length > 0 ? fetchedMentors : fallbackMentors)].sort((a, b) => {
+        const nameA = a.name.toUpperCase();
+        const nameB = b.name.toUpperCase();
+        if (nameA.includes('HAMSAVENI')) return -1;
+        if (nameB.includes('HAMSAVENI')) return 1;
+        return nameA.localeCompare(nameB);
+    });
 
     // Sort members based on hierarchy
     const allTeamMembers = [...(dynamicMembers.length > 0 ? dynamicMembers : staticTeam)].sort((a, b) => {
