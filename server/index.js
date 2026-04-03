@@ -236,7 +236,20 @@ app.post('/api/public/join', joinLimiter, async (req, res) => {
     try {
         const validatedData = publicJoinSchema.parse(req.body);
         
-        // Forward data to Google Apps Script
+        // 1. Save to Supabase so it appears in the admin dashboard
+        if (supabase) {
+            await supabase.from('member_requests').insert([{
+                name: validatedData.name,
+                email: validatedData.email,
+                department: validatedData.department,
+                year: validatedData.year,
+                role: 'APPLICANT',
+                status: 'pending',
+                submitted_at: new Date().toISOString()
+            }]);
+        }
+
+        // 2. Forward data to Google Apps Script
         const response = await fetch(sheetUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -244,7 +257,7 @@ app.post('/api/public/join', joinLimiter, async (req, res) => {
         });
 
         if (response.ok) {
-            res.status(201).json({ message: 'Application sent to Google Sheets!' });
+            res.status(201).json({ message: 'Application sent to Google Sheets & Database!' });
         } else {
             throw new Error('Failed to reach Google Sheets');
         }
@@ -347,27 +360,7 @@ app.post('/api/member-request', upload.single('photo'), async (req, res) => {
 // ═══════════════════════════════════════
 // Admin Management (Public Join Form)
 // ═══════════════════════════════════════
-app.get('/api/admin/applications', requireAdmin, async (req, res) => {
-    const sheetUrl = process.env.GOOGLE_SHEET_URL;
-    if (!sheetUrl) return res.status(503).json({ error: 'Google Sheets URL not configured.' });
-    
-    try {
-        const response = await fetch(sheetUrl);
-        const data = await response.json();
-        // Return as if they were DB records
-        res.json(data.map((r, idx) => ({ 
-            id: idx, 
-            name: r.name, 
-            email: r.email, 
-            department: r.department, 
-            year: r.year, 
-            status: r.status || 'unread',
-            applied_at: r.date || new Date().toISOString()
-        })));
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch from Google Sheets' });
-    }
-});
+// Endpoint removed because it conflicted with the Supabase fetcher endpoint
 
 // ═══════════════════════════════════════
 // Admin Interface
