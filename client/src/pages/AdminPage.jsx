@@ -459,7 +459,7 @@ const DomainManager = ({ token }) => {
                         <div key={d.id} className="glow-card p-6 rounded-2xl group border border-white/5 hover:border-cyan-400/20 transition-all">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="w-10 h-10 rounded-lg bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center text-cyan-400">
-                                    <Globe size={18} />
+                                    {d.icon === 'Brain' ? <Brain size={18} /> : d.icon === 'Cpu' ? <Cpu size={18} /> : d.icon === 'Briefcase' ? <Briefcase size={18} /> : d.icon === 'Palette' ? <Palette size={18} /> : d.icon === 'Bot' ? <Bot size={18} /> : d.icon === 'Layers' ? <Layers size={18} /> : d.icon === 'Smartphone' ? <Smartphone size={18} /> : <Globe size={18} />}
                                 </div>
                                 <div className="flex gap-2">
                                     <button onClick={() => { setEditing(d); setFormData({ title: d.title, desc: d.desc, icon: d.icon }); }} className="p-2 text-white/20 hover:text-cyan-400 transition-colors"><Edit size={16} /></button>
