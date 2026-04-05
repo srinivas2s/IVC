@@ -388,7 +388,29 @@ const ProfilePage = () => {
             </nav>
 
             <div className="relative z-10 max-w-4xl mx-auto px-6 py-12">
-                {verified ? <ProfileForm token={token} /> : (checking ? <div className="min-h-[60vh] flex items-center justify-center"><div className="w-8 h-8 border-2 border-cyan-400/20 border-t-cyan-400 animate-spin rounded-full" /></div> : <LoginScreen onLogin={(t) => { setToken(t); setVerified(true); }} />)}
+                {verified ? <ProfileForm token={token} /> : (checking ? (
+                    <div className="w-full max-w-2xl mx-auto space-y-8 animate-pulse pt-10">
+                        {/* Profile Image Skeleton */}
+                        <div className="flex flex-col items-center gap-4">
+                            <div className="w-24 h-24 rounded-full bg-slate-200 mt-4"></div>
+                            <div className="w-32 h-4 bg-slate-200 rounded"></div>
+                        </div>
+                        {/* Fields Skeleton */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 bg-white p-6 rounded-3xl border border-slate-100 shadow-sm">
+                            {[...Array(6)].map((_, i) => (
+                                <div key={i} className="space-y-2">
+                                    <div className="w-20 h-3 bg-slate-200 rounded"></div>
+                                    <div className="w-full h-12 bg-slate-100 rounded-xl"></div>
+                                </div>
+                            ))}
+                        </div>
+                        {/* Bio Field Skeleton */}
+                        <div className="bg-white p-6 rounded-3xl border border-slate-100 shadow-sm space-y-2">
+                            <div className="w-20 h-3 bg-slate-200 rounded"></div>
+                            <div className="w-full h-24 bg-slate-100 rounded-xl"></div>
+                        </div>
+                    </div>
+                ) : <LoginScreen onLogin={(t) => { setToken(t); setVerified(true); }} />)}
             </div>
         </div>
     );

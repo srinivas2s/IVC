@@ -4,7 +4,8 @@ import {
     Shield, Users, CheckCircle, XCircle, Clock, Eye, Trash2,
     RefreshCw, LogIn, Lock, ArrowLeft, Search, LayoutGrid,
     List, Linkedin, Github, Mail, User, Camera, FileText,
-    ExternalLink, Edit3
+    ExternalLink, Edit3, Plus, Globe, Award, Trophy, MapPin, Calendar, Check, X,
+    Edit, Trash
 } from 'lucide-react';
 import { Link } from 'react-router-dom';
 import logo from '../assets/logo.png';
@@ -443,11 +444,22 @@ const DomainManager = ({ token }) => {
                 </form>
 
                 <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 h-fit">
-                    {loading ? <div className="col-span-full py-20 text-center text-white/10"><RefreshCw className="animate-spin mx-auto mb-4" /></div> : domains.map(d => (
+                    {loading ? (
+                        [...Array(4)].map((_, i) => (
+                            <div key={i} className="glow-card p-6 rounded-2xl border border-white/5 bg-[#0c0f18] animate-pulse h-32 flex flex-col justify-center">
+                                <div className="flex justify-between items-start mb-4">
+                                    <div className="w-10 h-10 rounded-lg bg-white/[0.05]"></div>
+                                    <div className="flex gap-2"><div className="w-6 h-6 rounded-md bg-white/[0.03]"></div><div className="w-6 h-6 rounded-md bg-white/[0.03]"></div></div>
+                                </div>
+                                <div className="w-1/2 h-4 bg-white/[0.05] rounded mb-2"></div>
+                                <div className="w-1/3 h-2 bg-white/[0.03] rounded"></div>
+                            </div>
+                        ))
+                    ) : domains.map(d => (
                         <div key={d.id} className="glow-card p-6 rounded-2xl group border border-white/5 hover:border-cyan-400/20 transition-all">
                             <div className="flex justify-between items-start mb-4">
                                 <div className="w-10 h-10 rounded-lg bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center text-cyan-400">
-                                    <Globe size={18} />
+                                    {d.icon === 'Brain' ? <Brain size={18} /> : d.icon === 'Cpu' ? <Cpu size={18} /> : d.icon === 'Briefcase' ? <Briefcase size={18} /> : d.icon === 'Palette' ? <Palette size={18} /> : d.icon === 'Bot' ? <Bot size={18} /> : d.icon === 'Layers' ? <Layers size={18} /> : d.icon === 'Smartphone' ? <Smartphone size={18} /> : <Globe size={18} />}
                                 </div>
                                 <div className="flex gap-2">
                                     <button onClick={() => { setEditing(d); setFormData({ title: d.title, desc: d.desc, icon: d.icon }); }} className="p-2 text-white/20 hover:text-cyan-400 transition-colors"><Edit size={16} /></button>
@@ -557,7 +569,19 @@ const AchievementManager = ({ token }) => {
                 </form>
 
                 <div className="lg:col-span-2 grid grid-cols-1 md:grid-cols-2 gap-4 h-fit">
-                    {loading ? <div className="col-span-full py-20 text-center text-white/10"><RefreshCw className="animate-spin mx-auto mb-4" /></div> : achievements.map(a => (
+                    {loading ? (
+                        [...Array(4)].map((_, i) => (
+                            <div key={i} className="glow-card p-6 rounded-2xl border border-white/5 bg-[#0c0f18] animate-pulse h-24 flex items-center justify-between">
+                                <div className="flex items-center gap-6 w-full">
+                                    <div className="w-12 h-12 rounded-xl bg-white/[0.05]"></div>
+                                    <div className="flex-1 space-y-2">
+                                        <div className="w-1/3 h-6 bg-white/[0.05] rounded"></div>
+                                        <div className="w-1/4 h-2 bg-white/[0.03] rounded"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        ))
+                    ) : achievements.map(a => (
                         <div key={a.id} className={`glow-card p-6 rounded-2xl flex items-center justify-between group border ${a.highlight ? 'border-cyan-400/30 shadow-[0_0_20px_rgba(34,211,238,0.1)]' : 'border-white/5'}`}>
                             <div className="flex items-center gap-6">
                                 <div className="w-12 h-12 rounded-xl bg-cyan-400/5 border border-cyan-400/10 flex items-center justify-center text-cyan-400">
@@ -705,7 +729,21 @@ const EventManager = ({ token }) => {
                 </form>
 
                 <div className="lg:col-span-7 space-y-4">
-                    {loading ? <div className="py-20 text-center"><RefreshCw className="animate-spin mx-auto opacity-20" /></div> : events.map(ev => (
+                    {loading ? (
+                        [...Array(3)].map((_, i) => (
+                            <div key={i} className="glow-card p-6 rounded-2xl border border-white/5 bg-[#0c0f18] animate-pulse h-36 flex gap-6 items-center">
+                                <div className="w-24 h-24 rounded-lg bg-white/[0.05] shrink-0"></div>
+                                <div className="flex-1 space-y-3">
+                                    <div className="flex justify-between">
+                                        <div className="w-16 h-2 bg-white/[0.05] rounded"></div>
+                                        <div className="flex gap-2"><div className="w-6 h-6 rounded-md bg-white/[0.03]"></div><div className="w-6 h-6 rounded-md bg-white/[0.03]"></div></div>
+                                    </div>
+                                    <div className="w-1/2 h-5 bg-white/[0.05] rounded"></div>
+                                    <div className="flex gap-4"><div className="w-16 h-2 bg-white/[0.03] rounded"></div><div className="w-20 h-2 bg-white/[0.03] rounded"></div></div>
+                                </div>
+                            </div>
+                        ))
+                    ) : events.map(ev => (
                         <div key={ev.id} className="glow-card p-6 rounded-2xl flex gap-6 items-center group border border-white/5 hover:border-cyan-400/20 transition-all">
                             <div className="w-24 h-24 rounded-lg overflow-hidden shrink-0 border border-white/10">
                                 <img src={ev.image_url} className="w-full h-full object-cover" alt="" />
@@ -839,7 +877,20 @@ const ProjectManager = ({ token }) => {
                 </form>
 
                 <div className="lg:col-span-12 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                    {loading ? <div className="col-span-full py-20 text-center"><RefreshCw className="animate-spin mx-auto opacity-20" /></div> : projects.map(proj => (
+                    {loading ? (
+                        [...Array(3)].map((_, i) => (
+                            <div key={i} className="glow-card p-6 rounded-2xl border border-white/5 bg-[#0c0f18] animate-pulse flex flex-col gap-4">
+                                <div className="w-full h-40 rounded-lg bg-white/[0.05]"></div>
+                                <div className="w-1/4 h-3 bg-white/[0.05] rounded mt-2"></div>
+                                <div className="w-3/4 h-5 bg-white/[0.05] rounded"></div>
+                                <div className="space-y-2 mb-2">
+                                    <div className="w-full h-2 bg-white/[0.03] rounded"></div>
+                                    <div className="w-2/3 h-2 bg-white/[0.03] rounded"></div>
+                                    <div className="w-1/2 h-2 bg-white/[0.03] rounded"></div>
+                                </div>
+                            </div>
+                        ))
+                    ) : projects.map(proj => (
                         <div key={proj.id} className="glow-card p-6 rounded-2xl flex flex-col gap-4 group border border-white/5 hover:border-cyan-400/20 transition-all">
                             <div className="w-full h-40 rounded-lg overflow-hidden shrink-0 border border-white/10 shadow-2xl relative">
                                 {proj.image_url ? <img src={proj.image_url} className="w-full h-full object-cover" alt="" /> : <div className="w-full h-full bg-white/5 flex items-center justify-center text-white/10"><LayoutGrid size={24} /></div>}
@@ -867,24 +918,67 @@ const ProjectManager = ({ token }) => {
 const ApplicationManager = ({ token }) => {
     const [apps, setApps] = useState([]);
     const [loading, setLoading] = useState(true);
+    const [joinEnabled, setJoinEnabled] = useState(true);
+    const [saving, setSaving] = useState(false);
 
-    const fetchApps = useCallback(async () => {
+    const fetchData = useCallback(async () => {
         try {
-            const res = await fetch('/api/admin/applications', { headers: { 'Authorization': `Bearer ${token}` } });
-            if (res.ok) setApps(await res.json());
+            const resApps = await fetch('/api/admin/applications', { headers: { 'Authorization': `Bearer ${token}` } });
+            if (resApps.ok) setApps(await resApps.json());
+            
+            const resStatus = await fetch('/api/settings/join-status');
+            if (resStatus.ok) {
+                const data = await resStatus.json();
+                setJoinEnabled(data.enabled);
+            }
         } catch (e) { console.error(e); }
         setLoading(false);
     }, [token]);
 
-    useEffect(() => { fetchApps(); }, [fetchApps]);
+    useEffect(() => { fetchData(); }, [fetchData]);
+
+    const toggleJoinStatus = async () => {
+        setSaving(true);
+        try {
+            const res = await fetch('/api/admin/settings/join-status', {
+                method: 'POST',
+                headers: { 
+                    'Content-Type': 'application/json',
+                    'Authorization': `Bearer ${token}` 
+                },
+                body: JSON.stringify({ enabled: !joinEnabled })
+            });
+            if (res.ok) {
+                const data = await res.json();
+                setJoinEnabled(data.enabled);
+            }
+        } catch (e) {
+            console.error(e);
+        }
+        setSaving(false);
+    };
 
     return (
         <div className="space-y-6">
-            <div className="flex justify-between items-center bg-white/[0.02] p-4 rounded-xl border border-white/[0.05] backdrop-blur-xl mb-6">
+            <div className="flex flex-col md:flex-row justify-between items-center bg-white/[0.02] p-4 rounded-xl border border-white/[0.05] backdrop-blur-xl mb-6 gap-4">
                 <h3 className="font-display text-[11px] tracking-[0.3em] text-white/40 uppercase">EXCEL RECORDS ({apps.length})</h3>
-                <a href="https://docs.google.com/spreadsheets/d/1Jt5RM71qsScLztmq1l6TJuDyoCGnOXGZU0saHRERpP4/edit" target="_blank" rel="noreferrer" className="px-5 py-2 rounded-xl bg-emerald-400/5 border border-emerald-400/20 text-emerald-400 text-[10px] uppercase font-display tracking-widest hover:bg-emerald-400/10 transition-all flex items-center gap-2">
-                    <ExternalLink size={12} /> OPEN IN GOOGLE SHEETS
-                </a>
+                
+                <div className="flex gap-4 items-center">
+                    <div className="flex items-center gap-3">
+                        <span className="font-display text-[9px] tracking-widest uppercase text-white/40">Accepting Forms:</span>
+                        <button 
+                            disabled={saving}
+                            onClick={toggleJoinStatus}
+                            className={`relative inline-flex h-6 w-11 items-center rounded-full transition-colors disabled:opacity-50 ${joinEnabled ? 'bg-cyan-500' : 'bg-white/10'}`}
+                        >
+                            <span className={`inline-block h-4 w-4 transform rounded-full bg-white transition-transform ${joinEnabled ? 'translate-x-6' : 'translate-x-1'}`} />
+                        </button>
+                    </div>
+
+                    <a href="https://docs.google.com/spreadsheets/d/1Jt5RM71qsScLztmq1l6TJuDyoCGnOXGZU0saHRERpP4/edit" target="_blank" rel="noreferrer" className="px-5 py-2 rounded-xl bg-emerald-400/5 border border-emerald-400/20 text-emerald-400 text-[10px] uppercase font-display tracking-widest hover:bg-emerald-400/10 transition-all flex items-center gap-2">
+                        <ExternalLink size={12} /> Google Sheets
+                    </a>
+                </div>
             </div>
 
             <div className="bg-white/[0.01] border border-white/[0.06] rounded-xl overflow-hidden overflow-x-auto">
@@ -1160,7 +1254,26 @@ const AdminDashboard = ({ token, onLogout }) => {
                             </div>
                         </div>
 
-                        {loading ? <div className="py-32 text-center text-white/10"><RefreshCw size={40} className="animate-spin mx-auto mb-4 opacity-20" /><p className="text-[10px] tracking-[0.5em] uppercase font-black">Accessing Data...</p></div> : (
+                        {loading ? (
+                            <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 gap-8' : 'space-y-4'}>
+                                {[...Array(6)].map((_, i) => (
+                                    <div key={i} className="glow-card p-6 rounded-2xl border border-white/5 bg-[#0c0f18] animate-pulse h-48 flex flex-col justify-between">
+                                        <div className="flex justify-between items-start mb-4">
+                                            <div className="space-y-3 flex-1">
+                                                <div className="h-4 w-3/4 bg-white/[0.05] rounded"></div>
+                                                <div className="h-3 w-1/2 bg-white/[0.03] rounded"></div>
+                                            </div>
+                                            <div className="w-12 h-12 rounded-xl bg-white/[0.05]"></div>
+                                        </div>
+                                        <div className="flex gap-2 mt-4 pt-4 border-t border-white/5">
+                                            <div className="h-8 flex-1 bg-white/[0.03] rounded-lg"></div>
+                                            <div className="h-8 flex-1 bg-white/[0.03] rounded-lg"></div>
+                                            <div className="h-8 flex-1 bg-white/[0.03] rounded-lg"></div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
                             <div className={viewMode === 'grid' ? 'grid grid-cols-1 md:grid-cols-3 gap-8' : 'space-y-4'}>
                                 {filtered.map(r => (
                                     <RequestCard key={r.id} request={r} viewMode={viewMode} onEdit={handleEdit} onApprove={id => handleAction(id, 'approve')} onReject={id => handleAction(id, 'reject')} onDelete={handleDelete} />
@@ -1203,7 +1316,19 @@ const AdminPage = () => {
         } else setChecking(false);
     }, []);
 
-    if (checking) return <div className="min-h-screen bg-[#02040a] flex items-center justify-center text-white/20"><RefreshCw className="animate-spin" /></div>;
+    if (checking) return (
+        <div className="min-h-screen bg-[#02040a] p-8 animate-pulse">
+            <div className="max-w-7xl mx-auto space-y-8">
+                <div className="flex justify-between items-center mb-12">
+                    <div className="w-48 h-10 bg-white/[0.03] rounded-xl flex items-center px-4"><div className="w-6 h-6 rounded bg-white/[0.05] mr-3"></div><div className="w-24 h-3 rounded bg-white/[0.05]"></div></div>
+                    <div className="flex gap-2"><div className="w-32 h-10 bg-white/[0.03] rounded-xl"></div><div className="w-32 h-10 bg-white/[0.03] rounded-xl"></div></div>
+                </div>
+                <div className="flex gap-2 mb-8">{[...Array(6)].map((_,i) => <div key={i} className="w-24 h-10 bg-white/[0.03] rounded-xl"></div>)}</div>
+                <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-12">{[...Array(4)].map((_,i) => <div key={i} className="h-24 bg-white/[0.02] rounded-2xl"></div>)}</div>
+                <div className="h-64 bg-white/[0.02] rounded-2xl w-full"></div>
+            </div>
+        </div>
+    );
     if (!verified) return <LoginScreen onLogin={t => { setToken(t); setVerified(true); }} />;
     return <AdminDashboard token={token} onLogout={() => { sessionStorage.removeItem('ivc_admin_token'); setVerified(false); }} />;
 };

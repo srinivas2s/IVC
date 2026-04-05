@@ -372,17 +372,29 @@ const Team = () => {
                     </div>
 
                     <div className="grid grid-cols-2 md:flex md:flex-wrap items-center justify-center gap-4 md:gap-16">
-                        {mentors.map((m, i) => (
-                            <motion.div
-                                key={i}
-                                {...fadeUp(i * 0.1)}
-                                whileHover={{ y: -15 }}
-                                className="cursor-pointer"
-                                onClick={() => setSelectedMentor(m)}
-                            >
-                                <PhotoCard member={m} isFinal={true} />
-                            </motion.div>
-                        ))}
+                        {loading ? (
+                            [1, 2, 3].map(n => (
+                                <div key={n} className="w-[160px] md:w-[320px] h-[220px] md:h-[450px] animate-pulse rounded-xl bg-[#0c0f18] border border-white/5 shadow-2xl overflow-hidden flex flex-col">
+                                    <div className="w-full flex-1 bg-white/[0.02]" />
+                                    <div className="h-20 md:h-32 bg-white/[0.03] border-t border-white/5 p-4 flex flex-col justify-center items-center">
+                                        <div className="h-2 w-1/3 bg-white/[0.05] rounded mb-3" />
+                                        <div className="h-3 w-3/4 bg-white/[0.04] rounded" />
+                                    </div>
+                                </div>
+                            ))
+                        ) : (
+                            mentors.map((m, i) => (
+                                <motion.div
+                                    key={i}
+                                    {...fadeUp(i * 0.1)}
+                                    whileHover={{ y: -15 }}
+                                    className="cursor-pointer"
+                                    onClick={() => setSelectedMentor(m)}
+                                >
+                                    <PhotoCard member={m} isFinal={true} />
+                                </motion.div>
+                            ))
+                        )}
                     </div>
                 </div>
             </section>
@@ -403,7 +415,21 @@ const Team = () => {
                                 {loading ? 'FETCHING INNOVATORS...' : 'The passionate innovators driving IVC forward'}
                             </p>
                         </motion.div>
-                        {renderGrid(allTeamMembers)}
+                        {loading ? (
+                            <div className="grid grid-cols-3 sm:grid-cols-2 lg:grid-cols-4 gap-2 md:gap-8 mt-12">
+                                {[...Array(8)].map((_, i) => (
+                                    <div key={i} className="relative rounded-xl md:rounded-2xl overflow-hidden animate-pulse border border-white/5 bg-[#0c0f18] flex flex-col shadow-2xl">
+                                        <div className="h-[120px] md:h-[300px] w-full bg-white/[0.02]" />
+                                        <div className="p-2 md:p-6 bg-white/[0.02] border-t border-white/5 flex flex-col items-center">
+                                            <div className="h-1.5 md:h-2 w-1/4 bg-white/[0.04] rounded mb-2 md:mb-4" />
+                                            <div className="h-2 md:h-4 w-2/3 bg-white/[0.03] rounded" />
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        ) : (
+                            renderGrid(allTeamMembers)
+                        )}
                     </div>
                 </div>
             </section>

@@ -236,7 +236,20 @@ app.post('/api/public/join', joinLimiter, async (req, res) => {
     try {
         const validatedData = publicJoinSchema.parse(req.body);
         
-        // Forward data to Google Apps Script
+        // 1. Save to Supabase so it appears in the admin dashboard
+        if (supabase) {
+            await supabase.from('member_requests').insert([{
+                name: validatedData.name,
+                email: validatedData.email,
+                department: validatedData.department,
+                year: validatedData.year,
+                role: 'APPLICANT',
+                status: 'pending',
+                submitted_at: new Date().toISOString()
+            }]);
+        }
+
+        // 2. Forward data to Google Apps Script
         const response = await fetch(sheetUrl, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
@@ -244,7 +257,7 @@ app.post('/api/public/join', joinLimiter, async (req, res) => {
         });
 
         if (response.ok) {
-            res.status(201).json({ message: 'Application sent to Google Sheets!' });
+            res.status(201).json({ message: 'Application sent to Google Sheets & Database!' });
         } else {
             throw new Error('Failed to reach Google Sheets');
         }
@@ -347,27 +360,7 @@ app.post('/api/member-request', upload.single('photo'), async (req, res) => {
 // ═══════════════════════════════════════
 // Admin Management (Public Join Form)
 // ═══════════════════════════════════════
-app.get('/api/admin/applications', requireAdmin, async (req, res) => {
-    const sheetUrl = process.env.GOOGLE_SHEET_URL;
-    if (!sheetUrl) return res.status(503).json({ error: 'Google Sheets URL not configured.' });
-    
-    try {
-        const response = await fetch(sheetUrl);
-        const data = await response.json();
-        // Return as if they were DB records
-        res.json(data.map((r, idx) => ({ 
-            id: idx, 
-            name: r.name, 
-            email: r.email, 
-            department: r.department, 
-            year: r.year, 
-            status: r.status || 'unread',
-            applied_at: r.date || new Date().toISOString()
-        })));
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch from Google Sheets' });
-    }
-});
+// Endpoint removed because it conflicted with the Supabase fetcher endpoint
 
 // ═══════════════════════════════════════
 // Admin Interface
@@ -1005,6 +998,184 @@ app.delete('/api/admin/projects/:id', requireAdmin, async (req, res) => {
         res.status(500).json({ error: error.message });
     }
 });
+
+app.get('/api/admin/applications', requireAdmin, async (req, res) => {
+    if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
+    // Returns pending member_requests
+    const { data, error } = await supabase.from('member_requests').select('*').order('submitted_at', { ascending: false });
+    if (error) return res.status(500).json({ error: error.message });
+    // Normalize to what the frontend expects
+    const apps = data.map(r => ({
+        name: r.name,
+        email: r.email,
+        department: r.department,
+        year: r.year,
+        applied_at: r.submitted_at
+    }));
+    res.json(apps);
+});
+
+// Settings Management
+let joinUsEnabled = true;
+
+app.get('/api/settings/join-status', async (req, res) => {
+    if (supabase) {
+        try {
+            const { data, error } = await supabase.from('app_settings').select('value').eq('key', 'join_us_enabled').maybeSingle();
+            if (!error && data) joinUsEnabled = (data.value === 'true' || data.value === true);
+        } catch (e) { console.error('Settings fetch error:', e.message); }
+    }
+    res.json({ enabled: joinUsEnabled });
+});
+
+app.post('/api/admin/settings/join-status', requireAdmin, async (req, res) => {
+    const { enabled } = req.body;
+    joinUsEnabled = !!enabled;
+    if (supabase) {
+        try {
+            await supabase.from('app_settings').upsert({ key: 'join_us_enabled', value: joinUsEnabled.toString() });
+        } catch (e) { console.error('Settings save error:', e.message); }
+    }
+    res.json({ message: `Join Applications ${joinUsEnabled ? 'ENABLED' : 'DISABLED'}`, enabled: joinUsEnabled });
+});
+
+// ═══════════════════════════════════════
+// DOMAINS, ACHIEVEMENTS, EVENTS
+// ═══════════════════════════════════════
+
+// DOMAINS
+app.get('/api/domains', async (req, res) => {
+    if (!supabase) return res.json([]);
+    const { data, error } = await supabase.from('domains').select('*').order('created_at', { ascending: true });
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
+app.post('/api/admin/domains', requireAdmin, async (req, res) => {
+    const { title, desc, icon } = req.body;
+    const { data, error } = await supabase.from('domains').insert([{ title, desc, icon }]);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ message: 'Domain created' });
+});
+
+app.put('/api/admin/domains/:id', requireAdmin, async (req, res) => {
+    const { id } = req.params;
+    const { title, desc, icon } = req.body;
+    const { data, error } = await supabase.from('domains').update({ title, desc, icon }).eq('id', id);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ message: 'Domain updated' });
+});
+
+app.delete('/api/admin/domains/:id', requireAdmin, async (req, res) => {
+    const { error } = await supabase.from('domains').delete().eq('id', req.params.id);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ message: 'Domain deleted' });
+});
+
+// ACHIEVEMENTS
+app.get('/api/achievements', async (req, res) => {
+    if (!supabase) return res.json([]);
+    const { data, error } = await supabase.from('achievements').select('*').order('id', { ascending: true });
+    if (error) return res.status(500).json({ error: error.message });
+    res.json(data);
+});
+
+app.post('/api/admin/achievements', requireAdmin, async (req, res) => {
+    const { value, suffix, label, icon, highlight } = req.body;
+    const { data, error } = await supabase.from('achievements').insert([{ value, suffix, label, icon, highlight: !!highlight }]);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ message: 'Achievement created' });
+});
+
+app.put('/api/admin/achievements/:id', requireAdmin, async (req, res) => {
+    const { id } = req.params;
+    const { value, suffix, label, icon, highlight } = req.body;
+    const { data, error } = await supabase.from('achievements').update({ value, suffix, label, icon, highlight: !!highlight }).eq('id', id);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ message: 'Achievement updated' });
+});
+
+app.delete('/api/admin/achievements/:id', requireAdmin, async (req, res) => {
+    const { error } = await supabase.from('achievements').delete().eq('id', req.params.id);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ message: 'Achievement deleted' });
+});
+
+// EVENTS
+app.get('/api/events', async (req, res) => {
+    if (!supabase) return res.json([]);
+    const { data, error } = await supabase.from('events').select('*').order('created_at', { ascending: false });
+    if (error) return res.status(500).json({ error: error.message });
+    // Map backend snake_case to frontend camelCase
+    res.json(data.map(e => ({
+        id: e.id,
+        title: e.title,
+        fullTitle: e.full_title,
+        date: e.date,
+        time: e.time,
+        location: e.location,
+        description: e.description,
+        type: e.type,
+        image_url: e.image_url
+    })));
+});
+
+app.post('/api/admin/events', requireAdmin, upload.single('photo'), async (req, res) => {
+    let photoUrl = '';
+    if (req.file) {
+        const compressedBuffer = await compressImage(req.file.buffer);
+        const fileName = `event-${Date.now()}.webp`;
+        const { error: uploadError } = await supabase.storage.from(supabaseBucket).upload(fileName, compressedBuffer, { contentType: 'image/webp' });
+        if (!uploadError) {
+            const { data: { publicUrl } } = supabase.storage.from(supabaseBucket).getPublicUrl(fileName);
+            photoUrl = publicUrl;
+        }
+    }
+    const evt = req.body;
+    const { error } = await supabase.from('events').insert([{
+        title: evt.title, full_title: evt.fullTitle, date: evt.date,
+        time: evt.time, location: evt.location, description: evt.description,
+        type: evt.type, image_url: photoUrl
+    }]);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ message: 'Event created' });
+});
+
+app.put('/api/admin/events/:id', requireAdmin, upload.single('photo'), async (req, res) => {
+    const { id } = req.params;
+    const evt = req.body;
+    const { data: existing } = await supabase.from('events').select('image_url').eq('id', id).single();
+    let photoUrl = existing?.image_url || '';
+
+    if (req.file) {
+        if (existing?.image_url) await deletePhotoFromUrl(existing.image_url);
+        const compressedBuffer = await compressImage(req.file.buffer);
+        const fileName = `event-${Date.now()}.webp`;
+        const { error: uploadError } = await supabase.storage.from(supabaseBucket).upload(fileName, compressedBuffer, { contentType: 'image/webp' });
+        if (!uploadError) {
+            const { data: { publicUrl } } = supabase.storage.from(supabaseBucket).getPublicUrl(fileName);
+            photoUrl = publicUrl;
+        }
+    }
+
+    const { error } = await supabase.from('events').update({
+        title: evt.title, full_title: evt.fullTitle, date: evt.date,
+        time: evt.time, location: evt.location, description: evt.description,
+        type: evt.type, image_url: photoUrl
+    }).eq('id', id);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ message: 'Event updated' });
+});
+
+app.delete('/api/admin/events/:id', requireAdmin, async (req, res) => {
+    const { id } = req.params;
+    const { data: existing } = await supabase.from('events').select('image_url').eq('id', id).single();
+    if (existing?.image_url) await deletePhotoFromUrl(existing.image_url);
+    const { error } = await supabase.from('events').delete().eq('id', id);
+    if (error) return res.status(500).json({ error: error.message });
+    res.json({ message: 'Event deleted' });
+});
+
 
 // Final Error Handler
 app.use((err, req, res, next) => {
