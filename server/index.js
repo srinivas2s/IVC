@@ -377,8 +377,9 @@ app.get('/api/admin/requests', requireAdmin, async (req, res) => {
 
     if (error) return res.status(500).json({ error: error.message });
 
-    // Map DB fields to current frontend CamelCase
-    const members = data.filter(r => r.status === 'approved').map(r => ({
+    // Filter out 'APPLICANT' role as they belong in the Applications portal
+    // Also remove the .filter(r => r.status === 'approved') so the frontend can show pending/rejected requests
+    const members = data.filter(r => r.role !== 'APPLICANT').map(r => ({
         id: r.id,
         name: r.name,
         email: r.email,
@@ -1001,8 +1002,12 @@ app.delete('/api/admin/projects/:id', requireAdmin, async (req, res) => {
 
 app.get('/api/admin/applications', requireAdmin, async (req, res) => {
     if (!supabase) return res.status(503).json({ error: 'Database not configured.' });
-    // Returns pending member_requests
-    const { data, error } = await supabase.from('member_requests').select('*').order('submitted_at', { ascending: false });
+    // Returns ONLY applicants who joined via the public "Join Us" form
+    const { data, error } = await supabase
+        .from('member_requests')
+        .select('*')
+        .eq('role', 'APPLICANT')
+        .order('submitted_at', { ascending: false });
     if (error) return res.status(500).json({ error: error.message });
     // Normalize to what the frontend expects
     const apps = data.map(r => ({
