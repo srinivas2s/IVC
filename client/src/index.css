@@ -20,6 +20,36 @@
     font-family: 'Orbitron', sans-serif;
     letter-spacing: 0.05em;
   }
+
+  /* Fix linter warnings in Tailwind base styles */
+  img,
+  svg,
+  video,
+  canvas,
+  audio,
+  iframe,
+  embed,
+  object {
+    vertical-align: unset; /* Remove vertical-align as it's ignored on display: block */
+  }
+
+  button,
+  input:where([type='button']),
+  input:where([type='reset']),
+  input:where([type='submit']) {
+    appearance: button; /* Define standard property for compatibility */
+  }
+
+  /* Support standard line-clamp property for linter compatibility */
+  [class*='line-clamp-'] {
+    line-clamp: attr(data-line-clamp); /* Placeholder or explicit value if known */
+  }
+  .line-clamp-1 { line-clamp: 1; }
+  .line-clamp-2 { line-clamp: 2; }
+  .line-clamp-3 { line-clamp: 3; }
+  .line-clamp-4 { line-clamp: 4; }
+  .line-clamp-5 { line-clamp: 5; }
+  .line-clamp-6 { line-clamp: 6; }
 }
 
 /* ===== TECHSOLSTICE DESIGN SYSTEM REFINEMENT ===== */
@@ -146,32 +176,4 @@ body {
 ::selection {
   background: rgba(34, 211, 238, 0.3);
   color: white;
-}
-
-/* Fix for IDE validation warnings in built CSS */
-@layer base {
-  img, svg, video, canvas, audio, iframe, embed, object {
-    vertical-align: unset;
-  }
-  
-  button, 
-  input:where([type=button]), 
-  input:where([type=reset]), 
-  input:where([type=submit]),
-  ::-webkit-file-upload-button {
-    appearance: button;
-  }
-
-  [type=search] {
-    appearance: textfield;
-  }
-}
-
-@layer utilities {
-  .line-clamp-1 { line-clamp: 1; }
-  .line-clamp-2 { line-clamp: 2; }
-  .line-clamp-3 { line-clamp: 3; }
-  .line-clamp-4 { line-clamp: 4; }
-  .line-clamp-5 { line-clamp: 5; }
-  .line-clamp-6 { line-clamp: 6; }
 }
