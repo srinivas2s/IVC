@@ -147,3 +147,31 @@ body {
   background: rgba(34, 211, 238, 0.3);
   color: white;
 }
+
+/* Fix for IDE validation warnings in built CSS */
+@layer base {
+  img, svg, video, canvas, audio, iframe, embed, object {
+    vertical-align: unset;
+  }
+  
+  button, 
+  input:where([type=button]), 
+  input:where([type=reset]), 
+  input:where([type=submit]),
+  ::-webkit-file-upload-button {
+    appearance: button;
+  }
+
+  [type=search] {
+    appearance: textfield;
+  }
+}
+
+@layer utilities {
+  .line-clamp-1 { line-clamp: 1; }
+  .line-clamp-2 { line-clamp: 2; }
+  .line-clamp-3 { line-clamp: 3; }
+  .line-clamp-4 { line-clamp: 4; }
+  .line-clamp-5 { line-clamp: 5; }
+  .line-clamp-6 { line-clamp: 6; }
+}
