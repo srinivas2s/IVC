@@ -10,7 +10,6 @@ const fadeUp = (delay = 0) => ({
     viewport: { once: true, margin: "-50px" },
     transition: { duration: 0.8, delay, ease: [0.16, 1, 0.3, 1] }
 });
-
 // Animated counter
 const Counter = ({ target, suffix = '' }) => {
     const [count, setCount] = useState(0);
