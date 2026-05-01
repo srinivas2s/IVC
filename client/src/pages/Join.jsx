@@ -1,11 +1,30 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { User, Mail, School, Calendar, CheckCircle, Phone, ChevronDown } from 'lucide-react';
+import { User, Mail, School, Calendar, CheckCircle, Phone, ChevronDown, Users, Lock } from 'lucide-react';
 
 const Join = ({ isModal = false }) => {
-    const [formData, setFormData] = useState({ name: '', email: '', phone: '', department: '', year: '' });
+    const [formData, setFormData] = useState({ name: '', email: '', phone: '', department: '', year: '', section: '' });
     const [status, setStatus] = useState('');
     const [focusedField, setFocusedField] = useState(null);
+    const [enabled, setEnabled] = useState(true);
+    const [loadingSettings, setLoadingSettings] = useState(true);
+
+    useEffect(() => {
+        const fetchSettings = async () => {
+            try {
+                const res = await fetch('/api/settings/join-status');
+                if (res.ok) {
+                    const data = await res.json();
+                    setEnabled(data.enabled);
+                }
+            } catch (err) {
+                console.error('Error fetching settings:', err);
+            } finally {
+                setLoadingSettings(false);
+            }
+        };
+        fetchSettings();
+    }, []);
 
     const handleChange = (e) => setFormData({ ...formData, [e.target.name]: e.target.value });
 
@@ -20,7 +39,7 @@ const Join = ({ isModal = false }) => {
             });
             if (res.ok) {
                 setStatus('success');
-                setFormData({ name: '', email: '', phone: '', department: '', year: '' });
+                setFormData({ name: '', email: '', phone: '', department: '', year: '', section: '' });
             } else {
                 const data = await res.json();
                 alert(data.error || 'Submission failed');
@@ -52,7 +71,50 @@ const Join = ({ isModal = false }) => {
             options: ['1', '2', '3', '4'],
             placeholder: 'Select Year' 
         },
+        { 
+            name: 'section', 
+            label: 'SECTION', 
+            icon: Users, 
+            type: 'select', 
+            options: ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V', 'W', 'X', 'Y', 'Z'],
+            placeholder: 'Select Section' 
+        },
     ];
+
+    if (loadingSettings) {
+        return (
+            <div className="min-h-screen bg-[#02040a] text-white flex items-center justify-center">
+                <div className="animate-spin rounded-full h-8 w-8 border-t-2 border-b-2 border-cyan-400"></div>
+            </div>
+        );
+    }
+
+    if (!enabled) {
+        return (
+            <div className={isModal ? "w-full py-12 px-4 text-center" : "pt-40 pb-24 px-4 max-w-2xl mx-auto min-h-screen flex flex-col justify-center text-center"}>
+                <motion.div
+                    initial={{ opacity: 0, scale: 0.95 }}
+                    animate={{ opacity: 1, scale: 1 }}
+                    transition={{ duration: 0.5 }}
+                    className="glow-card rounded-2xl p-12 border border-white/5 bg-[#02040a]/60 backdrop-blur-xl relative overflow-hidden"
+                >
+                    <div className="absolute inset-0 pointer-events-none">
+                        <div className="absolute top-[-50%] right-[-50%] w-[100vw] h-[100vw] bg-[radial-gradient(circle,rgba(239,68,68,0.05)_0%,transparent_60%)] rounded-full blur-[80px]" />
+                    </div>
+
+                    <div className="w-20 h-20 rounded-2xl bg-red-500/10 border border-red-500/20 flex items-center justify-center mx-auto mb-8 shadow-[0_0_30px_rgba(239,68,68,0.1)]">
+                        <Lock className="text-red-500" size={36} />
+                    </div>
+                    <h2 className="font-display text-3xl md:text-4xl font-black tracking-wider uppercase text-white mb-4">
+                        APPLICATIONS <span className="text-red-500 text-glow-red">CLOSED</span>
+                    </h2>
+                    <p className="text-white/50 text-sm md:text-base mb-8 max-w-md mx-auto leading-relaxed">
+                        We are currently not accepting new registrations. Thank you for your interest! Keep an eye on our social handles for updates.
+                    </p>
+                </motion.div>
+            </div>
+        );
+    }
 
     return (
         <div className={isModal ? "w-full py-4 px-2" : "pt-40 pb-24 px-4 max-w-2xl mx-auto min-h-screen flex flex-col justify-center"}>
