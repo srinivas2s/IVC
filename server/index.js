@@ -227,6 +227,7 @@ const publicJoinSchema = z.object({
     phone: z.string().min(10).max(20),
     department: z.string().min(2).max(100),
     year: z.string().min(1).max(50),
+    section: z.string().min(1).max(10).optional(),
 });
 
 app.post('/api/public/join', joinLimiter, async (req, res) => {
@@ -241,7 +242,7 @@ app.post('/api/public/join', joinLimiter, async (req, res) => {
             await supabase.from('member_requests').insert([{
                 name: validatedData.name,
                 email: validatedData.email,
-                department: validatedData.department,
+                department: `${validatedData.department} (Sec: ${validatedData.section || 'N/A'})`,
                 year: validatedData.year,
                 role: 'APPLICANT',
                 status: 'pending',
@@ -397,26 +398,6 @@ app.get('/api/admin/requests', requireAdmin, async (req, res) => {
     res.json({ requests: members });
 });
 
-app.get('/api/approved-members', async (req, res) => {
-    if (!supabase) return res.json({ members: [] });
-    const { data, error } = await supabase.from('member_requests').select('*').eq('status', 'approved');
-    if (error) return res.status(500).json({ error: error.message });
-    const members = data.map(r => ({
-        ...r,
-        photoUrl: r.photo_url || ''
-    }));
-    res.json({ members });
-});
-
-app.get('/api/mentors', async (req, res) => {
-    if (!supabase) return res.json([]);
-    const { data, error } = await supabase.from('mentors').select('*');
-    if (error) return res.status(500).json({ error: error.message });
-    res.json(data.map(m => ({
-        ...m,
-        photoUrl: m.photo_url || ''
-    })));
-});
 
 app.patch('/api/admin/requests/:id/:action', requireAdmin, async (req, res) => {
     if (!supabase) {
