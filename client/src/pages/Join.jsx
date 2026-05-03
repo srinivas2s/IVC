@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { User, Mail, School, Calendar, CheckCircle, Phone, ChevronDown, Users, Lock } from 'lucide-react';
 
-const Join = ({ isModal = false }) => {
+const Join = ({ isModal = false }) => {  
     const [formData, setFormData] = useState({ name: '', email: '', phone: '', department: '', year: '', section: '' });
     const [status, setStatus] = useState('');
     const [focusedField, setFocusedField] = useState(null);
