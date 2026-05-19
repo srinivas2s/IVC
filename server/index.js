@@ -1007,7 +1007,7 @@ let joinUsEnabled = true;
 app.get('/api/settings/join-status', async (req, res) => {
     if (supabase) {
         try {
-            const { data, error } = await supabase.from('app_settings').select('value').eq('key', 'join_us_enabled').maybeSingle();
+            const { data, error } = await supabase.from('settings').select('value').eq('key', 'join_us_enabled').maybeSingle();
             if (!error && data) joinUsEnabled = (data.value === 'true' || data.value === true);
         } catch (e) { console.error('Settings fetch error:', e.message); }
     }
@@ -1019,7 +1019,7 @@ app.post('/api/admin/settings/join-status', requireAdmin, async (req, res) => {
     joinUsEnabled = !!enabled;
     if (supabase) {
         try {
-            await supabase.from('app_settings').upsert({ key: 'join_us_enabled', value: joinUsEnabled.toString() });
+            await supabase.from('settings').upsert({ key: 'join_us_enabled', value: joinUsEnabled.toString() });
         } catch (e) { console.error('Settings save error:', e.message); }
     }
     res.json({ message: `Join Applications ${joinUsEnabled ? 'ENABLED' : 'DISABLED'}`, enabled: joinUsEnabled });
