@@ -15,8 +15,18 @@ const Projects = () => {
     useEffect(() => {
         fetch('/api/projects')
             .then(res => res.json())
-            .then(data => { setProjects(data); setLoading(false); })
-            .catch(() => setLoading(false));
+            .then(data => {
+                if (Array.isArray(data)) {
+                    setProjects(data);
+                } else {
+                    setProjects([]);
+                }
+                setLoading(false);
+            })
+            .catch(() => {
+                setProjects([]);
+                setLoading(false);
+            });
     }, []);
 
     return (

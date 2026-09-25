@@ -42,7 +42,7 @@ const Events = () => {
         fetch('/api/events')
             .then(res => res.json())
             .then(data => {
-                if (data && data.length > 0) setEvents(data);
+                if (Array.isArray(data) && data.length > 0) setEvents(data);
                 else setEvents(fallbackEvents);
             })
             .catch(() => setEvents(fallbackEvents));

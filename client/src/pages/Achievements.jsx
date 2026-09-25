@@ -52,7 +52,7 @@ const Achievements = () => {
         fetch('/api/achievements')
             .then(res => res.json())
             .then(data => {
-                if (data && data.length > 0) setStats(data);
+                if (Array.isArray(data) && data.length > 0) setStats(data);
                 else setStats(fallbackStats);
             })
             .catch(() => setStats(fallbackStats));

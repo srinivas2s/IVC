@@ -27,7 +27,7 @@ const Domains = () => {
         fetch('/api/domains')
             .then(res => res.json())
             .then(data => {
-                if (data && data.length > 0) setDomains(data);
+                if (Array.isArray(data) && data.length > 0) setDomains(data);
                 else setDomains(fallbackDomains);
             })
             .catch(() => setDomains(fallbackDomains));

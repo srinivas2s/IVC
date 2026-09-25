@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import { AnimatePresence, motion, useScroll, useSpring, useMotionValue, useTransform, useMotionTemplate } from 'framer-motion';
 import Home from './pages/Home';
@@ -17,6 +17,25 @@ import InteractiveBackground from './components/InteractiveBackground';
 import logo from './assets/logo.png';
 import vvceLogo from './assets/vvce-logo.png';
 import robotImg from './assets/robot.png';
+
+class ErrorBoundary extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false };
+  }
+  static getDerivedStateFromError() {
+    return { hasError: true };
+  }
+  componentDidCatch(error, errorInfo) {
+    console.error('ErrorBoundary caught an error:', error, errorInfo);
+  }
+  render() {
+    if (this.state.hasError) {
+      return this.props.fallback || null;
+    }
+    return this.props.children;
+  }
+}
 
 const sections = [
   { id: 'home', label: '01' },
@@ -245,11 +264,13 @@ function MainSite() {
 function App() {
   return (
     <Router>
-      <Routes>
-        <Route path="/admin" element={<AdminPage />} />
-        <Route path="/profile" element={<ProfilePage />} />
-        <Route path="*" element={<MainSite />} />
-      </Routes>
+      <ErrorBoundary>
+        <Routes>
+          <Route path="/admin" element={<AdminPage />} />
+          <Route path="/profile" element={<ProfilePage />} />
+          <Route path="*" element={<MainSite />} />
+        </Routes>
+      </ErrorBoundary>
     </Router>
   );
 }
