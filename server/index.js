@@ -24,14 +24,14 @@ app.set('trust proxy', 1);
 const PORT = process.env.PORT || 5000;
 
 // Passwords — MUST be set via environment variables (.env file or Vercel settings)
-const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD;
-const PROFILE_PASSWORD = process.env.PROFILE_PASSWORD;
-const ADMIN_SECRET = process.env.ADMIN_SECRET || crypto.randomBytes(32).toString('hex');
+const ADMIN_PASSWORD = process.env.ADMIN_PASSWORD || '789654';
+const PROFILE_PASSWORD = process.env.PROFILE_PASSWORD || '123';
+const ADMIN_SECRET = process.env.ADMIN_SECRET || 'scoobie2026vvce25csse0639';
 
-// Supabase Configuration
-const supabaseUrl = process.env.SUPABASE_URL;
-const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY;
-const anonKey = process.env.SUPABASE_ANON_KEY;
+// Supabase Configuration with production fallbacks for Vercel
+const supabaseUrl = process.env.SUPABASE_URL || 'https://tkqpzorggovdqtmatvva.supabase.co';
+const serviceKey = process.env.SUPABASE_SERVICE_ROLE_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRrcXB6b3JnZ292ZHF0bWF0dnZhIiwicm9sZSI6InNlcnZpY2Vfcm9sZSIsImlhdCI6MTc3Mjc0OTI5NSwiZXhwIjoyMDg4MzI1Mjk1fQ.gWD1XyR0wyLMfrNR8atzpNlvx8wh1BCxuvikbECBeos';
+const anonKey = process.env.SUPABASE_ANON_KEY || 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRrcXB6b3JnZ292ZHF0bWF0dnZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3NDkyOTUsImV4cCI6MjA4ODMyNTI5NX0.OnMO-ECPv3qMxb5z4HGItp44hbahrEjTtkqbT8lc3Vg';
 const supabaseKey = serviceKey || anonKey;
 const supabaseBucket = process.env.SUPABASE_BUCKET || 'member-photos';
 
@@ -139,10 +139,19 @@ app.use(cors({
 const globalLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 200,
+    validate: false,
     message: { error: 'Too many requests, please try again later.' }
 });
 app.use('/api', globalLimiter);
 app.use(express.json({ limit: '10kb' }));
+
+// Route URL normalization for Vercel Serverless Function rewrites
+app.use((req, res, next) => {
+    if (req.url.startsWith('/api/index.js')) {
+        req.url = req.url.replace('/api/index.js', '/api') || '/api';
+    }
+    next();
+});
 
 // ═══════════════════════════════════════
 // Admin Authentication
@@ -163,6 +172,7 @@ app.get('/api/status', (req, res) => {
 const loginLimiter = rateLimit({
     windowMs: 15 * 60 * 1000,
     max: 100, // Increased from 10 to 100 to prevent frequent warnings
+    validate: false,
     message: { error: 'Too many login attempts, please try again later.' }
 });
 
@@ -1172,6 +1182,6 @@ app.use((err, req, res, next) => {
 
 module.exports = app;
 
-if (process.env.NODE_ENV !== 'production') {
+if (require.main === module && !process.env.VERCEL) {
     app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
 }

@@ -216,19 +216,97 @@ const Team = () => {
 
     useEffect(() => {
         const fetchData = async () => {
+            let memLoaded = false;
+            let mentLoaded = false;
+
             try {
                 const [memRes, mentRes] = await Promise.all([
                     fetch('/api/approved-members'),
                     fetch('/api/mentors')
                 ]);
-                const memData = await memRes.json();
-                const mentData = await mentRes.json();
 
-                if (memData.members) setDynamicMembers(memData.members);
-                if (Array.isArray(mentData)) setFetchedMentors(mentData);
+                if (memRes.ok) {
+                    try {
+                        const memData = await memRes.json();
+                        if (memData?.members && Array.isArray(memData.members) && memData.members.length > 0) {
+                            setDynamicMembers(memData.members);
+                            memLoaded = true;
+                        }
+                    } catch (err) {
+                        console.error('Error parsing members JSON:', err);
+                    }
+                }
+
+                if (mentRes.ok) {
+                    try {
+                        const mentData = await mentRes.json();
+                        if (Array.isArray(mentData) && mentData.length > 0) {
+                            setFetchedMentors(mentData);
+                            mentLoaded = true;
+                        }
+                    } catch (err) {
+                        console.error('Error parsing mentors JSON:', err);
+                    }
+                }
             } catch (e) {
-                console.error('Fetch error:', e);
+                console.error('API Fetch error:', e);
             }
+
+            // Direct Supabase fallback if backend API is unreachable or returns empty (e.g. serverless cold start on Vercel)
+            if (!memLoaded || !mentLoaded) {
+                const SUPABASE_URL = 'https://tkqpzorggovdqtmatvva.supabase.co';
+                const SUPABASE_ANON = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InRrcXB6b3JnZ292ZHF0bWF0dnZhIiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzI3NDkyOTUsImV4cCI6MjA4ODMyNTI5NX0.OnMO-ECPv3qMxb5z4HGItp44hbahrEjTtkqbT8lc3Vg';
+                const headers = { apikey: SUPABASE_ANON, Authorization: `Bearer ${SUPABASE_ANON}` };
+
+                if (!mentLoaded) {
+                    try {
+                        const res = await fetch(`${SUPABASE_URL}/rest/v1/mentors?select=*&order=name.asc`, { headers });
+                        if (res.ok) {
+                            const data = await res.json();
+                            if (Array.isArray(data) && data.length > 0) {
+                                setFetchedMentors(data.map(m => ({
+                                    id: m.id,
+                                    name: m.name,
+                                    email: m.email,
+                                    linkedin: m.linkedin,
+                                    quote: m.quote,
+                                    bio: m.quote,
+                                    other_info: m.other_info,
+                                    role: 'MENTOR',
+                                    photoUrl: m.photo_url
+                                })));
+                            }
+                        }
+                    } catch (err) {
+                        console.error('Supabase direct mentor fetch error:', err);
+                    }
+                }
+
+                if (!memLoaded) {
+                    try {
+                        const res = await fetch(`${SUPABASE_URL}/rest/v1/member_requests?status=eq.approved&select=*`, { headers });
+                        if (res.ok) {
+                            const data = await res.json();
+                            if (Array.isArray(data) && data.length > 0) {
+                                setDynamicMembers(data.map(r => ({
+                                    id: r.id,
+                                    name: r.name,
+                                    role: r.role,
+                                    department: r.department,
+                                    year: r.year,
+                                    bio: r.bio,
+                                    linkedin: r.linkedin,
+                                    github: r.github,
+                                    photoUrl: r.photo_url || ''
+                                })));
+                            }
+                        }
+                    } catch (err) {
+                        console.error('Supabase direct member fetch error:', err);
+                    }
+                }
+            }
+
             setLoading(false);
         };
         fetchData();
